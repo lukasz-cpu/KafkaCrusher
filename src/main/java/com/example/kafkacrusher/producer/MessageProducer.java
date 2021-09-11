@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Component
 @AllArgsConstructor
@@ -23,25 +24,15 @@ public class MessageProducer {
 
 
     @GetMapping("test")
-    public void createTopic(){
+    public void createTopic() throws ExecutionException, InterruptedException, TimeoutException {
 
         Map<String, Object> config = new HashMap<>();
         config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.74:9092");
         AdminClient adminClient = AdminClient.create(config);
         ListTopicsResult listTopicsResult = adminClient.listTopics();
-        KafkaFuture<Set<String>> names = listTopicsResult.names();
-
-
-
-        try {
-            Set<String> strings = names.get();
-            for (String string : strings) {
-                System.out.println(string);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        Set<String> strings = listTopicsResult.names().get(3, TimeUnit.SECONDS);
+        for (String string : strings) {
+            System.out.println(string);
         }
 
 
