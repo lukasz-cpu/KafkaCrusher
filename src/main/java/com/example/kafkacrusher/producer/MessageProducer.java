@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 public class MessageProducer {
 
-    KafkaTem
 
 
     @GetMapping("test")
