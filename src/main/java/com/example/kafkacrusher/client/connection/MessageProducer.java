@@ -1,10 +1,9 @@
-package com.example.kafkacrusher.controller;
+package com.example.kafkacrusher.client.connection;
 
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.ListTopicsResult;
-import org.apache.kafka.common.KafkaFuture;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

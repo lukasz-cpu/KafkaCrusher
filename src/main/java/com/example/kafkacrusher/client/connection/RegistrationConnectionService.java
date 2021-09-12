@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.controller;
+package com.example.kafkacrusher.client.connection;
 
 
 import org.springframework.stereotype.Component;

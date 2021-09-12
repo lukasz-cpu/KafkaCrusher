@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.controller;
+package com.example.kafkacrusher.client.connection;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.controller;
+package com.example.kafkacrusher.client.connection;
 
 public class ClientConnectionMapper {
 
