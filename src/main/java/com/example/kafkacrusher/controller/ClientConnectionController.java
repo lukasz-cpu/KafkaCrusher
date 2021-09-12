@@ -1,5 +1,6 @@
 package com.example.kafkacrusher.controller;
 
+import com.example.kafkacrusher.model.ClientConnection;
 import com.example.kafkacrusher.model.ClientConnectionDTO;
 import com.example.kafkacrusher.service.RegistrationConnectionService;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,9 @@ public class ClientConnectionController {
 
     @RequestMapping(value = "/registerConnection", method = RequestMethod.POST)
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO clientConnectionDTO) {
-        ClientConnectionMapper.map(clientConnectionDTO);
+        ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionDTO);
+        registrationConnectionService.registerClientConnection(clientConnection);
+
         return new ResponseEntity("{}", HttpStatus.OK);
     }
 

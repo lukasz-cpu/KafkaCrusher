@@ -5,6 +5,10 @@ import com.example.kafkacrusher.model.ClientConnectionDTO;
 
 public class ClientConnectionMapper {
 
+    private ClientConnectionMapper(){
+
+    }
+
 
     static ClientConnection map(ClientConnectionDTO clientConnectionDTO){
         return ClientConnection.ClientConnectionBuilder.aClientConnection()
