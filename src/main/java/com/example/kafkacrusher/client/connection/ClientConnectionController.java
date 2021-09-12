@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class ClientConnectionController {
@@ -20,7 +22,8 @@ public class ClientConnectionController {
 
     @GetMapping(value = "/getConnections")
     public ResponseEntity<ClientConnectionResponseDTO> getConnections(){
-
+        List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
+        return new ResponseEntity(connectionsInfo.toString(), HttpStatus.OK);
     }
 
 }
