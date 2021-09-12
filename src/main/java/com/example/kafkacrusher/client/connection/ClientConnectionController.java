@@ -15,8 +15,7 @@ public class ClientConnectionController {
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO clientConnectionDTO) {
         ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionDTO);
         registrationConnectionService.registerClientConnection(clientConnection);
-
-        return new ResponseEntity("{}", HttpStatus.OK);
+        return new ResponseEntity("Connection added: " + clientConnectionDTO, HttpStatus.OK);
     }
 
 }

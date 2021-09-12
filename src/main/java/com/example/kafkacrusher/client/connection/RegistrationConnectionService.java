@@ -12,6 +12,7 @@ public class RegistrationConnectionService {
         this.clientConnectionRepository = clientConnectionRepository;
     }
 
+
     public void registerClientConnection(ClientConnection clientConnection) {
         clientConnectionRepository.save(clientConnection);
     }

@@ -11,6 +11,7 @@ public class ClientConnectionMapper {
         return ClientConnection.ClientConnectionBuilder.aClientConnection()
                 .withConnectionName(clientConnectionDTO.getConnectionName())
                 .withBrokers(clientConnectionDTO.getBrokers())
+                .withIsActive(false)
                 .build();
 
     }

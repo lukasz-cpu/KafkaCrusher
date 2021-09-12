@@ -1,9 +1,10 @@
 package com.example.kafkacrusher.client.connection;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+
+
+
+import javax.persistence.*;
 
 @Entity(name = "client_connection")
 public class ClientConnection {
@@ -14,13 +15,14 @@ public class ClientConnection {
 
     private String connectionName;
     private String brokers;
-    private String isActive;
+    @Column(nullable = false)
+    private Boolean isActive;
 
     public static final class ClientConnectionBuilder {
         private Long id;
         private String connectionName;
         private String brokers;
-        private String isActive;
+        private Boolean isActive;
 
         private ClientConnectionBuilder() {
         }
@@ -39,7 +41,7 @@ public class ClientConnection {
             return this;
         }
 
-        public ClientConnectionBuilder withIsActive(String isActive) {
+        public ClientConnectionBuilder withIsActive(Boolean isActive) {
             this.isActive = isActive;
             return this;
         }
