@@ -17,7 +17,6 @@ public class ClientConnection {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String connectionName;
     private String brokers;
     @Column(nullable = false)

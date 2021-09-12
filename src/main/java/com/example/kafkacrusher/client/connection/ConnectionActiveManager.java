@@ -29,28 +29,34 @@ public class ConnectionActiveManager {
     @GetMapping("test")
     public void createTopic(){
 
+        List<ClientConnection> connections = clientConnectionRepository.findAll();
+        for (ClientConnection connection : connections) {
+            if(checkIsActive(connection.getBrokers())){
+                connection.setIsActive(true);
+                clientConnectionRepository.save(connection);
+            }
+        }
 
 
-
-
-        System.out.println("haha");
     }
 
-    private void setStatusesForConnection() {
+    private boolean checkIsActive(String server) {
+        boolean result = true;
         Map<String, Object> config = new HashMap<>();
-        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.74:9093");
+        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, server);
         AdminClient adminClient = AdminClient.create(config);
         ListTopicsResult listTopicsResult = adminClient.listTopics();
         try {
             Set<String> strings = listTopicsResult.names().get(1500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            result = false;
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            result = false;
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            result = false;
         }
-
         adminClient.close(Duration.ofMillis(1500));
+
+        return result;
     }
 }
