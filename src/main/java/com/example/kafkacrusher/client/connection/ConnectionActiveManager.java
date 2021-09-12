@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -18,12 +19,18 @@ import java.util.concurrent.TimeoutException;
 @Component
 @AllArgsConstructor
 @RestController
-public class MessageProducer {
+public class ConnectionActiveManager {
+
+
+    private ClientConnectionRepository clientConnectionRepository;
 
 
     @GetMapping("test")
     public void createTopic() throws ExecutionException, InterruptedException, TimeoutException {
 
+        List<ClientConnection> allConnections = clientConnectionRepository.findAll();
+
+        
         Map<String, Object> config = new HashMap<>();
         config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.74:9092");
         AdminClient adminClient = AdminClient.create(config);
