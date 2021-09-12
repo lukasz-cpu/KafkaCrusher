@@ -22,7 +22,6 @@ import java.util.concurrent.TimeoutException;
 public class MessageProducer {
 
 
-
     @GetMapping("test")
     public void createTopic() throws ExecutionException, InterruptedException, TimeoutException {
 
