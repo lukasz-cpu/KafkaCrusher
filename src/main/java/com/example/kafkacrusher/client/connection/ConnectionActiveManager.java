@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -26,18 +25,16 @@ public class ConnectionActiveManager {
     private ClientConnectionRepository clientConnectionRepository;
 
 
-    @GetMapping("test")
-    public void createTopic(){
+    @GetMapping("/connectionManager/setActiveStatuses")
+    public void setActiveStatuses() {
 
-        List<ClientConnection> connections = clientConnectionRepository.findAll();
+        final List<ClientConnection> connections = clientConnectionRepository.findAll();
         for (ClientConnection connection : connections) {
-            if(checkIsActive(connection.getBrokers())){
-                connection.setIsActive(true);
-                clientConnectionRepository.save(connection);
-            }
+            String brokers = connection.getBrokers();
+            boolean isActive = checkIsActive(brokers);
+            connection.setIsActive(isActive);
+            clientConnectionRepository.save(connection);
         }
-
-
     }
 
     private boolean checkIsActive(String server) {
@@ -47,7 +44,7 @@ public class ConnectionActiveManager {
         AdminClient adminClient = AdminClient.create(config);
         ListTopicsResult listTopicsResult = adminClient.listTopics();
         try {
-            Set<String> strings = listTopicsResult.names().get(1500, TimeUnit.MILLISECONDS);
+            listTopicsResult.names().get(1500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             result = false;
         } catch (ExecutionException e) {
