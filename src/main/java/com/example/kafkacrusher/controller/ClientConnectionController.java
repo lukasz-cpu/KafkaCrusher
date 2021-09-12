@@ -16,7 +16,7 @@ public class ClientConnectionController {
 
     @RequestMapping(value = "/registerConnection", method = RequestMethod.POST)
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO clientConnectionDTO) {
-
+        ClientConnectionMapper.map(clientConnectionDTO);
         return new ResponseEntity("{}", HttpStatus.OK);
     }
 
