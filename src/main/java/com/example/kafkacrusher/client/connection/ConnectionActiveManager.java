@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,21 +27,30 @@ public class ConnectionActiveManager {
 
 
     @GetMapping("test")
-    public void createTopic() throws ExecutionException, InterruptedException, TimeoutException {
+    public void createTopic(){
 
-        List<ClientConnection> allConnections = clientConnectionRepository.findAll();
 
-        
-        Map<String, Object> config = new HashMap<>();
-        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.74:9092");
-        AdminClient adminClient = AdminClient.create(config);
-        ListTopicsResult listTopicsResult = adminClient.listTopics();
-        Set<String> strings = listTopicsResult.names().get(3, TimeUnit.SECONDS);
-        for (String string : strings) {
-            System.out.println(string);
-        }
+
 
 
         System.out.println("haha");
+    }
+
+    private void setStatusesForConnection() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.74:9093");
+        AdminClient adminClient = AdminClient.create(config);
+        ListTopicsResult listTopicsResult = adminClient.listTopics();
+        try {
+            Set<String> strings = listTopicsResult.names().get(1500, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        adminClient.close(Duration.ofMillis(1500));
     }
 }
