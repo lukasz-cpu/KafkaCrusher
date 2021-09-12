@@ -24,7 +24,7 @@ public class ConnectionActiveManager {
 
     private ClientConnectionRepository clientConnectionRepository;
 
-
+    //fixme not working as expected
     @GetMapping("/connectionManager/setActiveStatuses")
     public void setActiveStatuses() {
 
@@ -44,7 +44,7 @@ public class ConnectionActiveManager {
         AdminClient adminClient = AdminClient.create(config);
         ListTopicsResult listTopicsResult = adminClient.listTopics();
         try {
-            listTopicsResult.names().get(1500, TimeUnit.MILLISECONDS);
+            listTopicsResult.names().get(1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             result = false;
         } catch (ExecutionException e) {
@@ -52,7 +52,7 @@ public class ConnectionActiveManager {
         } catch (TimeoutException e) {
             result = false;
         }
-        adminClient.close(Duration.ofMillis(1500));
+        adminClient.close(Duration.ofMillis(1000));
 
         return result;
     }
