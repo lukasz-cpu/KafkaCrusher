@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.producer;
+package com.example.kafkacrusher.controller;
 
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClient;

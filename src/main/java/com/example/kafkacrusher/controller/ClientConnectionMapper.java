@@ -1,8 +1,5 @@
 package com.example.kafkacrusher.controller;
 
-import com.example.kafkacrusher.model.ClientConnection;
-import com.example.kafkacrusher.model.ClientConnectionDTO;
-
 public class ClientConnectionMapper {
 
     private ClientConnectionMapper(){

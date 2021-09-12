@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.model;
+package com.example.kafkacrusher.controller;
 
 
 import lombok.Data;

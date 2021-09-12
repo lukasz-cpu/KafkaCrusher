@@ -1,7 +1,8 @@
-package com.example.kafkacrusher.repository;
+package com.example.kafkacrusher.controller;
 
-import com.example.kafkacrusher.model.ClientConnection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface ClientConnectionRepository extends JpaRepository<ClientConnection, Long> {
 }
