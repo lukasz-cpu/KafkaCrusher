@@ -1,9 +1,5 @@
 package com.example.kafkacrusher.client.connection;
 
-
-
-
-
 import lombok.Getter;
 import lombok.Setter;
 
