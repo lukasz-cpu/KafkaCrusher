@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class ClientConnectionDTO {
+public class ClientConnectionRequestDTO {
     private String connectionName;
     private String brokers;
 }

@@ -7,10 +7,10 @@ public class ClientConnectionMapper {
     }
 
 
-    static ClientConnection map(ClientConnectionDTO clientConnectionDTO){
+    static ClientConnection map(ClientConnectionRequestDTO clientConnectionRequestDTO){
         return ClientConnection.ClientConnectionBuilder.aClientConnection()
-                .withConnectionName(clientConnectionDTO.getConnectionName())
-                .withBrokers(clientConnectionDTO.getBrokers())
+                .withConnectionName(clientConnectionRequestDTO.getConnectionName())
+                .withBrokers(clientConnectionRequestDTO.getBrokers())
                 .withIsActive(false)
                 .build();
 

@@ -12,10 +12,15 @@ public class ClientConnectionController {
     private RegistrationConnectionService registrationConnectionService;
 
     @PostMapping(value = "/registerConnection")
-    public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO clientConnectionDTO) {
-        ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionDTO);
+    public ResponseEntity<String> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
+        ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
         registrationConnectionService.registerClientConnection(clientConnection);
-        return new ResponseEntity("Connection added: " + clientConnectionDTO, HttpStatus.OK);
+        return new ResponseEntity("Connection added: " + clientConnectionRequestDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getConnections")
+    public ResponseEntity<ClientConnectionResponseDTO> getConnections(){
+
     }
 
 }
