@@ -28,7 +28,7 @@ public class ClientConnectionController {
     public ResponseEntity<ClientConnectionResponseDTO> getConnections(){
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
         String payload = getJson(connectionsInfo);
-        return new ResponseEntity<>(payload, HttpStatus.OK);
+        return new ResponseEntity(payload, HttpStatus.OK);
     }
 
     private String getJson(Object object) throws JsonProcessingException {
