@@ -1,24 +1,16 @@
-package com.example.kafkacrusher.client.connection;
+package com.example.kafkacrusher.connection.register;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.ListTopicsResult;
+import org.apache.kafka.clients.admin.DescribeClusterOptions;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @Component
 @AllArgsConstructor
@@ -29,10 +21,9 @@ public class ConnectionActiveManager {
 
     private ClientConnectionRepository clientConnectionRepository;
 
-    //fixme not working as expected
+
     @GetMapping("/connectionManager/setActiveStatuses")
     public void setActiveStatuses() {
-
         final List<ClientConnection> connections = clientConnectionRepository.findAll();
         for (ClientConnection connection : connections) {
             String brokers = connection.getBrokers();
@@ -42,18 +33,20 @@ public class ConnectionActiveManager {
         }
     }
 
-    public boolean validateKafkaAddress(String kafkaAddress) {
+
+    public boolean validateKafkaAddress(String kafkaAddress){
         boolean flag = false;
-
-        boolean validateKafkaAddress = false;
-        AdminClient adminClient = null;
-
         Properties props = new Properties();
-        props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
-        adminClient = AdminClient.create(props);
-        
-//                String host = adminClient.describeCluster().controller().get().host();
-
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
+        try (AdminClient adminClient = AdminClient.create(props)) {
+            DescribeClusterOptions dco = new DescribeClusterOptions();
+            dco.timeoutMs(5000);
+            adminClient.describeCluster(dco).clusterId().get();
+            flag = true;
+        } catch (Exception e) {
+            log.error("Error with validation Kafka Address: {}", kafkaAddress);
+        }
         return flag;
     }
 }
+

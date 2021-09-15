@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.client.connection;
+package com.example.kafkacrusher.connection.register;
 
 import lombok.Builder;
 import lombok.Data;
