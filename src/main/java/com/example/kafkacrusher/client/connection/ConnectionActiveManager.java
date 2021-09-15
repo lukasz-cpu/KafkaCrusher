@@ -44,37 +44,16 @@ public class ConnectionActiveManager {
 
     public boolean validateKafkaAddress(String kafkaAddress) {
         boolean flag = false;
-        FutureTask<Object> future = new FutureTask<>(() -> {
-            boolean validateKafkaAddress = false;
-            AdminClient adminClient = null;
-            try {
-                Properties props = new Properties();
-                props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
-                adminClient = AdminClient.create(props);
-                String host = adminClient.describeCluster().controller().get().host();
-                if (host != null) {
-                    validateKafkaAddress = true;
-                }
-            }catch (Exception e){
-                log.warn("connect kafka error.",e);
-            }finally {
-                if(adminClient!=null){
-                    adminClient.close();
-                }
-            }
-            return validateKafkaAddress;
-        });
-        Thread thread = new Thread(future);
-        thread.start();
-        Object validateKafkaAddress;
-        try {
-            validateKafkaAddress = future.get(3, TimeUnit.SECONDS);
-            if(validateKafkaAddress!=null) {
-                flag = true;
-            }
-        }catch (Exception e) {
-            log.warn("validateKafkaAddress  result is inactive",e);
-        }
+
+        boolean validateKafkaAddress = false;
+        AdminClient adminClient = null;
+
+        Properties props = new Properties();
+        props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
+        adminClient = AdminClient.create(props);
+        
+//                String host = adminClient.describeCluster().controller().get().host();
+
         return flag;
     }
 }
