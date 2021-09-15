@@ -30,7 +30,7 @@ public class ConnectionActiveManager {
 
     private ClientConnectionRepository clientConnectionRepository;
 
- 
+
     @GetMapping("/connectionManager/setActiveStatuses")
     public void setActiveStatuses() {
         final List<ClientConnection> connections = clientConnectionRepository.findAll();
