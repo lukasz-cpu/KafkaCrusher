@@ -43,7 +43,7 @@ public class ConnectionActiveManager {
         }
     }
 
-    public boolean validateKafkaAddress(String kafkaAddress) {
+    public boolean validateKafkaAddress(String kafkaAddress){
         boolean flag = false;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
@@ -53,7 +53,7 @@ public class ConnectionActiveManager {
             adminClient.describeCluster(dco).clusterId().get();
             flag = true;
         } catch (Exception e) {
-
+            log.warn("connect kafka error.",e);
         }
         return flag;
     }
