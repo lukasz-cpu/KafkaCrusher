@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.DescribeClusterOptions;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,16 +45,20 @@ public class ConnectionActiveManager {
 
     public boolean validateKafkaAddress(String kafkaAddress) {
         boolean flag = false;
-
-        boolean validateKafkaAddress = false;
-        AdminClient adminClient = null;
-
         Properties props = new Properties();
-        props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
-        adminClient = AdminClient.create(props);
-        
-//                String host = adminClient.describeCluster().controller().get().host();
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
+        AdminClient adminClient =  AdminClient.create(props);
+        try {
+            DescribeClusterOptions dco = new DescribeClusterOptions();
+            dco.timeoutMs(3000);
+            adminClient.describeCluster(dco).clusterId().get();
+            flag = true;
+        } catch (Exception e) {
 
+        } finally {
+            adminClient.close();
+        }
         return flag;
     }
-}
+    }
+
