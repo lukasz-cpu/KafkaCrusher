@@ -30,10 +30,9 @@ public class ConnectionActiveManager {
 
     private ClientConnectionRepository clientConnectionRepository;
 
-    //fixme not working as expected
+ 
     @GetMapping("/connectionManager/setActiveStatuses")
     public void setActiveStatuses() {
-
         final List<ClientConnection> connections = clientConnectionRepository.findAll();
         for (ClientConnection connection : connections) {
             String brokers = connection.getBrokers();
@@ -42,6 +41,7 @@ public class ConnectionActiveManager {
             clientConnectionRepository.save(connection);
         }
     }
+
 
     public boolean validateKafkaAddress(String kafkaAddress){
         boolean flag = false;
