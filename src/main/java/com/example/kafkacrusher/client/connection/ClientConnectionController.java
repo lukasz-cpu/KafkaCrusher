@@ -6,9 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -19,10 +23,9 @@ public class ClientConnectionController {
     @PostMapping(value = "/registerConnection")
     public ResponseEntity<String> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
         ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
-        try{
-            registrationConnectionService.registerClientConnection(clientConnection);
-        }
-        catch (RegisterClientException e){
+
+        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
+        if (clientConnectionResult.isEmpty()) {
             return new ResponseEntity<>("Problem with saving: " + clientConnectionRequestDTO, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Connection added: " + clientConnectionRequestDTO, HttpStatus.OK);

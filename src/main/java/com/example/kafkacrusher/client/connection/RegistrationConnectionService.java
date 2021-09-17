@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -20,17 +21,18 @@ public class RegistrationConnectionService {
         this.connectionActiveManager = connectionActiveManager;
     }
 
-    public ClientConnection registerClientConnection(ClientConnection clientConnection) {
+    public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection) {
+        Optional<ClientConnection> clientConnectionResult = Optional.empty();
         try {
             String brokers = clientConnection.getBrokers();
             if (connectionActiveManager.validateKafkaAddress(brokers)) {
-                return clientConnectionRepository.save(clientConnection);
+                clientConnectionResult = Optional.of(clientConnectionRepository.save(clientConnection));
             }
         } catch (Exception e) {
             throw new RegisterClientException("Error with saving client connection to database : " + clientConnection.toString());
         }
 
-        return clientConnection;
+        return clientConnectionResult;
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
