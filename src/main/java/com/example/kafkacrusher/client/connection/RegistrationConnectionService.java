@@ -1,7 +1,6 @@
 package com.example.kafkacrusher.client.connection;
 
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.List;
 @Component
 public class RegistrationConnectionService {
 
-    private ClientConnectionRepository clientConnectionRepository;
+    private final ClientConnectionRepository clientConnectionRepository;
 
     public RegistrationConnectionService(ClientConnectionRepository clientConnectionRepository) {
         this.clientConnectionRepository = clientConnectionRepository;
