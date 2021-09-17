@@ -49,7 +49,7 @@ public class ConnectionActiveManager {
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
         try (AdminClient adminClient = AdminClient.create(props)) {
             DescribeClusterOptions dco = new DescribeClusterOptions();
-            dco.timeoutMs(3000);
+            dco.timeoutMs(5000);
             adminClient.describeCluster(dco).clusterId().get();
             flag = true;
         } catch (Exception e) {
