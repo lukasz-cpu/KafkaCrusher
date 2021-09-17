@@ -9,15 +9,23 @@ import java.util.List;
 @Component
 public class RegistrationConnectionService {
 
-    private final ClientConnectionRepository clientConnectionRepository;
+    private ClientConnectionRepository clientConnectionRepository;
+    private ConnectionActiveManager connectionActiveManager;
 
-    public RegistrationConnectionService(ClientConnectionRepository clientConnectionRepository) {
+    public RegistrationConnectionService(ClientConnectionRepository clientConnectionRepository,
+                                         ConnectionActiveManager connectionActiveManager) {
         this.clientConnectionRepository = clientConnectionRepository;
+        this.connectionActiveManager = connectionActiveManager;
     }
 
-
-    public void registerClientConnection(ClientConnection clientConnection) {
-        clientConnectionRepository.save(clientConnection);
+    public ClientConnection registerClientConnection(ClientConnection clientConnection) {
+        String brokers = clientConnection.getBrokers();
+        if(connectionActiveManager.validateKafkaAddress(brokers)){
+            return clientConnectionRepository.save(clientConnection);
+        }
+        else{
+            throw new RegisterClientException("Error with saving {} to database : " + clientConnection);
+        }
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
