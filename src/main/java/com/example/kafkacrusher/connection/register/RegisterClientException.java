@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.client.connection;
+package com.example.kafkacrusher.connection.register;
 
 public class RegisterClientException extends RuntimeException {
     public RegisterClientException(String errorMessage) {

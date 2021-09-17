@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.client.connection;
+package com.example.kafkacrusher.connection.register;
 
 
 import lombok.extern.slf4j.Slf4j;
