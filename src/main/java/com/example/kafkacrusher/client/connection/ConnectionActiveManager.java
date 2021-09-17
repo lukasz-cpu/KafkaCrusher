@@ -44,7 +44,7 @@ public class ConnectionActiveManager {
             adminClient.describeCluster(dco).clusterId().get();
             flag = true;
         } catch (Exception e) {
-            log.warn("connect kafka error.",e);
+            throw new ValidateKafkaAddressException("Error with validation Kafka Address: " + kafkaAddress);
         }
         return flag;
     }

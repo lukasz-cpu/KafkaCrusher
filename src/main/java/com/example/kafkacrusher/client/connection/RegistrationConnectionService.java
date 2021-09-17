@@ -1,16 +1,18 @@
 package com.example.kafkacrusher.client.connection;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class RegistrationConnectionService {
 
-    private ClientConnectionRepository clientConnectionRepository;
-    private ConnectionActiveManager connectionActiveManager;
+    private final ClientConnectionRepository clientConnectionRepository;
+    private final ConnectionActiveManager connectionActiveManager;
 
     public RegistrationConnectionService(ClientConnectionRepository clientConnectionRepository,
                                          ConnectionActiveManager connectionActiveManager) {
@@ -19,13 +21,16 @@ public class RegistrationConnectionService {
     }
 
     public ClientConnection registerClientConnection(ClientConnection clientConnection) {
-        String brokers = clientConnection.getBrokers();
-        if(connectionActiveManager.validateKafkaAddress(brokers)){
-            return clientConnectionRepository.save(clientConnection);
+        try {
+            String brokers = clientConnection.getBrokers();
+            if (connectionActiveManager.validateKafkaAddress(brokers)) {
+                return clientConnectionRepository.save(clientConnection);
+            }
+        } catch (Exception e) {
+            throw new RegisterClientException("Error with saving client connection to database : " + clientConnection.toString());
         }
-        else{
-            throw new RegisterClientException("Error with saving {} to database : " + clientConnection);
-        }
+
+        return clientConnection;
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
