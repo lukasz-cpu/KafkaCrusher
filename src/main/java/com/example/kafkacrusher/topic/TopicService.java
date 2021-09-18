@@ -38,13 +38,14 @@ public class TopicService {
         try (AdminClient adminClient = AdminClient.create(props)) {
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
-            Set<String> strings = adminClient.listTopics(listTopicsOptions).names().get();
-            List<String> strings1 = strings.stream().filter(StringUtils::hasLength).toList();
-            log.info("--------------------");
-            log.info("JESTEM TUTAJ getTopicByAddresses {}", strings1);
-            log.info("--------------------");
+            List<String> result = adminClient.listTopics(listTopicsOptions).names().get()
+                    .stream().filter(StringUtils::hasLength).toList();
 
-            return strings1;
+            if(result.isEmpty()){
+                throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
+            }
+            return result;
+
         } catch (Exception e) {
             throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
         }
