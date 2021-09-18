@@ -7,9 +7,11 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.ListTopicsOptions;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 @Component
 @Slf4j
@@ -23,29 +25,24 @@ public class TopicService {
     }
 
 
-    public List<String> getTopicsNames(String connectionName) throws TopicsNameNotFound {
-        String brokerAddressesByName;
-        try {
-            brokerAddressesByName = getBrokerAddressesByName(connectionName);
-            return getTopicByAddresses(brokerAddressesByName);
-        } catch (BrokerNotFoundException e) {
-            throw new TopicsNameNotFound("Broker not found");
-        }
+    public List<String> getTopicsNames(String connectionName) throws TopicsNameNotFound, BrokerNotFoundException {
+        String brokerAddressesByName = getBrokerAddressesByName(connectionName);
+        List<String> topicByAddresses = getTopicByAddresses(brokerAddressesByName);
+        return topicByAddresses;
+
     }
 
-    private List<String> getTopicByAddresses(String brokerAddresses) {
+    private List<String> getTopicByAddresses(String brokerAddresses) throws TopicsNameNotFound {
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
         try (AdminClient adminClient = AdminClient.create(props)) {
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
             Set<String> strings = adminClient.listTopics(listTopicsOptions).names().get();
-            return strings.stream().toList();
+            return strings.stream().filter(StringUtils::hasLength).toList();
         } catch (Exception e) {
-            log.error("Error with getting topic list for broker address: {}", brokerAddresses);
+            throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
         }
-        return new ArrayList<>();
-
     }
 
 
