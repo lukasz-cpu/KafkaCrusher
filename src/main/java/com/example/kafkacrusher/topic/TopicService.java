@@ -39,7 +39,12 @@ public class TopicService {
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
             Set<String> strings = adminClient.listTopics(listTopicsOptions).names().get();
-            return strings.stream().filter(StringUtils::hasLength).toList();
+            List<String> strings1 = strings.stream().filter(StringUtils::hasLength).toList();
+            log.info("--------------------");
+            log.info("JESTEM TUTAJ getTopicByAddresses {}", strings1);
+            log.info("--------------------");
+
+            return strings1;
         } catch (Exception e) {
             throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
         }
@@ -49,6 +54,7 @@ public class TopicService {
     private String getBrokerAddressesByName(String name) throws BrokerNotFoundException {
         Optional<ClientConnection> brokerConnection = clientConnectionRepository.findByConnectionName(name).stream().findFirst();
         if (brokerConnection.isEmpty()) {
+            log.debug("JESTEM TUTAJ getBrokerAddressesByName");
             throw new BrokerNotFoundException("Broker not found");
         }
         return brokerConnection.get().getBrokers();

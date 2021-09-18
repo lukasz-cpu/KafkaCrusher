@@ -20,7 +20,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 192.168.0.74
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "TestTopic:1:1"
+#      KAFKA_CREATE_TOPICS: "TestTopic:1:1"
     depends_on:
       - zookeeper
 
