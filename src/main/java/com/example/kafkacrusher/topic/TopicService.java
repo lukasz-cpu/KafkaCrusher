@@ -19,7 +19,14 @@ public class TopicService {
     }
 
 
-    public String getTopicsNames(String connectionName){
+    public String getTopicsNames(String connectionName) throws TopicsNameNotFound {
+        try {
+            String brokerAddressesByName = getBrokerAddressesByName(connectionName);
+        } catch (BrokerNotFoundException e) {
+            throw new TopicsNameNotFound("Broker not found");
+        }
+
+        return "ihaaaaahaaa";
 
     }
 
