@@ -39,7 +39,7 @@ public class TopicService {
         try (AdminClient adminClient = AdminClient.create(props)) {
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
-            Set<String> strings = adminClient.listTopics().names().get(5000, TimeUnit.SECONDS);
+            Set<String> strings = adminClient.listTopics(listTopicsOptions).names().get();
             return strings.stream().toList();
         } catch (Exception e) {
             log.error("Error with getting topic list for broker address: {}", brokerAddresses);
