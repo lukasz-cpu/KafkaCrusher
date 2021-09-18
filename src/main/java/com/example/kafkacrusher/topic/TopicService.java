@@ -5,6 +5,7 @@ import com.example.kafkacrusher.connection.register.ClientConnectionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -36,6 +37,8 @@ public class TopicService {
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
         try (AdminClient adminClient = AdminClient.create(props)) {
+            ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
+            listTopicsOptions.timeoutMs(5000);
             Set<String> strings = adminClient.listTopics().names().get(5000, TimeUnit.SECONDS);
             return strings.stream().toList();
         } catch (Exception e) {
