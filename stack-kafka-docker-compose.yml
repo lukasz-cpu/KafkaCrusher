@@ -10,7 +10,7 @@ services:
       - "2181:2181"
     environment:
       ZOO_MY_ID: 1
-      
+
   kafka:
     image: wurstmeister/kafka
     container_name: kafka

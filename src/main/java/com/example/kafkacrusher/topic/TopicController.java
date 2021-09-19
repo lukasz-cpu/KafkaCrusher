@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.example.kafkacrusher.util.JSONUtils.getJson;
 
 @RestController
 @Slf4j
@@ -20,12 +22,21 @@ public class TopicController {
     public ResponseEntity<String> getTopicsForConnectionName(@RequestParam String connectionName) {
 
         try {
-            return new ResponseEntity<>(topicService.getTopicsNames(connectionName).toString(), HttpStatus.OK);
+            List<String> topicsNames = topicService.getTopicsNames(connectionName);
+            return new ResponseEntity<>(getJson(topicsNames), HttpStatus.OK);
         } catch (TopicsNameNotFound | BrokerNotFoundException e) {
             return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
+    }
+
+    @PostMapping("/addTopicsForConnectionName")
+    public ResponseEntity<String> addTopicsForConnectionsName(@RequestBody TopicListDTO topicListDTO,
+                                                              @RequestParam String connectionName){
 
 
+        topicService.createTopicForConnection(connectionName, topicListDTO);
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 }

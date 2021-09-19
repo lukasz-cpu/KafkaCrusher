@@ -1,7 +1,5 @@
-package com.example.kafkacrusher.connection.register;
+package com.example.kafkacrusher.connection;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.kafkacrusher.util.JSONUtils.getJson;
+
 
 @RestController
 @AllArgsConstructor
@@ -33,14 +34,9 @@ public class ClientConnectionController {
 
     @SneakyThrows
     @GetMapping(value = "/getConnections")
-    public ResponseEntity<String> getConnections(){
+    public ResponseEntity<String> getConnections() {
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
         String payload = getJson(connectionsInfo);
         return new ResponseEntity<>(payload, HttpStatus.OK);
     }
-
-    private String getJson(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-     }
 }

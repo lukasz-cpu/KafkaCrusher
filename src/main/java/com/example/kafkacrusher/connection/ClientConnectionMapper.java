@@ -1,13 +1,13 @@
-package com.example.kafkacrusher.connection.register;
+package com.example.kafkacrusher.connection;
 
 public class ClientConnectionMapper {
 
-    private ClientConnectionMapper(){
+    private ClientConnectionMapper() {
 
     }
 
 
-    static ClientConnection map(ClientConnectionRequestDTO clientConnectionRequestDTO){
+    static ClientConnection map(ClientConnectionRequestDTO clientConnectionRequestDTO) {
         return ClientConnection.ClientConnectionBuilder.aClientConnection()
                 .withConnectionName(clientConnectionRequestDTO.getConnectionName())
                 .withBrokers(clientConnectionRequestDTO.getBrokers())

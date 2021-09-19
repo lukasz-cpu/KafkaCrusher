@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.connection.register;
+package com.example.kafkacrusher.connection;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class ConnectionActiveManager {
     }
 
 
-    public boolean validateKafkaAddress(String kafkaAddress){
+    public boolean validateKafkaAddress(String kafkaAddress) {
         boolean flag = false;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);

@@ -1,10 +1,9 @@
-package com.example.kafkacrusher.connection.register;
+package com.example.kafkacrusher.connection;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,17 +35,13 @@ public class RegistrationConnectionService {
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
-        List<ClientConnection> connections = clientConnectionRepository.findAll();
-        List<ClientConnectionResponseDTO> responseDTOList = new ArrayList<>();
-        for (ClientConnection connection : connections) {
-            ClientConnectionResponseDTO build = ClientConnectionResponseDTO.builder()
-                    .id(connection.getId())
-                    .brokers(connection.getBrokers())
-                    .connectionName(connection.getConnectionName())
-                    .isActive(connection.getIsActive())
-                    .build();
-            responseDTOList.add(build);
-        }
-        return  responseDTOList;
+        return clientConnectionRepository.findAll().stream().map(
+                clientConnection -> ClientConnectionResponseDTO.builder()
+                        .id(clientConnection.getId())
+                        .brokers(clientConnection.getBrokers())
+                        .connectionName(clientConnection.getConnectionName())
+                        .isActive(clientConnection.getIsActive())
+                        .build()
+        ).toList();
     }
 }
