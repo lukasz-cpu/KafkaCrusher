@@ -24,8 +24,6 @@ public class TopicController {
         } catch (TopicsNameNotFound | BrokerNotFoundException e) {
             return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
-
-
     }
 
 }
