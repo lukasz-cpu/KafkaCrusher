@@ -10,4 +10,4 @@ class KafkaCrusherApplicationTests {
     void contextLoads() {
     }
 
-}
+ }
