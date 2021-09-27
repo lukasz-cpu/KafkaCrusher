@@ -53,8 +53,9 @@ public class TopicService {
 
     }
 
-    public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) {
-
+    public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws BrokerNotFoundException {
+        String brokerAddressesByName = getBrokerAddressesByName(connectionName);
+        System.out.println(brokerAddressesByName);
     }
 
 

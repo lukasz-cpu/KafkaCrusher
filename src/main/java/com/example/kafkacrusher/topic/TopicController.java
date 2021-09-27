@@ -34,7 +34,11 @@ public class TopicController {
                                                               @RequestParam String connectionName){
 
 
-        topicService.createTopicForConnection(connectionName, topicListDTO);
+        try {
+            topicService.createTopicForConnection(connectionName, topicListDTO);
+        } catch (BrokerNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
