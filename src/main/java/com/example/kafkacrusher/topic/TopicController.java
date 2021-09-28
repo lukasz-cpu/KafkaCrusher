@@ -20,7 +20,6 @@ public class TopicController {
 
     @GetMapping("/getTopicListForConnectionName")
     public ResponseEntity<String> getTopicsForConnectionName(@RequestParam String connectionName) {
-
         try {
             List<String> topicsNames = topicService.getTopicsNames(connectionName);
             return new ResponseEntity<>(getJson(topicsNames), HttpStatus.OK);
@@ -32,16 +31,12 @@ public class TopicController {
     @PostMapping("/addTopicsForConnectionName")
     public ResponseEntity<String> addTopicsForConnectionsName(@RequestBody TopicListDTO topicListDTO,
                                                               @RequestParam String connectionName){
-
-
         try {
             topicService.createTopicForConnection(connectionName, topicListDTO);
         } catch (CreateTopicException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
-
-
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully added topics: " + getJson(topicListDTO), HttpStatus.OK);
     }
 
 }
