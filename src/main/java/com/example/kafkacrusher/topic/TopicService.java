@@ -40,8 +40,14 @@ public class TopicService {
             adminClient = AdminClient.create(props);
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
-            result = adminClient.listTopics(listTopicsOptions).names().get()
-                    .stream().filter(StringUtils::hasLength).toList();
+            result = adminClient
+                    .listTopics(listTopicsOptions)
+                    .names()
+                    .get()
+                    .stream()
+                    .filter(StringUtils::hasLength)
+                    .sorted()
+                    .toList();
 
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();

@@ -27,9 +27,9 @@ public class ClientConnectionController {
 
         Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
         if (clientConnectionResult.isEmpty()) {
-            return new ResponseEntity<>("Problem with saving: " + clientConnectionRequestDTO, HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Problem with saving: " + getJson(clientConnectionRequestDTO), HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Connection added: " + clientConnectionRequestDTO, HttpStatus.OK);
+        return new ResponseEntity<>("Connection added: " + getJson(clientConnectionRequestDTO), HttpStatus.OK);
     }
 
     @SneakyThrows
