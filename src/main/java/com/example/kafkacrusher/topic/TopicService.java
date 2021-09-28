@@ -87,9 +87,27 @@ public class TopicService {
 
     }
 
-    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) {
-        log.info(connectionName);
-        log.info(topicListDTO.toString());
+    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) throws DeleteTopicException {
+        AdminClient adminClient = null;
+        try {
+            String brokerAddressesByName = getBrokerAddressesByName(connectionName);
+            Properties props = new Properties();
+            props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
+            adminClient = AdminClient.create(props);
+            List<String> topicsList = topicListDTO
+                    .getTopicListDTO()
+                    .stream()
+                            .toList();
+
+            log.info(topicsList.toString());
+
+            adminClient.deleteTopics(topicsList);
+
+        } catch (Exception e) {
+            throw new DeleteTopicException("Cannot delete topic for connection name " + connectionName);
+        } finally {
+            closeAdminClient(adminClient);
+        }
     }
 
     private void closeAdminClient(AdminClient adminClient) {

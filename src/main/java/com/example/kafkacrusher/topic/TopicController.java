@@ -42,7 +42,11 @@ public class TopicController {
     @PostMapping("/deleteTopicsForConnectionName")
     public ResponseEntity<String> deleteTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
                                                                 @RequestParam String connectionName) {
-        topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
+        try {
+            topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
+        } catch (DeleteTopicException e) {
+            return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
+        }
         return new ResponseEntity<>("Successfully deleted topics: " + getJson(topicListDTO), HttpStatus.OK);
     }
 
