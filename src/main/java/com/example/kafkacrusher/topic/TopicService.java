@@ -2,15 +2,16 @@ package com.example.kafkacrusher.topic;
 
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -32,9 +33,11 @@ public class TopicService {
 
     private List<String> getTopicByAddresses(String brokerAddresses) throws TopicsNameNotFound {
         List<String> result = new ArrayList<>();
+        AdminClient adminClient = null;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
-        try (AdminClient adminClient = AdminClient.create(props)) {
+        try {
+            adminClient = AdminClient.create(props);
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
             result = adminClient.listTopics(listTopicsOptions).names().get()
@@ -45,6 +48,8 @@ public class TopicService {
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
+        } finally {
+            closeAdminClient(adminClient);
         }
         if (result.isEmpty()) {
             throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
@@ -70,15 +75,17 @@ public class TopicService {
 
         } catch (Exception e) {
             throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
-        }
-        finally {
-            if(adminClient != null){
-                adminClient.close();
-            }
+        } finally {
+            closeAdminClient(adminClient);
         }
 
     }
 
+    private void closeAdminClient(AdminClient adminClient) {
+        if (adminClient != null) {
+            adminClient.close();
+        }
+    }
 
     private String getBrokerAddressesByName(String name) throws BrokerNotFoundException {
         return clientConnectionRepository.
