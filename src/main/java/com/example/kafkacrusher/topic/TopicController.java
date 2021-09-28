@@ -35,7 +35,11 @@ public class TopicController {
 
 
         try {
-            topicService.createTopicForConnection(connectionName, topicListDTO);
+            try {
+                topicService.createTopicForConnection(connectionName, topicListDTO);
+            } catch (CreateTopicException e) {
+                e.printStackTrace();
+            }
         } catch (BrokerNotFoundException e) {
             e.printStackTrace();
         }

@@ -6,6 +6,7 @@ import org.apache.kafka.clients.admin.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -52,12 +53,13 @@ public class TopicService {
 
     }
 
-    public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws BrokerNotFoundException {
+    public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
+        AdminClient adminClient = null;
         try {
             String brokerAddressesByName = getBrokerAddressesByName(connectionName);
             Properties props = new Properties();
             props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
-            AdminClient adminClient = AdminClient.create(props);
+            adminClient = AdminClient.create(props);
             List<NewTopic> topicsList = topicListDTO
                     .getTopicListDTO()
                     .stream()
@@ -65,9 +67,14 @@ public class TopicService {
                     .toList();
 
             adminClient.createTopics(topicsList);
-            
-        } catch (Exception e) {
 
+        } catch (Exception e) {
+            throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
+        }
+        finally {
+            if(adminClient != null){
+                adminClient.close(Duration.ofMillis(1000));
+            }
         }
 
     }
