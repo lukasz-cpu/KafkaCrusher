@@ -30,13 +30,20 @@ public class TopicController {
 
     @PostMapping("/addTopicsForConnectionName")
     public ResponseEntity<String> addTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
-                                                             @RequestParam String connectionName){
+                                                             @RequestParam String connectionName) {
         try {
             topicService.createTopicForConnection(connectionName, topicListDTO);
         } catch (CreateTopicException e) {
             return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Successfully added topics: " + getJson(topicListDTO), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteTopicsForConnectionName")
+    public ResponseEntity<String> deleteTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
+                                                                @RequestParam String connectionName) {
+        topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
+        return new ResponseEntity<>("Successfully deleted topics: " + getJson(topicListDTO), HttpStatus.OK);
     }
 
 }

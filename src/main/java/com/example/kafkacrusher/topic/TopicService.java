@@ -87,6 +87,11 @@ public class TopicService {
 
     }
 
+    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) {
+        log.info(connectionName);
+        log.info(topicListDTO.toString());
+    }
+
     private void closeAdminClient(AdminClient adminClient) {
         if (adminClient != null) {
             adminClient.close();
