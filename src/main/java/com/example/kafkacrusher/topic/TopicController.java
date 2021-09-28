@@ -29,8 +29,8 @@ public class TopicController {
     }
 
     @PostMapping("/addTopicsForConnectionName")
-    public ResponseEntity<String> addTopicsForConnectionsName(@RequestBody TopicListDTO topicListDTO,
-                                                              @RequestParam String connectionName){
+    public ResponseEntity<String> addTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
+                                                             @RequestParam String connectionName){
         try {
             topicService.createTopicForConnection(connectionName, topicListDTO);
         } catch (CreateTopicException e) {
