@@ -35,14 +35,11 @@ public class TopicController {
 
 
         try {
-            try {
-                topicService.createTopicForConnection(connectionName, topicListDTO);
-            } catch (CreateTopicException e) {
-                e.printStackTrace();
-            }
-        } catch (BrokerNotFoundException e) {
+            topicService.createTopicForConnection(connectionName, topicListDTO);
+        } catch (CreateTopicException e) {
             e.printStackTrace();
         }
+
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
