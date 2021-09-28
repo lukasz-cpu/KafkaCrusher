@@ -73,7 +73,7 @@ public class TopicService {
         }
         finally {
             if(adminClient != null){
-                adminClient.close(Duration.ofMillis(1000));
+                adminClient.close();
             }
         }
 
