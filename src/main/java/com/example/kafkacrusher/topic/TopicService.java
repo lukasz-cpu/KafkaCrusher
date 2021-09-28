@@ -65,8 +65,7 @@ public class TopicService {
                     .toList();
 
             adminClient.createTopics(topicsList);
-
-
+            
         } catch (Exception e) {
 
         }
