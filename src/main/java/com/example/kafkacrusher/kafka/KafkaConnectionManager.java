@@ -51,7 +51,7 @@ public class KafkaConnectionManager {
 
     @SneakyThrows
     public void processMessage(MessageDTO message) {
-
+log.info(message.toString());
 
     }
 
