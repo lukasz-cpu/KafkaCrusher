@@ -19,7 +19,7 @@ import java.util.Map;
 public class KafkaConnectionManager {
 
     private final ClientConnectionRepository clientConnectionRepository;
-    private Map<ConnectionInfo, KafkaTemplate<String, String>> connectionKafkaTemplateMap = new HashMap<>();
+    private final Map<ConnectionInfo, KafkaTemplate<String, String>> connectionKafkaTemplateMap = new HashMap<>();
 
 
     public KafkaConnectionManager(ClientConnectionRepository clientConnectionRepository) {
@@ -27,17 +27,17 @@ public class KafkaConnectionManager {
     }
 
 
-    public KafkaTemplate<String, String> getOrAddKafkaTemplate(String connectionName) throws BrokerNotFoundException {
+    public KafkaTemplate<String, String> getKafkaTemplate(String connectionName) throws BrokerNotFoundException {
         String addresses = getBrokerAddressesByName(connectionName);
         ConnectionInfo connectionInfo = ConnectionInfo.builder()
                 .connectionName(connectionName)
                 .addresses(addresses)
                 .build();
 
-        return connectionKafkaTemplateMap.computeIfAbsent(connectionInfo, value -> addKafkaTemplate(addresses, connectionInfo));
+        return connectionKafkaTemplateMap.computeIfAbsent(connectionInfo, value -> createKafkaTemplate(addresses));
     }
 
-    private KafkaTemplate<String, String> addKafkaTemplate(String addresses, ConnectionInfo connectionInfo) {
+    private KafkaTemplate<String, String> createKafkaTemplate(String addresses) {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, addresses);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
