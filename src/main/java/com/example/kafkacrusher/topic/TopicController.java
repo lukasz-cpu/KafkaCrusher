@@ -34,7 +34,7 @@ public class TopicController {
         try {
             topicService.createTopicForConnection(connectionName, topicListDTO);
         } catch (CreateTopicException e) {
-            return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Problem with adding topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Successfully added topics: " + getJson(topicListDTO), HttpStatus.OK);
     }
@@ -45,7 +45,7 @@ public class TopicController {
         try {
             topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
         } catch (DeleteTopicException e) {
-            return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Problem with deleting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>("Successfully deleted topics: " + getJson(topicListDTO), HttpStatus.OK);
     }
