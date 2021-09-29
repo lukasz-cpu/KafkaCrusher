@@ -7,5 +7,6 @@ import lombok.Data;
 @Builder
 public class MessageDTO {
     private String connectionName;
+    private String topic;
     private String message;
 }
