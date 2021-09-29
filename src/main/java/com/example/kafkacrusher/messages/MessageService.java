@@ -11,13 +11,10 @@ import static com.example.kafkacrusher.util.JSONUtils.getJson;
 public class MessageService {
 
     public String processMessageForConnection(MessageDTO message) {
-        log.info(getJson(message));
 
-        MessageDTO build = MessageDTO.builder().connectionName("connectionName")
-                .message("exampleMessage")
-                .build();
+        String connectionName = message.getConnectionName();
 
-        log.info(getJson(build));
+    
 
         return "";
     }

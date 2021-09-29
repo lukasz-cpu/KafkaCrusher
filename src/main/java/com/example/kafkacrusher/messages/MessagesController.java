@@ -13,7 +13,6 @@ public class MessagesController {
 
     private MessageService messageService;
 
-
     @PostMapping("/sendMessage")
     public String sendMessage(@RequestBody MessageDTO message) {
         return messageService.processMessageForConnection(message);
