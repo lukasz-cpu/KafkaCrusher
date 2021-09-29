@@ -1,9 +1,7 @@
 package com.example.kafkacrusher.kafka;
 
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
-import com.example.kafkacrusher.messages.MessageDTO;
 import com.example.kafkacrusher.topic.BrokerNotFoundException;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -45,12 +43,6 @@ public class KafkaConnectionManager {
         DefaultKafkaProducerFactory<String, String> stringStringDefaultKafkaProducerFactory = new DefaultKafkaProducerFactory<>(props);
         return new KafkaTemplate<>(stringStringDefaultKafkaProducerFactory);
 
-    }
-
-
-    @SneakyThrows
-    public void processMessage(MessageDTO message) {
-        log.info(message.toString());
     }
 
     private String getBrokerAddressesByName(String name) throws BrokerNotFoundException {
