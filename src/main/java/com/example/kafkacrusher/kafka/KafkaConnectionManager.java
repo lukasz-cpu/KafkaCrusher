@@ -5,6 +5,9 @@ import com.example.kafkacrusher.messages.MessageDTO;
 import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +26,25 @@ public class KafkaConnectionManager {
         this.clientConnectionRepository = clientConnectionRepository;
     }
 
-    @SneakyThrows
-    public KafkaTemplate<String, String> getOrAddKafkaTemplate(String connectionName){
-        String addresses = getBrokerAddressesByName(connectionName);
-        ConnectionInfo.ConnectionInfoBuilder connectionInfo = ConnectionInfo.builder()
-                .connectionName(connectionName)
-                .addresses(addresses);
 
-        
+    public KafkaTemplate<String, String> getOrAddKafkaTemplate(String connectionName) throws BrokerNotFoundException {
+        String addresses = getBrokerAddressesByName(connectionName);
+        ConnectionInfo connectionInfo = ConnectionInfo.builder()
+                .connectionName(connectionName)
+                .addresses(addresses)
+                .build();
+
+        if(!connectionKafkaTemplateMap.containsKey(connectionInfo)){
+            Map<String, Object> props = new HashMap<>();
+            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, addresses);
+            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            DefaultKafkaProducerFactory<String, String> stringStringDefaultKafkaProducerFactory = new DefaultKafkaProducerFactory<>(props);
+            KafkaTemplate<String, String> value = new KafkaTemplate<>(stringStringDefaultKafkaProducerFactory);
+            connectionKafkaTemplateMap.put(connectionInfo, value);
+        }
+
+        return connectionKafkaTemplateMap.get(connectionInfo);
 
     }
 
