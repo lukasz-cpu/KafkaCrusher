@@ -15,7 +15,7 @@ public class MessagesController {
 
 
     @PostMapping("/sendMessage")
-    public String sendMessage(@RequestBody String message) {
+    public String sendMessage(@RequestBody MessageDTO message) {
         return messageService.processMessageForConnection(message);
     }
 }
