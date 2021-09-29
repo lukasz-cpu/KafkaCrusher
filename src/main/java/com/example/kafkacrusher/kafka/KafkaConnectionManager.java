@@ -34,25 +34,23 @@ public class KafkaConnectionManager {
                 .addresses(addresses)
                 .build();
 
-        if(!connectionKafkaTemplateMap.containsKey(connectionInfo)){
-            Map<String, Object> props = new HashMap<>();
-            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, addresses);
-            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-            DefaultKafkaProducerFactory<String, String> stringStringDefaultKafkaProducerFactory = new DefaultKafkaProducerFactory<>(props);
-            KafkaTemplate<String, String> value = new KafkaTemplate<>(stringStringDefaultKafkaProducerFactory);
-            connectionKafkaTemplateMap.put(connectionInfo, value);
-        }
+        return connectionKafkaTemplateMap.computeIfAbsent(connectionInfo, value -> addKafkaTemplate(addresses, connectionInfo));
+    }
 
-        return connectionKafkaTemplateMap.get(connectionInfo);
+    private KafkaTemplate<String, String> addKafkaTemplate(String addresses, ConnectionInfo connectionInfo) {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, addresses);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        DefaultKafkaProducerFactory<String, String> stringStringDefaultKafkaProducerFactory = new DefaultKafkaProducerFactory<>(props);
+        return new KafkaTemplate<>(stringStringDefaultKafkaProducerFactory);
 
     }
 
 
     @SneakyThrows
     public void processMessage(MessageDTO message) {
-log.info(message.toString());
-
+        log.info(message.toString());
     }
 
     private String getBrokerAddressesByName(String name) throws BrokerNotFoundException {
