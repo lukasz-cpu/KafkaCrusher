@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Properties;
+
 @Component
 @Slf4j
 public class MessageService {
@@ -31,6 +33,13 @@ public class MessageService {
     }
 
     public void readMessageFromTopic(String topicName) {
+        Properties props = new Properties();
+        props.put("bootstrap.servers", connection.getProps().get("bootstrapServers"));
+        props.put("group.id", getName());
+        props.put("auto.offset.reset", "earliest");
+        props.put("enable.auto.commit", "true");
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         log.info("hahaha" + topicName);
 
     }
