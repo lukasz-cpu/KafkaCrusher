@@ -27,7 +27,8 @@ public class MessagesController {
 
     @GetMapping("/readMessagesFromTopic")
     public ResponseEntity<String> readMessagesFromTopic(@RequestParam String topicName){
-
+            messageService.readMessageFromTopic(topicName);
+            return "ihahah";
     }
 }
 
