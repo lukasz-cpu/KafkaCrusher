@@ -25,7 +25,7 @@ public class MessageService {
             KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
             String topic = message.getTopic();
             String payload = message.getMessage();
-            kafkaTemplate.send(topic, payload);
+            kafkaTemplate.send(topic, payload);  //FIXME set timeout hehe
         } catch (Exception e) {
             throw new MessageProcessingException("Error with sending message to Kafka");
         }
