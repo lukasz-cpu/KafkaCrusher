@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.example.kafkacrusher.util.JSONUtils.getJson;
 
@@ -26,4 +24,11 @@ public class MessagesController {
             return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(message), HttpStatus.CONFLICT);
         }
     }
+
+    @GetMapping("/readMessagesFromTopic")
+    public ResponseEntity<String> readMessagesFromTopic(@RequestParam String topicName){
+
+    }
 }
+
+//https://stackoverflow.com/questions/47702994/how-to-reliably-get-all-kafka-topic-messages-via-kafkaconsumer
