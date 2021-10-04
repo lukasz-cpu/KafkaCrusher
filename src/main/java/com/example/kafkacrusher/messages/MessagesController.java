@@ -28,7 +28,7 @@ public class MessagesController {
     @GetMapping("/readMessagesFromTopic")
     public ResponseEntity<String> readMessagesFromTopic(@RequestParam String topicName){
             messageService.readMessageFromTopic(topicName);
-            return "ihahah";
+        return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(topicName), HttpStatus.OK);
     }
 }
 

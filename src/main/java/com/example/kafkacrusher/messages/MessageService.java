@@ -29,4 +29,9 @@ public class MessageService {
         }
         return message;
     }
+
+    public void readMessageFromTopic(String topicName) {
+        log.info("hahaha" + topicName);
+
+    }
 }
