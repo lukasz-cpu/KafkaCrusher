@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "2b5859cb-0103-4ee1-9914-3c6cf682b363",
+		"name": "kafka",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "set active statuses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/connectionManager/setActiveStatuses",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"connectionManager",
+						"setActiveStatuses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register connection",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"connectionName\":\"connection test\", \"brokers\": \"192.168.0.74:9092, 192.168.0.74:9094\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/registerConnection",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"registerConnection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get connections",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/getConnections",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getConnections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get topic list for connection name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/getTopicListForConnectionName?connectionName=connection%20test1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getTopicListForConnectionName"
+					],
+					"query": [
+						{
+							"key": "connectionName",
+							"value": "connection%20test1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add topic for connection name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"topicList\" : [ \"TestTopic2\", \"TestTopic3\", \"TestTopic4\", \"Topic7\" ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/addTopicsForConnectionName?connectionName=connection%20test1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addTopicsForConnectionName"
+					],
+					"query": [
+						{
+							"key": "connectionName",
+							"value": "connection%20test1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete topics",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"topicList\" :[ \"TestTopic2\", \"TestTopic3\", \"TestTopic4\", \"Topic7\" ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/deleteTopicsForConnectionName?connectionName=connection%20test1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deleteTopicsForConnectionName"
+					],
+					"query": [
+						{
+							"key": "connectionName",
+							"value": "connection%20test1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"connectionName\" : \"connection test1\",\r\n  \"topic\" : \"TestTopic\",\r\n  \"message\" : \"lambo2332221\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/sendMessage",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sendMessage"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
