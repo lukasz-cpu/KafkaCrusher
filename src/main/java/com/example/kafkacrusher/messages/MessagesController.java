@@ -20,9 +20,10 @@ public class MessagesController {
     @PostMapping("/sendMessage")
     public ResponseEntity<String> sendMessage(@RequestBody MessageDTO message) {
         try {
-            messageService.processMessageForConnection(message);
-            return new ResponseEntity<>("Successfully added message: " + getJson(message), HttpStatus.OK);
+            MessageDTO messageDTO = messageService.processMessageForConnection(message);
+            return new ResponseEntity<>("Successfully added message: " + getJson(messageDTO), HttpStatus.OK);
         } catch (MessageProcessingException e) {
-            return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(message), HttpStatus.CONFLICT);        }
+            return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(message), HttpStatus.CONFLICT);
+        }
     }
 }
