@@ -66,4 +66,5 @@ public class MessageService {
     }
 }
 
+//https://stackoverflow.com/questions/28561147/how-to-read-data-using-kafka-consumer-api-from-beginning
 
