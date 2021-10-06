@@ -3,10 +3,15 @@ package com.example.kafkacrusher.messages;
 
 import com.example.kafkacrusher.kafka.KafkaConnectionManager;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Properties;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -33,14 +38,32 @@ public class MessageService {
     }
 
     public void readMessageFromTopic(String topicName) {
-//        Properties props = new Properties();
-//        props.put("bootstrap.servers", connection.getProps().get("bootstrapServers"));
-//        props.put("group.id", getName());
-//        props.put("auto.offset.reset", "earliest");
-//        props.put("enable.auto.commit", "true");
-//        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-//        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        log.info("hahaha" + topicName);
+        List<String> messages = new ArrayList<>();
 
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "192.168.0.74:9091,192.168.0.74:9092,192.168.0.74:9093");
+        props.put("group.id", "japko");
+        props.put("auto.offset.reset", "earliest");
+        props.put("enable.auto.commit", "false");
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Collections.singletonList("TestTopic"));
+        while (true) {
+            ConsumerRecords<String, String> records = consumer.poll(1000);
+            for (ConsumerRecord<String, String> record : records) {
+                System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
+
+                // after each message, query the number of messages of the topic
+                Set<TopicPartition> partitions = consumer.assignment();
+                Map<TopicPartition, Long> offsets = consumer.endOffsets(partitions);
+                for (TopicPartition partition : offsets.keySet()) {
+                    System.out.printf("partition %s is at %d\n", partition.topic(), offsets.get(partition));
+                }
+            }
+        }
     }
 }
+
+
