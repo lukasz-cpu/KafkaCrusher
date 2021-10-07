@@ -53,25 +53,19 @@ public class MessageService {
         consumer.subscribe(Collections.singletonList("TestTopic"));
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofDays(1));  //returns immediately if there are records available. Otherwise, it will await 2 seconds (loop for timeous ms for polling)
         for (ConsumerRecord<String, String> record : records) {
-        System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
-        messages.add(String.format("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value()));
-                // after each message, query the number of messages of the topic
-                Set<TopicPartition> partitions = consumer.assignment();
-                Map<TopicPartition, Long> offsets = consumer.endOffsets(partitions);
-                for (TopicPartition partition : offsets.keySet()) {
-                    System.out.printf("partition %s is at %d\n", partition.topic(), offsets.get(partition));
-                }
-            }
-
-
-        consumer.close();
+            System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
 
 
         }
 
-
+        consumer.close();
 
     }
+}
+
+
+
+
 
 
 //https://stackoverflow.com/questions/28561147/how-to-read-data-using-kafka-consumer-api-from-beginning
