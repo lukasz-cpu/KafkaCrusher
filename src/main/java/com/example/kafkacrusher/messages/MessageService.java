@@ -52,7 +52,7 @@ public class MessageService {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList("TestTopic"));
         while (true) {
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(2));  //returns immediately if there are records available. Otherwise, it will await 2 seconds
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(5));  //returns immediately if there are records available. Otherwise, it will await 2 seconds
             for (ConsumerRecord<String, String> record : records) {
                 System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
 
