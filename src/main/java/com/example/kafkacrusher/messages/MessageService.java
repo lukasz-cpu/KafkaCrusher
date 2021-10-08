@@ -43,7 +43,7 @@ public class MessageService {
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.0.74:9091,192.168.0.74:9092,192.168.0.74:9093");
-        props.put("group.id", "123");
+        props.put("group.id", "consumer-test-group-spring-boot");
         props.put("auto.offset.reset", "earliest");
         props.put("enable.auto.commit", "false");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
