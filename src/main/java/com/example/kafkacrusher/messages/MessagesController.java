@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.kafkacrusher.util.JSONUtils.getJson;
 
 @RestController
@@ -27,8 +29,8 @@ public class MessagesController {
 
     @GetMapping("/readMessagesFromTopic")
     public ResponseEntity<String> readMessagesFromTopic(@RequestParam String topicName){
-            messageService.readMessageFromTopic(topicName);
-        return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(topicName), HttpStatus.OK);
+        List<String> messageFromTopic = messageService.readMessageFromTopic(topicName);
+        return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(messageFromTopic), HttpStatus.OK);
     }
 }
 

@@ -6,13 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.TopicPartition;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -38,7 +36,7 @@ public class MessageService {
         return message;
     }
 
-    public void readMessageFromTopic(String topicName) {
+    public List<String> readMessageFromTopic(String topicName) {
         List<String> messages = new ArrayList<>();
 
         Properties props = new Properties();
@@ -52,13 +50,15 @@ public class MessageService {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList("TestTopic"));
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));  //returns immediately if there are records available. Otherwise, it will await (loop for timeous ms for polling)
+
         for (ConsumerRecord<String, String> record : records) {
-            System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
-
-
+            messages.add(record.value());
         }
 
+
         consumer.close();
+
+        return messages;
 
     }
 }
