@@ -44,9 +44,10 @@ public class MessageService {
     }
 
     public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) {
+        String brokerAddressByConnectionName = null;
 
         try {
-            String brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
+            brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
         } catch (BrokerNotFoundException e) {
             e.printStackTrace();
         }
@@ -54,7 +55,7 @@ public class MessageService {
         List<MessageResponseDTO> messages = new ArrayList<>();
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", "192.168.0.74:9091,192.168.0.74:9092,192.168.0.74:9093");
+        props.put("bootstrap.servers", brokerAddressByConnectionName);
         props.put("group.id", "consumer-test-group-spring-boot");
         props.put("auto.offset.reset", "earliest");
         props.put("enable.auto.commit", "false");
