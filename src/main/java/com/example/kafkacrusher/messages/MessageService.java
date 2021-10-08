@@ -1,7 +1,9 @@
 package com.example.kafkacrusher.messages;
 
 
+import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.kafka.KafkaConnectionManager;
+import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -19,11 +21,13 @@ public class MessageService {
 
     private final Date date = new Date();
     private final KafkaConnectionManager kafkaConnectionManager;
+    private final ClientConnectionRepository clientConnectionRepository;
 
 
 
-    public MessageService(KafkaConnectionManager kafkaConnectionManager) {
+    public MessageService(KafkaConnectionManager kafkaConnectionManager, ClientConnectionRepository clientConnectionRepository) {
         this.kafkaConnectionManager = kafkaConnectionManager;
+        this.clientConnectionRepository = clientConnectionRepository;
     }
 
     public MessageRequestDTO processMessageForConnection(MessageRequestDTO message) throws MessageProcessingException {
@@ -39,9 +43,13 @@ public class MessageService {
         return message;
     }
 
-    public List<MessageResponseDTO> readMessageFromTopic(String topicName) {
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) {
 
-
+        try {
+            String brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
+        } catch (BrokerNotFoundException e) {
+            e.printStackTrace();
+        }
 
         List<MessageResponseDTO> messages = new ArrayList<>();
 
@@ -75,7 +83,7 @@ public class MessageService {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(date);
     }
-    
+
 }
 
 
