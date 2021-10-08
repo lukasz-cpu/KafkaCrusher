@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -46,7 +45,9 @@ public class MessageService {
     public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException {
 
         Optional<String> brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
-        Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareproperties).findFirst();
+
+        Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareProperties).findFirst();
+
         List<MessageResponseDTO> messageResponseDTOS =
                 properties
                         .stream()
@@ -92,7 +93,7 @@ public class MessageService {
     }
 
 
-    private Properties prepareproperties(String brokerAddressByConnectionName) {
+    private Properties prepareProperties(String brokerAddressByConnectionName) {
         Properties props = new Properties();
         props.put("bootstrap.servers", brokerAddressByConnectionName);
         props.put("group.id", "consumer-test-group-spring-boot");
