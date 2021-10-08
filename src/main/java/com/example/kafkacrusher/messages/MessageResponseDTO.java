@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class MessageDTO {
-    private String connectionName;
-    private String topic;
+public class MessageResponseDTO {
     private String message;
+    private String date;
 }
