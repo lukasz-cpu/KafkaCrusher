@@ -33,7 +33,7 @@ public class MessagesController {
             List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
             return new ResponseEntity<>("Successfully read messages: " + getJson(messageFromTopic), HttpStatus.OK);
         } catch (ReadMessageFromTopicException e) {
-            return new ResponseEntity<>("Problem with reading messages from topic", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Problem with reading messages from topic " + topicName + ", connection name " + connectionName, HttpStatus.CONFLICT);
         }
     }
 }

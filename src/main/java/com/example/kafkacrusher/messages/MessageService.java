@@ -47,7 +47,13 @@ public class MessageService {
 
         Optional<String> brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
         Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareproperties).findFirst();
-        List<MessageResponseDTO> messageResponseDTOS = properties.stream().map(x -> getMessagesFromTopic(topicName, x)).takeWhile(list -> !list.isEmpty()).findAny().orElse(new ArrayList<>());
+        List<MessageResponseDTO> messageResponseDTOS =
+                properties
+                        .stream()
+                        .map(x -> getMessagesFromTopic(topicName, x))
+                        .takeWhile(list -> !list.isEmpty())
+                        .findAny()
+                        .orElse(new ArrayList<>());
 
         
 
