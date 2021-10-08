@@ -21,6 +21,7 @@ public class MessageService {
     private final KafkaConnectionManager kafkaConnectionManager;
 
 
+
     public MessageService(KafkaConnectionManager kafkaConnectionManager) {
         this.kafkaConnectionManager = kafkaConnectionManager;
     }
@@ -39,6 +40,9 @@ public class MessageService {
     }
 
     public List<MessageResponseDTO> readMessageFromTopic(String topicName) {
+
+
+
         List<MessageResponseDTO> messages = new ArrayList<>();
 
         Properties props = new Properties();
@@ -50,7 +54,7 @@ public class MessageService {
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Collections.singletonList("TestTopic"));
+        consumer.subscribe(Collections.singletonList(topicName));
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));  //returns immediately if there are records available. Otherwise, it will await (loop for timeous ms for polling)
 
         for (ConsumerRecord<String, String> recordMessage : records) {
@@ -71,6 +75,7 @@ public class MessageService {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(date);
     }
+    
 }
 
 
