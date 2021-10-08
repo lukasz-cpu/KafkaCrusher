@@ -43,7 +43,7 @@ public class MessageService {
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.0.74:9091,192.168.0.74:9092,192.168.0.74:9093");
-        props.put("group.id", "japko");
+        props.put("group.id", "123");
         props.put("auto.offset.reset", "earliest");
         props.put("enable.auto.commit", "false");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -51,7 +51,7 @@ public class MessageService {
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList("TestTopic"));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofDays(1));  //returns immediately if there are records available. Otherwise, it will await 2 seconds (loop for timeous ms for polling)
+        ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));  //returns immediately if there are records available. Otherwise, it will await (loop for timeous ms for polling)
         for (ConsumerRecord<String, String> record : records) {
             System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
 
