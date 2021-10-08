@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -22,7 +23,6 @@ public class MessageService {
     private final Date date = new Date();
     private final KafkaConnectionManager kafkaConnectionManager;
     private final ClientConnectionRepository clientConnectionRepository;
-
 
 
     public MessageService(KafkaConnectionManager kafkaConnectionManager, ClientConnectionRepository clientConnectionRepository) {
@@ -43,17 +43,50 @@ public class MessageService {
         return message;
     }
 
-    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) {
-        String brokerAddressByConnectionName = null;
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException {
 
-        try {
-            brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
-        } catch (BrokerNotFoundException e) {
-            e.printStackTrace();
+        Optional<String> brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
+        Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareproperties).findFirst();
+        List<MessageResponseDTO> messageResponseDTOS = properties.stream().map(x -> getMessagesFromTopic(topicName, x)).takeWhile(list -> !list.isEmpty()).findAny().orElse(new ArrayList<>());
+
+        
+
+        if(!messageResponseDTOS.isEmpty()){
+            return messageResponseDTOS;
         }
 
-        List<MessageResponseDTO> messages = new ArrayList<>();
+        else{
+            throw new ReadMessageFromTopicException();
+        }
 
+    }
+
+    private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
+        List<MessageResponseDTO> messages = new ArrayList<>();
+        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
+            consumer.subscribe(Collections.singletonList(topicName));
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));  //returns immediately if there are records available. Otherwise, it will await (loop for timeous ms for polling)
+            for (ConsumerRecord<String, String> recordMessage : records) {
+                String value = recordMessage.value();
+                String formattedDate = getFormattedDateFromTimeStamp(recordMessage);
+                MessageResponseDTO buildMessage = MessageResponseDTO.builder().message(value).date(formattedDate).build();
+                messages.add(buildMessage);
+            }
+        }
+        return messages;
+    }
+
+    private Optional<String> getBrokerAddressByConnectionName(String connectionName) {
+        try {
+            return Optional.of(clientConnectionRepository.getBrokerAddressByConnectionName(connectionName));
+        } catch (BrokerNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+
+    private Properties prepareproperties(String brokerAddressByConnectionName) {
         Properties props = new Properties();
         props.put("bootstrap.servers", brokerAddressByConnectionName);
         props.put("group.id", "consumer-test-group-spring-boot");
@@ -61,22 +94,7 @@ public class MessageService {
         props.put("enable.auto.commit", "false");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Collections.singletonList(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));  //returns immediately if there are records available. Otherwise, it will await (loop for timeous ms for polling)
-
-        for (ConsumerRecord<String, String> recordMessage : records) {
-            String value = recordMessage.value();
-            String formattedDate = getFormattedDateFromTimeStamp(recordMessage);
-            MessageResponseDTO buildMessage = MessageResponseDTO.builder().message(value).date(formattedDate).build();
-            messages.add(buildMessage);
-        }
-
-        consumer.close();
-
-        return messages;
-
+        return props;
     }
 
     private String getFormattedDateFromTimeStamp(ConsumerRecord<String, String> recordMessage) {

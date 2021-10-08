@@ -29,8 +29,12 @@ public class MessagesController {
 
     @GetMapping("/readMessagesFromTopic")
     public ResponseEntity<String> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName){
-        List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
-        return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(messageFromTopic), HttpStatus.OK);
+        try {
+            List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
+            return new ResponseEntity<>("Successfully read messages: " + getJson(messageFromTopic), HttpStatus.OK);
+        } catch (ReadMessageFromTopicException e) {
+            return new ResponseEntity<>("Problem with reading messages from topic", HttpStatus.CONFLICT);
+        }
     }
 }
 
