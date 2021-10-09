@@ -113,17 +113,17 @@ public class MessageService {
 
 
 
-    public void executeServiceMethod(){
+    public Integer executeServiceMethod(){
+        int result = 0;
         ExecutorService executor = Executors.newCachedThreadPool();
-        Callable<Integer> task = new Callable<Integer>() {
+        Callable<Integer> task = new Callable<>() {
             public Integer call() {
                 return 3;
             }
         };
         Future<Integer> future = executor.submit(task);
         try {
-            Integer integer = future.get(5, TimeUnit.SECONDS);
-            System.out.println(integer);
+            result = future.get(5, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
             // handle the timeout
         } catch (InterruptedException e) {
@@ -133,6 +133,7 @@ public class MessageService {
         } finally {
             future.cancel(true); // may or may not desire this
         }
+        return result;
     }
 
 
