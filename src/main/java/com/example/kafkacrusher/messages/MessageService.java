@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.*;
 
 @Component
 @Slf4j
@@ -109,6 +110,32 @@ public class MessageService {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(date);
     }
+
+
+
+    public void executeServiceMethod(){
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Callable<Integer> task = new Callable<Integer>() {
+            public Integer call() {
+                return 3;
+            }
+        };
+        Future<Integer> future = executor.submit(task);
+        try {
+            Integer integer = future.get(5, TimeUnit.SECONDS);
+            System.out.println(integer);
+        } catch (TimeoutException ex) {
+            // handle the timeout
+        } catch (InterruptedException e) {
+            // handle the interrupts
+        } catch (ExecutionException e) {
+            // handle other exceptions
+        } finally {
+            future.cancel(true); // may or may not desire this
+        }
+    }
+
+
 
 }
 
