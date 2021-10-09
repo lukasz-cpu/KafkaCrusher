@@ -70,6 +70,10 @@ public class MessageService {
     }
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
+        Integer integer = executeServiceMethod();
+        log.info("-------------");
+        log.info(integer.toString());
+        log.info("-------------");
         List<MessageResponseDTO> messages = new ArrayList<>();
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
             consumer.subscribe(Collections.singletonList(topicName));
