@@ -10,4 +10,4 @@ public class KafkaCrusherApplication {
         SpringApplication.run(KafkaCrusherApplication.class, args);
     }
 
-             }
+              }
