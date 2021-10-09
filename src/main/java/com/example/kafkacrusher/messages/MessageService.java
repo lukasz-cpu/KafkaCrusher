@@ -70,18 +70,10 @@ public class MessageService {
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
         List<MessageResponseDTO> messages = new ArrayList<>();
-        log.error("jestem tutaj1");
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
-            log.error("jestem tutaj2");
             consumer.subscribe(Collections.singletonList(topicName));
-            log.error("jestem tutaj3");
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));
-            if(records.partitions().isEmpty()){
-                return new ArrayList<>();
-            }
-            log.error("jestem tutaj4");//returns immediately if there are records available. Otherwise, it will await (loop for timeous ms for polling)
             for (ConsumerRecord<String, String> recordMessage : records) {
-                log.error("jestem tutaj5");
                 String value = recordMessage.value();
                 String formattedDate = getFormattedDateFromTimeStamp(recordMessage);
                 MessageResponseDTO buildMessage = MessageResponseDTO.builder().message(value).date(formattedDate).build();
