@@ -70,7 +70,7 @@ public class MessageService {
     }
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
-        Integer integer = executeServiceMethod();
+
         log.info("-------------");
         log.info(integer.toString());
         log.info("-------------");
@@ -114,34 +114,6 @@ public class MessageService {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(date);
     }
-
-
-
-    public Integer executeServiceMethod(){
-        int result = 0;
-        ExecutorService executor = Executors.newCachedThreadPool();
-        Callable<Integer> task = new Callable<>() {
-            public Integer call() {
-                return 3;
-            }
-        };
-        Future<Integer> future = executor.submit(task);
-        try {
-            result = future.get(5, TimeUnit.SECONDS);
-        } catch (TimeoutException ex) {
-            // handle the timeout
-        } catch (InterruptedException e) {
-            // handle the interrupts
-        } catch (ExecutionException e) {
-            // handle other exceptions
-        } finally {
-            future.cancel(true); // may or may not desire this
-        }
-        return result;
-    }
-
-
-
 }
 
 
