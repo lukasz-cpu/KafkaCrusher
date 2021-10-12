@@ -185,6 +185,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "read messages from topic",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/readMessagesFromTopic?connectionName=connection test1&topicName=TestTopic",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"readMessagesFromTopic"
+					],
+					"query": [
+						{
+							"key": "connectionName",
+							"value": "connection test1"
+						},
+						{
+							"key": "topicName",
+							"value": "TestTopic"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
