@@ -52,31 +52,41 @@ public class MessageService {
         return topicService.getTopicsNames(connectionName).contains(message.getTopic());
     }
 
-    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException {
+
+    private boolean connectionContainsTopic(String connectionName, String topicName) throws TopicsNameNotFound, BrokerNotFoundException {
+        return topicService.getTopicsNames(connectionName).contains(topicName);
+    }
+
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException, BrokerNotFoundException, TopicsNameNotFound {
 
         Optional<String> brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
 
         Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareProperties).findFirst();
 
-        List<MessageResponseDTO> messageResponseDTOS =
-                properties
-                        .stream()
-                        .map(x -> getMessagesFromTopic(topicName, x))
-                        .takeWhile(list -> !list.isEmpty())
-                        .findAny()
-                        .orElse(new ArrayList<>());
+        if(connectionContainsTopic(connectionName, topicName)){
+            List<MessageResponseDTO> messageResponseDTOS =
+                    properties
+                            .stream()
+                            .map(x -> getMessagesFromTopic(topicName, x))
+                            .takeWhile(list -> !list.isEmpty())
+                            .findAny()
+                            .orElse(new ArrayList<>());
 
-        
 
-        if(!messageResponseDTOS.isEmpty()){
-            return messageResponseDTOS;
+
+            if(!messageResponseDTOS.isEmpty()){
+                return messageResponseDTOS;
+            }
+
+            else{
+                throw new ReadMessageFromTopicException();
+            }
         }
-
-        else{
-            throw new ReadMessageFromTopicException();
-        }
+        throw new ReadMessageFromTopicException();
 
     }
+
+
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
         List<MessageResponseDTO> messages = new ArrayList<>();
