@@ -86,6 +86,7 @@ public class TopicService {
                 adminClient.createTopics(topicsList);
             }
             else{
+                closeAdminClient(adminClient);
                 throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
             }
         } catch (Exception e) {
@@ -100,17 +101,21 @@ public class TopicService {
         AdminClient adminClient = null;
         try {
             String brokerAddressesByName = getBrokerAddressesByName(connectionName);
-            Properties props = new Properties();
-            props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
-            adminClient = AdminClient.create(props);
-            List<String> topicsList = topicListDTO
-                    .getTopicListDTO()
-                    .stream()
-                            .toList();
-
-            log.info(topicsList.toString());
-
-            adminClient.deleteTopics(topicsList);
+            boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
+            if(isActive){
+                Properties props = new Properties();
+                props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
+                adminClient = AdminClient.create(props);
+                List<String> topicsList = topicListDTO
+                        .getTopicListDTO()
+                        .stream()
+                        .toList();
+                adminClient.deleteTopics(topicsList);
+            }
+            else{
+                closeAdminClient(adminClient);
+                throw new DeleteTopicException("Cannot delete topic for connection name " + connectionName);
+            }
 
         } catch (Exception e) {
             throw new DeleteTopicException("Cannot delete topic for connection name " + connectionName);
