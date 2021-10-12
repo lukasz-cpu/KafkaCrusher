@@ -28,7 +28,6 @@ public class ClientConnectionController {
         ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
 
         Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
-
         if (clientConnectionResult.isEmpty()) {
             return new ResponseEntity<>("Problem with saving: " + getJson(clientConnectionRequestDTO), HttpStatus.CONFLICT);
         }
