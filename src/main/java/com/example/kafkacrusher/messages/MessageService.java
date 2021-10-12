@@ -4,6 +4,7 @@ package com.example.kafkacrusher.messages;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.kafka.KafkaConnectionManager;
 import com.example.kafkacrusher.topic.BrokerNotFoundException;
+import com.example.kafkacrusher.topic.TopicService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.*;
 
 @Component
 @Slf4j
@@ -23,11 +23,13 @@ public class MessageService {
     private final Date date = new Date();
     private final KafkaConnectionManager kafkaConnectionManager;
     private final ClientConnectionRepository clientConnectionRepository;
+    private final TopicService topicService;
 
 
-    public MessageService(KafkaConnectionManager kafkaConnectionManager, ClientConnectionRepository clientConnectionRepository) {
+    public MessageService(KafkaConnectionManager kafkaConnectionManager, ClientConnectionRepository clientConnectionRepository, TopicService topicService) {
         this.kafkaConnectionManager = kafkaConnectionManager;
         this.clientConnectionRepository = clientConnectionRepository;
+        this.topicService = topicService;
     }
 
     //FIXME //check if topic exists, dont auto create

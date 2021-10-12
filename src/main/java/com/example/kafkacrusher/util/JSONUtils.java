@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public interface JSONUtils {
 
+
+    //FIXME singleton
     static String getJson(Object object) {
         ObjectMapper mapper = new ObjectMapper();
         try {
