@@ -34,7 +34,6 @@ public class ClientConnectionController {
         return new ResponseEntity<>("Connection added: " + getJson(clientConnectionRequestDTO), HttpStatus.OK);
     }
 
-    @SneakyThrows
     @GetMapping(value = "/getConnections")
     public ResponseEntity<String> getConnections() {
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
