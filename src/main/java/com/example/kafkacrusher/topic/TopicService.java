@@ -64,6 +64,7 @@ public class TopicService {
 
     }
 
+    //FIXME set timeout
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
         AdminClient adminClient = null;
         try {
