@@ -1,5 +1,7 @@
 package com.example.kafkacrusher.messages;
 
+import com.example.kafkacrusher.topic.BrokerNotFoundException;
+import com.example.kafkacrusher.topic.TopicsNameNotFound;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,7 @@ public class MessagesController {
         try {
             MessageRequestDTO messageRequestDTO = messageService.processMessageForConnection(message);
             return new ResponseEntity<>("Successfully added message: " + getJson(messageRequestDTO), HttpStatus.OK);
-        } catch (MessageProcessingException e) {
+        } catch (MessageProcessingException | BrokerNotFoundException | TopicsNameNotFound e) {
             return new ResponseEntity<>("Problem with sending message for connection name: " + getJson(message), HttpStatus.CONFLICT);
         }
     }

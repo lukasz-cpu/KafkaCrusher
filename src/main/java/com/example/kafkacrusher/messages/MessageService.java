@@ -5,6 +5,7 @@ import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.kafka.KafkaConnectionManager;
 import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import com.example.kafkacrusher.topic.TopicService;
+import com.example.kafkacrusher.topic.TopicsNameNotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -33,17 +34,22 @@ public class MessageService {
     }
 
     //FIXME //check if topic exists, dont auto create
-    public MessageRequestDTO processMessageForConnection(MessageRequestDTO message) throws MessageProcessingException {
+    public MessageRequestDTO processMessageForConnection(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException, TopicsNameNotFound {
         String connectionName = message.getConnectionName();
-        try {
+        if(connectionContainsTopic(message, connectionName)){
             KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
             String topic = message.getTopic();
             String payload = message.getMessage();
             kafkaTemplate.send(topic, payload);  //FIXME set timeout hehe
-        } catch (Exception e) {
-            throw new MessageProcessingException("Error with sending message to Kafka");
+        }
+        else{
+         throw new MessageProcessingException("Problem with sending message");
         }
         return message;
+    }
+
+    private boolean connectionContainsTopic(MessageRequestDTO message, String connectionName) throws TopicsNameNotFound, BrokerNotFoundException {
+        return topicService.getTopicsNames(connectionName).contains(message.getTopic());
     }
 
     public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException {
