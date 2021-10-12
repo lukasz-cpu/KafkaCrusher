@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +19,8 @@ public class ClientConnection {
     private String brokers;
     @Column(nullable = false)
     private Boolean isActive;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> topics;
 
     public static final class ClientConnectionBuilder {
         private Long id;
