@@ -23,7 +23,7 @@ public class MessagesController {
             MessageRequestDTO messageRequestDTO = messageService.processMessageForConnection(message);
             return new ResponseEntity<>("Successfully added message: " + getJson(messageRequestDTO), HttpStatus.OK);
         } catch (MessageProcessingException e) {
-            return new ResponseEntity<>("Problem with deleting topics for connection name: " + getJson(message), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Problem with sending message for connection name: " + getJson(message), HttpStatus.CONFLICT);
         }
     }
 
