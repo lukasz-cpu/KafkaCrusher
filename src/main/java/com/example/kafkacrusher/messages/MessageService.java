@@ -29,7 +29,8 @@ public class MessageService {
         this.kafkaConnectionManager = kafkaConnectionManager;
         this.clientConnectionRepository = clientConnectionRepository;
     }
-//check if topic exists, dont auto create
+
+    //FIXME //check if topic exists, dont auto create
     public MessageRequestDTO processMessageForConnection(MessageRequestDTO message) throws MessageProcessingException {
         String connectionName = message.getConnectionName();
         try {
