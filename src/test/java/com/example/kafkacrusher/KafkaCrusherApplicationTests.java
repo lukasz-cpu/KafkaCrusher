@@ -10,7 +10,6 @@ class KafkaCrusherApplicationTests {
 
     @Test
     void contextLoads() {
-        assertEquals(1,2);
     }
 
 }
