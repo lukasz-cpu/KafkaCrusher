@@ -33,7 +33,7 @@ public class MessageService {
         this.topicService = topicService;
     }
 
-    //FIXME //check if topic exists, dont auto create
+
     public MessageRequestDTO processMessageForConnection(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException, TopicsNameNotFound {
         String connectionName = message.getConnectionName();
         if(connectionContainsTopic(message, connectionName)){
