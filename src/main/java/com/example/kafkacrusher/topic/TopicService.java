@@ -1,6 +1,7 @@
 package com.example.kafkacrusher.topic;
 
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
+import com.example.kafkacrusher.connection.ConnectionActiveManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
@@ -18,10 +19,12 @@ import java.util.Properties;
 public class TopicService {
 
     private final ClientConnectionRepository clientConnectionRepository;
+    private final ConnectionActiveManager connectionActiveManager;
 
 
-    public TopicService(ClientConnectionRepository clientConnectionRepository) {
+    public TopicService(ClientConnectionRepository clientConnectionRepository, ConnectionActiveManager connectionActiveManager) {
         this.clientConnectionRepository = clientConnectionRepository;
+        this.connectionActiveManager = connectionActiveManager;
     }
 
 
@@ -68,18 +71,23 @@ public class TopicService {
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
         AdminClient adminClient = null;
         try {
-            String brokerAddressesByName = getBrokerAddressesByName(connectionName);
-            Properties props = new Properties();
-            props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
-            adminClient = AdminClient.create(props);
-            List<NewTopic> topicsList = topicListDTO
-                    .getTopicListDTO()
-                    .stream()
-                    .map(topic -> new NewTopic(topic, 1, (short) 1))
-                    .toList();
+            String brokerAddresses = getBrokerAddressesByName(connectionName);
+            boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
+            if(isActive){
+                Properties props = new Properties();
+                props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
+                adminClient = AdminClient.create(props);
+                List<NewTopic> topicsList = topicListDTO
+                        .getTopicListDTO()
+                        .stream()
+                        .map(topic -> new NewTopic(topic, 1, (short) 1))
+                        .toList();
 
-            adminClient.createTopics(topicsList);
-
+                adminClient.createTopics(topicsList);
+            }
+            else{
+                throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
+            }
         } catch (Exception e) {
             throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
         } finally {
