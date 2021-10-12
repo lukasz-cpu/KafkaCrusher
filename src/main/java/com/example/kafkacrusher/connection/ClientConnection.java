@@ -13,6 +13,7 @@ public class ClientConnection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String connectionName;
     private String brokers;
     @Column(nullable = false)

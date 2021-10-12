@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Component
 @Slf4j
@@ -20,18 +21,24 @@ public class RegistrationConnectionService {
         this.connectionActiveManager = connectionActiveManager;
     }
 
-    public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection) {
-        Optional<ClientConnection> clientConnectionResult = Optional.empty();
+    public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection){
+        return getClientConnection(clientConnection)
+                .stream()
+                .findFirst()
+                .or(Optional::empty);
+    }
+
+    private Optional<ClientConnection> getClientConnection(ClientConnection clientConnection){
+        Optional<ClientConnection> result = Optional.empty();
         try {
             String brokers = clientConnection.getBrokers();
             if (connectionActiveManager.validateKafkaAddress(brokers)) {
-                clientConnectionResult = Optional.of(clientConnectionRepository.save(clientConnection));
+                result = Optional.of(clientConnectionRepository.save(clientConnection));
             }
         } catch (Exception e) {
-            throw new RegisterClientException("Error with saving client connection to database : " + clientConnection.toString());
+            log.error("Error with saving client connection to database : " + clientConnection.toString());
         }
-
-        return clientConnectionResult;
+        return result;
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
