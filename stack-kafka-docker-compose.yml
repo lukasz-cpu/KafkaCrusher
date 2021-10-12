@@ -21,6 +21,7 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: 192.168.0.74
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "TestTopic:1:1"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
     depends_on:
       - zookeeper
 
