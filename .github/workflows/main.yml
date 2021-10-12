@@ -27,4 +27,4 @@ jobs:
           java-version: '16'
       
       - name: Build maven project
-        run: mvn clean package --file pom.xml
+        run: mvn -B clean package --file pom.xml
