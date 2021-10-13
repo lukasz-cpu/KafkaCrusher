@@ -1,6 +1,9 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +16,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -30,6 +36,7 @@ class ClientConnectionControllerTest {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final String url = "http://localhost:8099"; //defined in props
 
 
@@ -54,12 +61,16 @@ class ClientConnectionControllerTest {
     }
 
     @Test
-    void getConnections() {
+    void getConnections() throws JsonProcessingException {
+        //given
+        ObjectMapper objectMapper = new ObjectMapper();
 
         //when
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/registerConnection", String.class);
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/getConnections", String.class);
 
         //then
+        List<ClientConnectionResponseDTO> connectionResponseDTOS = objectMapper.readValue(forEntity.getBody(), new TypeReference<>() {});
+        assertEquals(9, connectionResponseDTOS.size());
 
     }
 }
