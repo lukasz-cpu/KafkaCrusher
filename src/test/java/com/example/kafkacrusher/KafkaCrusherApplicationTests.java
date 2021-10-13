@@ -13,6 +13,6 @@ class KafkaCrusherApplicationTests {
     @Test
     void contextLoads() {
 
-    }
+     }
 
 }
