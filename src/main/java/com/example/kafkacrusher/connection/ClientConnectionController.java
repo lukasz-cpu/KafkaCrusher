@@ -24,14 +24,14 @@ public class ClientConnectionController {
     private RegistrationConnectionService registrationConnectionService;
 
     @PostMapping(value = "/registerConnection")
-    public ResponseEntity<String> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
+    public ResponseEntity<ClientConnectionRequestDTO> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
         ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
 
         Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
         if (clientConnectionResult.isEmpty()) {
-            return new ResponseEntity<>("Problem with saving: " + getJson(clientConnectionRequestDTO), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(clientConnectionRequestDTO, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Connection added: " + getJson(clientConnectionRequestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(clientConnectionRequestDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/getConnections")

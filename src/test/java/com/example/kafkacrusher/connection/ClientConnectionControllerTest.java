@@ -51,7 +51,7 @@ class ClientConnectionControllerTest {
         String response = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
         //then
-        assertTrue(response.contains("Connection added"));
+        assert response != null;
         assertTrue(response.contains("\"connectionName\" : \"connection test\""));
         assertTrue(response.contains("\"brokers\" : \"localhost:9092\""));
 
