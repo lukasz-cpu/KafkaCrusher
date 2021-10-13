@@ -3,12 +3,9 @@ package com.example.kafkacrusher.connection;
 
 import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@ToString
-@EqualsAndHashCode
 @Builder
+@Data
+@NoArgsConstructor
 public class ClientConnectionRequestDTO {
     private String connectionName;
     private String brokers;
