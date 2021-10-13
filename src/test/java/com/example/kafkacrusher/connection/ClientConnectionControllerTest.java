@@ -9,6 +9,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +25,8 @@ import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 )
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
+@DirtiesContext
+@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://192.168.0.74:9092", "port=9092" })
 class ClientConnectionControllerTest {
 
 
