@@ -3,6 +3,8 @@ package com.example.kafkacrusher.connection;
 import com.example.kafkacrusher.KafkaCrusherApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.ClassRule;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +36,12 @@ class ClientConnectionControllerTest {
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
     private final String url = "http://localhost:8099"; //defined in props
 
+
+    @BeforeEach
+    void setUp() {
+        kafka.start();
+    }
+
     @Test
     void connect() {
         //given
@@ -55,5 +63,14 @@ class ClientConnectionControllerTest {
     @Test
     void getConnections() {
 
+        String bootstrapServers = kafka.getBootstrapServers();
+        log.info(bootstrapServers);
+
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        kafka.stop();
     }
 }
