@@ -9,10 +9,11 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
+
+import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 
 
 @ExtendWith(SpringExtension.class)
@@ -29,22 +30,24 @@ class ClientConnectionControllerTest {
 
     @Test
     void connect() {
+        //given
 
-        String requestJson = "";
+        ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder()
+                .connectionName("connection test")
+                .brokers("192.168.0.74:9092")
+                .build();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
-        String answer = restTemplate.postForObject(url+"/registerConnection", entity, String.class);
+        HttpEntity<String> entity = new HttpEntity<>(getJson(connection_test), headers);
+        String answer = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
         log.info(answer);
-
-
 
 
     }
 
     @Test
     void getConnections() {
+
     }
 }
