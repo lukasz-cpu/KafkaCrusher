@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -55,4 +53,13 @@ class ClientConnectionControllerTest {
         assertTrue(response.contains("\"brokers\" : \"192.168.0.74:9092\""));
     }
 
-} 
+    @Test
+    void getConnections() {
+
+        //when
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/registerConnection", String.class);
+
+        //then
+
+    }
+}
