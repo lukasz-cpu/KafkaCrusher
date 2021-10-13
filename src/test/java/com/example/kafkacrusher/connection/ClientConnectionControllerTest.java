@@ -57,11 +57,10 @@ class ClientConnectionControllerTest {
         String url = "http://localhost:8099";
         String response = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
-        List<ClientConnectionRequestDTO> connectionResponseDTOS = objectMapper.readValue(response, new TypeReference<>() {});
+        ClientConnectionRequestDTO connectionResponseDTOS = objectMapper.readValue(response, new TypeReference<>() {});
 
-        assertEquals(1, connectionResponseDTOS.size());
-        assertEquals("connection test", connectionResponseDTOS.get(0).getConnectionName());
-        assertEquals("localhost:9092", connectionResponseDTOS.get(0).getBrokers());
+        assertEquals("connection test", connectionResponseDTOS.getConnectionName());
+        assertEquals("localhost:9092", connectionResponseDTOS.getBrokers());
 
     }
 }
