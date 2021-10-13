@@ -45,7 +45,7 @@ class ClientConnectionControllerTest {
 
 
     @Test
-    void connect() throws JsonProcessingException {
+    void connect() {
         //given
         ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder()
                 .connectionName("connection test")
