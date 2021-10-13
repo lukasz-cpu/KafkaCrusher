@@ -1,6 +1,9 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,13 +12,17 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -32,11 +39,13 @@ class ClientConnectionControllerTest {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     private final String url = "http://localhost:8099"; //defined in props
 
 
     @Test
-    void connect() {
+    void connect() throws JsonProcessingException {
         //given
         ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder()
                 .connectionName("connection test")
@@ -53,5 +62,14 @@ class ClientConnectionControllerTest {
         assertTrue(response.contains("Connection added"));
         assertTrue(response.contains("\"connectionName\" : \"connection test\""));
         assertTrue(response.contains("\"brokers\" : \"localhost:9092\""));
+
+
+        //then
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/getConnections", String.class);
+
+        //then
+        List<ClientConnectionResponseDTO> connectionResponseDTOS = objectMapper.readValue(forEntity.getBody(), new TypeReference<>() {
+        });
+        assertEquals(10, connectionResponseDTOS.size());
     }
 }
