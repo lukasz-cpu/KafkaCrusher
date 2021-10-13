@@ -62,6 +62,6 @@ class ClientConnectionControllerTest {
         assertTrue(response.contains("Connection added"));
         assertTrue(response.contains("\"connectionName\" : \"connection test\""));
         assertTrue(response.contains("\"brokers\" : \"localhost:9092\""));
-        
+
     }
 }
