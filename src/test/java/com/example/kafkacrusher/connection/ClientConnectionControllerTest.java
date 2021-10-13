@@ -1,6 +1,9 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +18,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -32,10 +38,11 @@ class ClientConnectionControllerTest {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @Test
-    void connect() {
+    void connect() throws JsonProcessingException {
         //given
         ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder()
                 .connectionName("connection test")
@@ -50,10 +57,11 @@ class ClientConnectionControllerTest {
         String url = "http://localhost:8099";
         String response = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
-        //then
-        assert response != null;
-        assertTrue(response.contains("\"connectionName\" : \"connection test\""));
-        assertTrue(response.contains("\"brokers\" : \"localhost:9092\""));
+        List<ClientConnectionRequestDTO> connectionResponseDTOS = objectMapper.readValue(response, new TypeReference<>() {});
+
+        assertEquals(1, connectionResponseDTOS.size());
+        assertEquals("connection test", connectionResponseDTOS.get(0).getConnectionName());
+        assertEquals("localhost:9092", connectionResponseDTOS.get(0).getBrokers());
 
     }
 }

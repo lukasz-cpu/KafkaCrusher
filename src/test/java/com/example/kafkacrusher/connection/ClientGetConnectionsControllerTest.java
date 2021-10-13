@@ -47,8 +47,7 @@ class ClientGetConnectionsControllerTest {
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/getConnections", String.class);
 
         //then
-        List<ClientConnectionResponseDTO> connectionResponseDTOS = objectMapper.readValue(forEntity.getBody(), new TypeReference<>() {
-        });
+        List<ClientConnectionResponseDTO> connectionResponseDTOS = objectMapper.readValue(forEntity.getBody(), new TypeReference<>() {});
         assertEquals(9, connectionResponseDTOS.size());
 
     }
