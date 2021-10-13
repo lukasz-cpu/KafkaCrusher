@@ -2,6 +2,7 @@ package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 
@@ -24,6 +27,9 @@ import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
 class ClientConnectionControllerTest {
+
+    @ClassRule
+    public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
     private final String url = "http://localhost:8099"; //defined in props
