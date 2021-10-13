@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://192.168.0.74:9092", "port=9092"})
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class ClientConnectionControllerTest {
 
 
@@ -38,7 +38,7 @@ class ClientConnectionControllerTest {
         //given
         ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder()
                 .connectionName("connection test")
-                .brokers("192.168.0.74:9092")
+                .brokers("localhost:9092")
                 .build();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -50,7 +50,7 @@ class ClientConnectionControllerTest {
         //then
         assertTrue(response.contains("Connection added"));
         assertTrue(response.contains("\"connectionName\" : \"connection test\""));
-        assertTrue(response.contains("\"brokers\" : \"192.168.0.74:9092\""));
+        assertTrue(response.contains("\"brokers\" : \"localhost:9092\""));
     }
 
     @Test
