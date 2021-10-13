@@ -34,7 +34,6 @@ class ClientGetConnectionsControllerTest {
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String url = "http://localhost:8099"; //defined in props
 
 
     @Test
@@ -43,6 +42,8 @@ class ClientGetConnectionsControllerTest {
         //noting
 
         //when
+        //defined in props
+        String url = "http://localhost:8099";
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/getConnections", String.class);
 
         //then
