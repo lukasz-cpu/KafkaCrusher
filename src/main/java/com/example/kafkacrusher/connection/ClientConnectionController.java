@@ -35,9 +35,8 @@ public class ClientConnectionController {
     }
 
     @GetMapping(value = "/getConnections")
-    public ResponseEntity<String> getConnections() {
+    public ResponseEntity<List<ClientConnectionResponseDTO>> getConnections() {
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
-        String payload = getJson(connectionsInfo);
-        return new ResponseEntity<>(payload, HttpStatus.OK);
+        return new ResponseEntity<>(connectionsInfo, HttpStatus.OK);
     }
 }
