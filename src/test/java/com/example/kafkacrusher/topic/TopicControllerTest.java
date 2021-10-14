@@ -65,7 +65,7 @@ class TopicControllerTest {
                 () -> Assertions.assertTrue(topicListDTO.contains("TestTopic2")),
                 () -> Assertions.assertTrue(topicListDTO.contains("TestTopic3")),
                 () -> Assertions.assertTrue(topicListDTO.contains("TestTopic4")),
-                () -> Assertions.assertTrue(topicListDTO.contains("TestTopic7"))
+                () -> Assertions.assertTrue(topicListDTO.contains("Topic7"))
 
         );
 
