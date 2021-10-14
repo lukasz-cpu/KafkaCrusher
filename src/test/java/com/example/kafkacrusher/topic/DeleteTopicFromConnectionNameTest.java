@@ -53,3 +53,5 @@ class DeleteTopicFromConnectionNameTest {
 
     }
 }
+//java.nio.file.AccessDeniedException: C:\Users\UKASZ~1\AppData\Local\Temp\spring.kafka.71768bc3-197f-45e0-a250-0052e28afda36175876506604861747\TestTopic123555-0 -> C:\Users\UKASZ~1\AppData\Local\Temp\spring.kafka.71768bc3-197f-45e0-a250-0052e28afda36175876506604861747\TestTopic123555-0.5764ec0bd35f4c71ac0af39938626271-delete
+//run tests and project inside docker container???
