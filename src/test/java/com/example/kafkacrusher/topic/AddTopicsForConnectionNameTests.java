@@ -70,9 +70,4 @@ class AddTopicsForConnectionNameTests {
         );
 
     }
-
-
-    @Test
-    void deleteTopicsForConnectionName() {
-    }
 }
