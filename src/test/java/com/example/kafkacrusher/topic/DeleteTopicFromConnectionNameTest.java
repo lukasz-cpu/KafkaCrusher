@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -23,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -47,14 +45,11 @@ class DeleteTopicFromConnectionNameTest {
 
 
         HttpEntity<String> entity = new HttpEntity<>(getJson(request), headers);
-        HttpEntity<String> response = restTemplate.exchange(
-                baseUrl,
-                HttpMethod.POST,
-                entity,
-                String.class);
+
+        ResponseEntity<String> response = restTemplate.exchange(baseUrl,HttpMethod.POST, entity,String.class);
 
 
-        System.out.println(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
     }
 }
