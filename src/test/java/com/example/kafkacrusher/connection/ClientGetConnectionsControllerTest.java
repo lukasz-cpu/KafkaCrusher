@@ -48,7 +48,7 @@ class ClientGetConnectionsControllerTest {
 
         //then
         List<ClientConnectionResponseDTO> connectionResponseDTOS = objectMapper.readValue(forEntity.getBody(), new TypeReference<>() {});
-        assertEquals(9, connectionResponseDTOS.size());
+        assertEquals(10, connectionResponseDTOS.size());
 
     }
 }
