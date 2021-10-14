@@ -29,14 +29,14 @@ public class TopicController {
     }
 
     @PostMapping("/addTopicsForConnectionName")
-    public ResponseEntity<String> addTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
+    public ResponseEntity<TopicListDTO> addTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
                                                              @RequestParam String connectionName) {
         try {
             topicService.createTopicForConnection(connectionName, topicListDTO);
         } catch (CreateTopicException e) {
-            return new ResponseEntity<>("Problem with adding topics for connection name: " + connectionName, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(topicListDTO, HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Successfully added topics: " + getJson(topicListDTO), HttpStatus.OK);
+        return new ResponseEntity<>(topicListDTO, HttpStatus.OK);
     }
 
     @PostMapping("/deleteTopicsForConnectionName")

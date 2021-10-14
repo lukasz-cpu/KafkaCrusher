@@ -1,7 +1,11 @@
 package com.example.kafkacrusher.topic;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +20,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -29,13 +34,14 @@ import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"}, topics = {"testTopic2", "testTopic3"})
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class TopicControllerTest {
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void getTopicsForConnectionName() throws URISyntaxException {
+    void getTopicsForConnectionName() throws JsonProcessingException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -50,11 +56,19 @@ class TopicControllerTest {
                 entity,
                 String.class);
 
+        TopicListDTO connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {
+        });
 
-        log.info("jestem");
-        log.info(getJson(request));
-        System.out.println(response.toString());
-        log.info("---------------");
+        List<String> topicListDTO = connectionResponseDTOS.getTopicListDTO();
+
+        assertAll(
+                () -> Assertions.assertTrue(topicListDTO.contains("TestTopic2")),
+                () -> Assertions.assertTrue(topicListDTO.contains("TestTopic3")),
+                () -> Assertions.assertTrue(topicListDTO.contains("TestTopic4")),
+                () -> Assertions.assertTrue(topicListDTO.contains("TestTopic7"))
+
+        );
+
     }
 
     @Test
