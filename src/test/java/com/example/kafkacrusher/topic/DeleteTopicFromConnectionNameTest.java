@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -48,11 +49,14 @@ class DeleteTopicFromConnectionNameTest {
 
         ResponseEntity<String> response = restTemplate.exchange(baseUrl,HttpMethod.POST, entity,String.class);
 
+        TopicListDTO connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {
+        });
+
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(connectionResponseDTOS.getTopicListDTO().contains("connection test10"));
 
     }
 }
-//https://stackoverflow.com/questions/48114040/exception-during-topic-deletion-when-kafka-is-hosted-in-docker-in-windows
 //java.nio.file.AccessDeniedException: C:\Users\UKASZ~1\AppData\Local\Temp\spring.kafka.71768bc3-197f-45e0-a250-0052e28afda36175876506604861747\TestTopic123555-0 -> C:\Users\UKASZ~1\AppData\Local\Temp\spring.kafka.71768bc3-197f-45e0-a250-0052e28afda36175876506604861747\TestTopic123555-0.5764ec0bd35f4c71ac0af39938626271-delete
-//run tests and project inside docker container???
+//https://stackoverflow.com/questions/48114040/exception-during-topic-deletion-when-kafka-is-hosted-in-docker-in-windows
