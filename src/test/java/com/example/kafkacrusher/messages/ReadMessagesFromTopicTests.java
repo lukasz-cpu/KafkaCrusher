@@ -1,7 +1,6 @@
 package com.example.kafkacrusher.messages;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
-import com.example.kafkacrusher.connection.ClientConnectionResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Properties;
 
-import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -54,9 +53,14 @@ class ReadMessagesFromTopicTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity,String.class);
+        ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
 
-        List<MessageResponseDTO> connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+        List<MessageResponseDTO> connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {
+        });
+
+        assertEquals("test message on test topic", connectionResponseDTOS.get(0).getMessage());
+
+
     }
 
     @AfterEach
