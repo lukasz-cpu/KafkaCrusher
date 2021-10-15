@@ -20,12 +20,12 @@ public class MessagesController {
     private MessageService messageService;
 
     @PostMapping("/sendMessage")
-    public ResponseEntity<String> sendMessage(@RequestBody MessageRequestDTO message) {
+    public ResponseEntity<MessageRequestDTO> sendMessage(@RequestBody MessageRequestDTO message) {
         try {
             MessageRequestDTO messageRequestDTO = messageService.processMessageForConnection(message);
-            return new ResponseEntity<>("Successfully added message: " + getJson(messageRequestDTO), HttpStatus.OK);
+            return new ResponseEntity<>(messageRequestDTO, HttpStatus.OK);
         } catch (MessageProcessingException | BrokerNotFoundException | TopicsNameNotFound e) {
-            return new ResponseEntity<>("Problem with sending message for connection name: " + getJson(message), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
         }
     }
 
