@@ -47,7 +47,7 @@ class ReadMessagesFromTopicTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity,MessageRequestDTO.class);
+        ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity,String.class);
 
         log.info("RESPONSE------------");
         log.info(response.getBody().toString());
