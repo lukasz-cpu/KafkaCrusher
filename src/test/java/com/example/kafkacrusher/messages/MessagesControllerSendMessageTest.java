@@ -13,7 +13,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -45,8 +49,10 @@ class MessagesControllerSendMessageTest {
 
         ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl,HttpMethod.POST, entity,MessageRequestDTO.class);
 
-        System.out.println(response.getStatusCode());
-        System.out.println(response.toString());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("TestTopic", Objects.requireNonNull(response.getBody()).getTopic());
+        assertEquals("test message", Objects.requireNonNull(response.getBody()).getMessage());
+        assertEquals("TestTopic", Objects.requireNonNull(response.getBody()).getTopic());
 
 
     }
