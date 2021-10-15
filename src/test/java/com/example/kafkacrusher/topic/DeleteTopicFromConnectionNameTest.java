@@ -54,7 +54,7 @@ class DeleteTopicFromConnectionNameTest {
 
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(connectionResponseDTOS.getTopicListDTO().contains("connection test10"));
+        assertTrue(connectionResponseDTOS.getTopicListDTO().contains("TestTopic123555"));
 
     }
 }
