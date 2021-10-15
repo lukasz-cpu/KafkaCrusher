@@ -1,9 +1,12 @@
 package com.example.kafkacrusher.messages;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@ToString
+@EqualsAndHashCode
 @Builder
 public class MessageRequestDTO {
     private String connectionName;
