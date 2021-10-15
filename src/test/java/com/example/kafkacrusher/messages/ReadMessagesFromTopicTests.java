@@ -42,7 +42,7 @@ class ReadMessagesFromTopicTests {
 
     @Test
     void readMessagesFromTopic() {
-        final String baseUrl = "localhost:8099/readMessagesFromTopic?connectionName=connection test10&topicName=TestTopic";
+        final String baseUrl = "http://localhost:8099/readMessagesFromTopic?connectionName=connection test10&topicName=TestTopic";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
