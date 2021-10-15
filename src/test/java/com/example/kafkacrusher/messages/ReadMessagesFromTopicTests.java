@@ -4,6 +4,7 @@ import com.example.kafkacrusher.KafkaCrusherApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +28,11 @@ class ReadMessagesFromTopicTests {
 
 
     public static KafkaProducer<String, String> kafkaProducer = null;
+
+    @BeforeEach
+    void setUp() {
+        send("TestTopic", "test message on test topic");
+    }
 
     @Test
     void readMessagesFromTopic() {
