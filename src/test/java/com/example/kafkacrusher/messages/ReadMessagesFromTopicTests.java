@@ -1,9 +1,14 @@
 package com.example.kafkacrusher.messages;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
+import com.example.kafkacrusher.connection.ClientConnectionResponseDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +21,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Properties;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
@@ -34,6 +40,7 @@ class ReadMessagesFromTopicTests {
 
     public static KafkaProducer<String, String> kafkaProducer = null;
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -41,7 +48,7 @@ class ReadMessagesFromTopicTests {
     }
 
     @Test
-    void readMessagesFromTopic() {
+    void readMessagesFromTopic() throws JsonProcessingException {
         final String baseUrl = "http://localhost:8099/readMessagesFromTopic?connectionName=connection test10&topicName=TestTopic";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -49,14 +56,13 @@ class ReadMessagesFromTopicTests {
 
         ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity,String.class);
 
-        log.info("RESPONSE------------");
-        log.info(response.getBody().toString());
-        log.info("----------------------------");
-        System.out.println(response.getBody().toString());
+        List<MessageResponseDTO> connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
     }
 
-
-
+    @AfterEach
+    void tearDown() {
+        kafkaProducer.close();
+    }
 
     public static KafkaProducer<String, String> createKafkaProducer() {
         Properties properties = new Properties();

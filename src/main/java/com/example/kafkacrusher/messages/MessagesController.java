@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.kafkacrusher.util.JSONUtils.getJson;
@@ -30,12 +31,12 @@ public class MessagesController {
     }
 
     @GetMapping("/readMessagesFromTopic")
-    public ResponseEntity<String> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName){
+    public ResponseEntity<List<MessageResponseDTO>> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName){
         try {
             List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
-            return new ResponseEntity<>("Successfully read messages: " + getJson(messageFromTopic), HttpStatus.OK);
+            return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);
         } catch (ReadMessageFromTopicException | BrokerNotFoundException | TopicsNameNotFound e) {
-            return new ResponseEntity<>("Problem with reading messages from topic: " + topicName + ", connection name: " + connectionName, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.CONFLICT);
         }
     }
 }
