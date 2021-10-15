@@ -6,8 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Entity(name = "client_connection")
-public final class ClientConnection {
+public class ClientConnection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
