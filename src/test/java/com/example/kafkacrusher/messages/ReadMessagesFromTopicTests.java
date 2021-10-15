@@ -8,12 +8,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
+
+import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -28,6 +33,7 @@ class ReadMessagesFromTopicTests {
 
 
     public static KafkaProducer<String, String> kafkaProducer = null;
+    private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
 
     @BeforeEach
     void setUp() {
@@ -36,6 +42,14 @@ class ReadMessagesFromTopicTests {
 
     @Test
     void readMessagesFromTopic() {
+        final String baseUrl = "localhost:8099/readMessagesFromTopic?connectionName=connection test10&topicName=TestTopic";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity,MessageRequestDTO.class);
+
+        System.out.println(response.getBody().toString());
     }
 
 

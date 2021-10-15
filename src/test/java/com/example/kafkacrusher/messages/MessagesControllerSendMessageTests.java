@@ -41,7 +41,7 @@ class MessagesControllerSendMessageTests {
                 .topic("TestTopic")
                 .build();
 
-        final String baseUrl = "http://localhost:8099/sendMessage";
+        final String baseUrl = "http://localhost:8099/readMessagesFromTopic";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
