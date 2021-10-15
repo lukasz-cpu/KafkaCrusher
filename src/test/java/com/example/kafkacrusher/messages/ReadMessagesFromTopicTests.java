@@ -49,6 +49,9 @@ class ReadMessagesFromTopicTests {
 
         ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity,MessageRequestDTO.class);
 
+        log.info("RESPONSE------------");
+        log.info(response.getBody().toString());
+        log.info("----------------------------");
         System.out.println(response.getBody().toString());
     }
 
