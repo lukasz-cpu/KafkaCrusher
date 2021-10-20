@@ -40,7 +40,7 @@ public class MessageService {
             KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
             String topic = message.getTopic();
             String payload = message.getMessage();
-            kafkaTemplate.send(topic, payload);  //FIXME set timeout hehe
+            kafkaTemplate.send(topic, payload); 
         }
         else{
          log.warn("No topic found: {}", message.getTopic());
