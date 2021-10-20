@@ -48,16 +48,16 @@ public class MessageService {
         return message;
     }
 
-    private boolean connectionContainsTopic(MessageRequestDTO message, String connectionName) throws TopicsNameNotFound, BrokerNotFoundException {
+    private boolean connectionContainsTopic(MessageRequestDTO message, String connectionName) throws TopicsNameNotFound {
         return topicService.getTopicsNames(connectionName).contains(message.getTopic());
     }
 
 
-    private boolean connectionContainsTopic(String connectionName, String topicName) throws TopicsNameNotFound, BrokerNotFoundException {
+    private boolean connectionContainsTopic(String connectionName, String topicName) throws TopicsNameNotFound {
         return topicService.getTopicsNames(connectionName).contains(topicName);
     }
 
-    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException, BrokerNotFoundException, TopicsNameNotFound {
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException, TopicsNameNotFound {
 
         Optional<String> brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
 
