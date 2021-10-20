@@ -72,17 +72,16 @@ public class TopicService {
         return result;
     }
 
-    //FIXME set timeout
-    public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
-        AdminClient adminClient = null;
-        try {
-            String brokerAddresses = getBrokerAddresses(connectionName);
 
-            boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
+
+    public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) {
+        String brokerAddresses = getBrokerAddresses(connectionName);
+        boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
+        Properties props = new Properties();
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
+
+        try (AdminClient adminClient = AdminClient.create(props)){
             if (isActive) {
-                Properties props = new Properties();
-                props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
-                adminClient = AdminClient.create(props);
                 List<NewTopic> topicsList = topicListDTO
                         .getTopicListDTO()
                         .stream()
@@ -91,51 +90,32 @@ public class TopicService {
 
                 adminClient.createTopics(topicsList);
             }
-            else{
-                closeAdminClient(adminClient);
-                throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
-            }
-        } catch (Exception e) {
-            throw new CreateTopicException("Cannot create topic for connection name " + connectionName);
-        } finally {
-            closeAdminClient(adminClient);
-        }
 
+        }
     }
 
 
-    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) throws DeleteTopicException {
-        AdminClient adminClient = null;
-        try {
-            String brokerAddressesByName = getBrokerAddresses(connectionName);
-            boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
-            if(isActive){
-                Properties props = new Properties();
-                props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
-                adminClient = AdminClient.create(props);
+    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO){
+        String brokerAddressesByName = getBrokerAddresses(connectionName);
+        boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
+        Properties props = new Properties();
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
+
+        if(isActive){
+            deleteTopic(topicListDTO, props);
+        }
+    }
+
+    private void deleteTopic(TopicListDTO topicListDTO, Properties props) {
+        try (AdminClient adminClient = AdminClient.create(props)) {
                 List<String> topicsList = topicListDTO
                         .getTopicListDTO()
                         .stream()
                         .toList();
                 adminClient.deleteTopics(topicsList);
-            }
-            else{
-                closeAdminClient(adminClient);
-                throw new DeleteTopicException("Cannot delete topic for connection name " + connectionName);
-            }
-
-        } catch (Exception e) {
-            throw new DeleteTopicException("Cannot delete topic for connection name " + connectionName);
-        } finally {
-            closeAdminClient(adminClient);
         }
     }
 
-    private void closeAdminClient(AdminClient adminClient) {
-        if (adminClient != null) {
-            adminClient.close();
-        }
-    }
 
     private Optional<ClientConnection> getClientConnectionByName(String name) {
         return Optional.of(clientConnectionRepository.
