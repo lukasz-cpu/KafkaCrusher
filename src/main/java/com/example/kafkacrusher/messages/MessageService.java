@@ -34,7 +34,7 @@ public class MessageService {
     }
 
 
-    public MessageRequestDTO processMessageForConnection(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException, TopicsNameNotFound {
+    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException, TopicsNameNotFound {
         String connectionName = message.getConnectionName();
         if(connectionContainsTopic(message, connectionName)){
             KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
@@ -43,6 +43,7 @@ public class MessageService {
             kafkaTemplate.send(topic, payload);  //FIXME set timeout hehe
         }
         else{
+         log.warn("No topic found: {}", message.getTopic());
          throw new MessageProcessingException("Problem with sending message");
         }
         return message;

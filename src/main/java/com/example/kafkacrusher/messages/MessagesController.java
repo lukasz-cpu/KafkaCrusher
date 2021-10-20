@@ -22,7 +22,7 @@ public class MessagesController {
     @PostMapping("/sendMessage")
     public ResponseEntity<MessageRequestDTO> sendMessage(@RequestBody MessageRequestDTO message) {
         try {
-            MessageRequestDTO messageRequestDTO = messageService.processMessageForConnection(message);
+            MessageRequestDTO messageRequestDTO = messageService.processMessage(message);
             return new ResponseEntity<>(messageRequestDTO, HttpStatus.OK);
         } catch (MessageProcessingException | BrokerNotFoundException | TopicsNameNotFound e) {
             return new ResponseEntity<>(message, HttpStatus.CONFLICT);
