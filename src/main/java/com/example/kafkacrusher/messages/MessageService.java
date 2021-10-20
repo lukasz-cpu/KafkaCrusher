@@ -34,7 +34,7 @@ public class MessageService {
     }
 
 
-    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException {
+    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException {
         if(connectionContainsTopic(message)){
             sendMessage(message);
         }
