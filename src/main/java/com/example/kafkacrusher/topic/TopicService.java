@@ -10,9 +10,8 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @Component
 @Slf4j
@@ -28,23 +27,20 @@ public class TopicService {
     }
 
 
-    public List<String> getTopicsNames(String connectionName) throws TopicsNameNotFound, BrokerNotFoundException {
+    public List<String> getTopicsNames(String connectionName) throws BrokerNotFoundException {
         String brokerAddressesByName = getBrokerAddressesByName(connectionName);
         return getTopicByAddresses(brokerAddressesByName);
 
     }
 
     private List<String> getTopicByAddresses(String brokerAddresses) {
-        List<String> result = new ArrayList<>();
+        List<String> result;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
         try (AdminClient adminClient = AdminClient.create(props)){
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
-            result = adminClient
-                    .listTopics(listTopicsOptions)
-                    .names()
-                    .get()
+            result = getTopicList(adminClient, listTopicsOptions)
                     .stream()
                     .filter(StringUtils::hasLength)
                     .sorted()
@@ -55,13 +51,30 @@ public class TopicService {
 
     }
 
+    private Set<String> getTopicList(AdminClient adminClient, ListTopicsOptions listTopicsOptions) {
+        Set<String> result = new HashSet<>();
+        try {
+            result = adminClient
+                    .listTopics(listTopicsOptions)
+                    .names()
+                    .get();
+        } catch (InterruptedException e) {
+            log.error("InterruptedException: ", e);
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            log.error("ExecutionException: ", e);
+        }
+
+        return result;
+    }
+
     //FIXME set timeout
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
         AdminClient adminClient = null;
         try {
             String brokerAddresses = getBrokerAddressesByName(connectionName);
             boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
-            if(isActive){
+            if (isActive) {
                 Properties props = new Properties();
                 props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
                 adminClient = AdminClient.create(props);
