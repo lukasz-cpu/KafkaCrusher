@@ -34,9 +34,9 @@ public class MessageService {
     }
 
 
-    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException, TopicsNameNotFound {
-        String connectionName = message.getConnectionName();
-        if(connectionContainsTopic(message, connectionName)){
+    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException, TopicsNameNotFound, BrokerNotFoundException {
+        if(connectionContainsTopic(message)){
+            String connectionName = message.getConnectionName();
             KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
             String topic = message.getTopic();
             String payload = message.getMessage();
@@ -49,8 +49,8 @@ public class MessageService {
         return message;
     }
 
-    private boolean connectionContainsTopic(MessageRequestDTO message, String connectionName) throws TopicsNameNotFound {
-        return topicService.getTopicsNames(connectionName).contains(message.getTopic());
+    private boolean connectionContainsTopic(MessageRequestDTO message) throws TopicsNameNotFound {
+        return topicService.getTopicsNames(message.getConnectionName()).contains(message.getTopic());
     }
 
 
