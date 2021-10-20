@@ -29,7 +29,7 @@ public class TopicService {
 
 
     public List<String> getTopicsNames(String connectionName) {
-        return getBrokerAddressesByName(connectionName)
+        return getClientConnectionByName(connectionName)
                 .stream()
                 .filter(name -> StringUtils.hasLength(name.getBrokers()))
                 .map(name -> getTopicByAddresses(name.getBrokers()))
@@ -76,11 +76,7 @@ public class TopicService {
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
         AdminClient adminClient = null;
         try {
-            String brokerAddresses = getBrokerAddressesByName(connectionName)
-                    .stream()
-                    .map(ClientConnection::getBrokers)
-                    .filter(StringUtils::hasLength)
-                    .findFirst().orElse("");
+            String brokerAddresses = getBrokerAddresses(connectionName);
 
             boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
             if (isActive) {
@@ -107,14 +103,11 @@ public class TopicService {
 
     }
 
+
     public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) throws DeleteTopicException {
         AdminClient adminClient = null;
         try {
-            String brokerAddressesByName = getBrokerAddressesByName(connectionName)
-                    .stream()
-                    .map(ClientConnection::getBrokers)
-                    .filter(StringUtils::hasLength)
-                    .findFirst().orElse("");
+            String brokerAddressesByName = getBrokerAddresses(connectionName);
             boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
             if(isActive){
                 Properties props = new Properties();
@@ -144,7 +137,7 @@ public class TopicService {
         }
     }
 
-    private Optional<ClientConnection> getBrokerAddressesByName(String name) {
+    private Optional<ClientConnection> getClientConnectionByName(String name) {
         return Optional.of(clientConnectionRepository.
                         findByConnectionName(name)
                         .stream()
@@ -152,5 +145,13 @@ public class TopicService {
                 .orElse(Optional.empty());
 
 
+    }
+
+    private String getBrokerAddresses(String connectionName) {
+        return getClientConnectionByName(connectionName)
+                .stream()
+                .map(ClientConnection::getBrokers)
+                .filter(StringUtils::hasLength)
+                .findFirst().orElse("");
     }
 }
