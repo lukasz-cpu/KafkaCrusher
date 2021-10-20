@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.kafkacrusher.util.JSONUtils.getJson;
 
 @RestController
 @Slf4j
