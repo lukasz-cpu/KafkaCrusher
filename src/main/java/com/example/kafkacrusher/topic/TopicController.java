@@ -31,22 +31,14 @@ public class TopicController {
     @PostMapping("/addTopicsForConnectionName")
     public ResponseEntity<TopicListDTO> addTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
                                                              @RequestParam String connectionName) {
-        try {
-            topicService.createTopicForConnection(connectionName, topicListDTO);
-        } catch (CreateTopicException e) {
-            return new ResponseEntity<>(topicListDTO, HttpStatus.CONFLICT);
-        }
+        topicService.createTopicForConnection(connectionName, topicListDTO);
         return new ResponseEntity<>(topicListDTO, HttpStatus.OK);
     }
 
     @PostMapping("/deleteTopicsForConnectionName")
     public ResponseEntity<TopicListDTO> deleteTopicsForConnectionName(@RequestBody TopicListDTO topicListDTO,
                                                                 @RequestParam String connectionName) {
-        try {
-            topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
-        } catch (DeleteTopicException e) {
-            return new ResponseEntity<>(topicListDTO, HttpStatus.CONFLICT);
-        }
+        topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
         return new ResponseEntity<>(topicListDTO, HttpStatus.OK);
     }
 
