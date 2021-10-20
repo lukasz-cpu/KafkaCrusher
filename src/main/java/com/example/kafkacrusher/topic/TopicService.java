@@ -29,7 +29,9 @@ public class TopicService {
 
 
     public List<String> getTopicsNames(String connectionName) {
-        return getBrokerAddressesByName(connectionName).stream().filter(name -> name.getBrokers().length() > 0)
+        return getBrokerAddressesByName(connectionName)
+                .stream()
+                .filter(name -> StringUtils.hasLength(name.getBrokers()))
                 .map(name -> getTopicByAddresses(name.getBrokers()))
                 .flatMap(List::stream)
                 .toList();
@@ -74,7 +76,12 @@ public class TopicService {
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) throws CreateTopicException {
         AdminClient adminClient = null;
         try {
-            String brokerAddresses = getBrokerAddressesByName(connectionName);
+            String brokerAddresses = getBrokerAddressesByName(connectionName)
+                    .stream()
+                    .map(ClientConnection::getBrokers)
+                    .filter(StringUtils::hasLength)
+                    .findFirst().orElse("");
+
             boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
             if (isActive) {
                 Properties props = new Properties();
@@ -103,7 +110,11 @@ public class TopicService {
     public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) throws DeleteTopicException {
         AdminClient adminClient = null;
         try {
-            String brokerAddressesByName = getBrokerAddressesByName(connectionName);
+            String brokerAddressesByName = getBrokerAddressesByName(connectionName)
+                    .stream()
+                    .map(ClientConnection::getBrokers)
+                    .filter(StringUtils::hasLength)
+                    .findFirst().orElse("");
             boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
             if(isActive){
                 Properties props = new Properties();
