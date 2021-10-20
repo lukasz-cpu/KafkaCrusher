@@ -35,7 +35,7 @@ public class MessagesController {
         try {
             List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
             return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);
-        } catch (ReadMessageFromTopicException | BrokerNotFoundException | TopicsNameNotFound e) {
+        } catch (ReadMessageFromTopicException | TopicsNameNotFound e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.CONFLICT);
         }
     }
