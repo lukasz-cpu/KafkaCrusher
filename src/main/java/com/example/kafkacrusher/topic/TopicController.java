@@ -23,7 +23,7 @@ public class TopicController {
         try {
             List<String> topicsNames = topicService.getTopicsNames(connectionName);
             return new ResponseEntity<>(getJson(topicsNames), HttpStatus.OK);
-        } catch (TopicsNameNotFound | BrokerNotFoundException e) {
+        } catch (TopicsNameNotFound e) {
             return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
         }
     }
