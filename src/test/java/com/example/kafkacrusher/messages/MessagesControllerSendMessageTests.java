@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -47,7 +46,7 @@ class MessagesControllerSendMessageTests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(getJson(connection_test), headers);
 
-        ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl,HttpMethod.POST, entity,MessageRequestDTO.class);
+        ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl, HttpMethod.POST, entity, MessageRequestDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("TestTopic", Objects.requireNonNull(response.getBody()).getTopic());

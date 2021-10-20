@@ -1,6 +1,5 @@
 package com.example.kafkacrusher.messages;
 
-import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import com.example.kafkacrusher.topic.TopicsNameNotFound;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public class MessagesController {
     }
 
     @GetMapping("/readMessagesFromTopic")
-    public ResponseEntity<List<MessageResponseDTO>> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName){
+    public ResponseEntity<List<MessageResponseDTO>> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName) {
         try {
             List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
             return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);

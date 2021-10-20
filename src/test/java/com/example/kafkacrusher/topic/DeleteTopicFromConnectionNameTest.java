@@ -16,7 +16,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
@@ -47,7 +46,7 @@ class DeleteTopicFromConnectionNameTest {
 
         HttpEntity<String> entity = new HttpEntity<>(getJson(request), headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(baseUrl,HttpMethod.POST, entity,String.class);
+        ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.POST, entity, String.class);
 
         TopicListDTO connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {
         });

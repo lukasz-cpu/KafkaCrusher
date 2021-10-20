@@ -41,6 +41,27 @@ class ReadMessagesFromTopicTests {
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    public static KafkaProducer<String, String> createKafkaProducer() {
+        Properties properties = new Properties();
+        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        KafkaProducer<String, String> producer = null;
+        try {
+            producer = new KafkaProducer<>(properties);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return producer;
+    }
+
+    public static void send(String topic, String msg) {
+        if (kafkaProducer == null) {
+            kafkaProducer = createKafkaProducer();
+        }
+        kafkaProducer.send(new ProducerRecord<>(topic, msg));
+    }
+
     @BeforeEach
     void setUp() {
         send("TestTopic", "test message on test topic");
@@ -66,26 +87,5 @@ class ReadMessagesFromTopicTests {
     @AfterEach
     void tearDown() {
         kafkaProducer.close();
-    }
-
-    public static KafkaProducer<String, String> createKafkaProducer() {
-        Properties properties = new Properties();
-        properties.put("bootstrap.servers", "localhost:9092");
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        KafkaProducer<String, String> producer = null;
-        try {
-            producer = new KafkaProducer<>(properties);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return producer;
-    }
-
-    public static void send(String topic, String msg) {
-        if (kafkaProducer == null) {
-            kafkaProducer = createKafkaProducer();
-        }
-        kafkaProducer.send(new ProducerRecord<>(topic, msg));
     }
 }

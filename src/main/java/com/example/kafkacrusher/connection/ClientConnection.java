@@ -12,7 +12,8 @@ public class ClientConnection {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)   //FIX ME need to investigate UUID as ID to have better hash code equals
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //FIX ME need to investigate UUID as ID to have better hash code equals
     private Long id;
     @Column(unique = true)
     private String connectionName;

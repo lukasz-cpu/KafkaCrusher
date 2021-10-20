@@ -35,17 +35,16 @@ public class MessageService {
 
 
     public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException {
-        if(connectionContainsTopic(message)){
+        if (connectionContainsTopic(message)) {
             sendMessage(message);
-        }
-        else{
-         log.warn("No topic found: {}", message.getTopic());
-         throw new MessageProcessingException("Problem with sending message");
+        } else {
+            log.warn("No topic found: {}", message.getTopic());
+            throw new MessageProcessingException("Problem with sending message");
         }
         return message;
     }
 
-    private void sendMessage(MessageRequestDTO message){
+    private void sendMessage(MessageRequestDTO message) {
         String topic = message.getTopic();
         String payload = message.getMessage();
         String connectionName = message.getConnectionName();
@@ -78,7 +77,7 @@ public class MessageService {
 
         Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareProperties).findFirst();
 
-        if(connectionContainsTopic(connectionName, topicName)){
+        if (connectionContainsTopic(connectionName, topicName)) {
             List<MessageResponseDTO> messageResponseDTOS =
                     properties
                             .stream()
@@ -88,19 +87,15 @@ public class MessageService {
                             .orElse(new ArrayList<>());
 
 
-
-            if(!messageResponseDTOS.isEmpty()){
+            if (!messageResponseDTOS.isEmpty()) {
                 return messageResponseDTOS;
-            }
-
-            else{
+            } else {
                 throw new ReadMessageFromTopicException();
             }
         }
         throw new ReadMessageFromTopicException();
 
     }
-
 
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {

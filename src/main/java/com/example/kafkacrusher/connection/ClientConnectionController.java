@@ -1,7 +1,6 @@
 package com.example.kafkacrusher.connection;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.example.kafkacrusher.util.JSONUtils.getJson;
 
 
 @RestController

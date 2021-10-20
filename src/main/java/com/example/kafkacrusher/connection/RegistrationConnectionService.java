@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 @Component
 @Slf4j
@@ -21,14 +20,14 @@ public class RegistrationConnectionService {
         this.connectionActiveManager = connectionActiveManager;
     }
 
-    public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection){
+    public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection) {
         return getClientConnection(clientConnection)
                 .stream()
                 .findFirst()
                 .or(Optional::empty);
     }
 
-    private Optional<ClientConnection> getClientConnection(ClientConnection clientConnection){
+    private Optional<ClientConnection> getClientConnection(ClientConnection clientConnection) {
         Optional<ClientConnection> result = Optional.empty();
         try {
             String brokers = clientConnection.getBrokers();
