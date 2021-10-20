@@ -15,17 +15,12 @@ import static com.example.kafkacrusher.util.JSONUtils.getJson;
 @AllArgsConstructor
 public class TopicController {
 
-
     private final TopicService topicService;
 
     @GetMapping("/getTopicListForConnectionName")
     public ResponseEntity<String> getTopicsForConnectionName(@RequestParam String connectionName) {
-        try {
-            List<String> topicsNames = topicService.getTopicsNames(connectionName);
-            return new ResponseEntity<>(getJson(topicsNames), HttpStatus.OK);
-        } catch (TopicsNameNotFound e) {
-            return new ResponseEntity<>("Problem with getting topics for connection name: " + connectionName, HttpStatus.CONFLICT);
-        }
+        List<String> topicsNames = topicService.getTopicsNames(connectionName);
+        return new ResponseEntity<>(getJson(topicsNames), HttpStatus.OK);
     }
 
     @PostMapping("/addTopicsForConnectionName")
@@ -41,5 +36,4 @@ public class TopicController {
         topicService.deleteTopicsForConnectionName(connectionName, topicListDTO);
         return new ResponseEntity<>(topicListDTO, HttpStatus.OK);
     }
-
 }
