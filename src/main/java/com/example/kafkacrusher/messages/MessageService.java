@@ -45,12 +45,22 @@ public class MessageService {
         return message;
     }
 
-    private void sendMessage(MessageRequestDTO message) throws BrokerNotFoundException {
-        String connectionName = message.getConnectionName();
-        KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
+    private void sendMessage(MessageRequestDTO message){
         String topic = message.getTopic();
         String payload = message.getMessage();
-        kafkaTemplate.send(topic, payload);
+        String connectionName = message.getConnectionName();
+        getKafkaTemplate(connectionName)
+                .ifPresent(template -> template.send(topic, payload));
+    }
+
+    private Optional<KafkaTemplate<String, String>> getKafkaTemplate(String connectionName) {
+        Optional<KafkaTemplate<String, String>> kafkaTemplate = Optional.empty();
+        try {
+            kafkaTemplate = Optional.of(kafkaConnectionManager.getKafkaTemplate(connectionName));
+        } catch (BrokerNotFoundException e) {
+            e.printStackTrace();
+        }
+        return kafkaTemplate;
     }
 
     private boolean connectionContainsTopic(MessageRequestDTO message) throws TopicsNameNotFound {

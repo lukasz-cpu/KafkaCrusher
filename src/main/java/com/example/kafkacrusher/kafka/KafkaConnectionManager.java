@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +50,7 @@ public class KafkaConnectionManager {
         return clientConnectionRepository.
                 findByConnectionName(name)
                 .stream()
+                .filter(clientConnection -> StringUtils.hasLength(clientConnection.getBrokers()))
                 .findFirst()
                 .orElseThrow(() -> new BrokerNotFoundException("Broker not found"))
                 .getBrokers();
