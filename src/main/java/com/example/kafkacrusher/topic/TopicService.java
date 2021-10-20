@@ -37,51 +37,13 @@ public class TopicService {
                 .toList();
     }
 
-    private List<String> getTopicByAddresses(String brokerAddresses) {
-        List<String> result;
-        Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
-
-        try (AdminClient adminClient = AdminClient.create(props)) {
-            ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
-            listTopicsOptions.timeoutMs(5000);
-            result = getTopicList(adminClient, listTopicsOptions)
-                    .stream()
-                    .filter(StringUtils::hasLength)
-                    .sorted()
-                    .toList();
-
-        }
-        return result;
-
-    }
-
-    private Set<String> getTopicList(AdminClient adminClient, ListTopicsOptions listTopicsOptions) {
-        Set<String> result = new HashSet<>();
-        try {
-            result = adminClient
-                    .listTopics(listTopicsOptions)
-                    .names()
-                    .get();
-        } catch (InterruptedException e) {
-            log.error("InterruptedException: ", e);
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException e) {
-            log.error("ExecutionException: ", e);
-        }
-
-        return result;
-    }
-
-
-
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) {
         String brokerAddresses = getBrokerAddresses(connectionName);
         boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
 
-        try (AdminClient adminClient = AdminClient.create(props)){
+        try (AdminClient adminClient = AdminClient.create(props)) {
             if (isActive) {
                 List<NewTopic> topicsList = topicListDTO
                         .getTopicListDTO()
@@ -96,24 +58,24 @@ public class TopicService {
     }
 
 
-    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO){
+    public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) {
         String brokerAddressesByName = getBrokerAddresses(connectionName);
         boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
 
-        if(isActive){
+        if (isActive) {
             deleteTopic(topicListDTO, props);
         }
     }
 
     private void deleteTopic(TopicListDTO topicListDTO, Properties props) {
         try (AdminClient adminClient = AdminClient.create(props)) {
-                List<String> topicsList = topicListDTO
-                        .getTopicListDTO()
-                        .stream()
-                        .toList();
-                adminClient.deleteTopics(topicsList);
+            List<String> topicsList = topicListDTO
+                    .getTopicListDTO()
+                    .stream()
+                    .toList();
+            adminClient.deleteTopics(topicsList);
         }
     }
 
@@ -134,5 +96,41 @@ public class TopicService {
                 .map(ClientConnection::getBrokers)
                 .filter(StringUtils::hasLength)
                 .findFirst().orElse("");
+    }
+
+    private Set<String> getTopicList(AdminClient adminClient, ListTopicsOptions listTopicsOptions) {
+        Set<String> result = new HashSet<>();
+        try {
+            result = adminClient
+                    .listTopics(listTopicsOptions)
+                    .names()
+                    .get();
+        } catch (InterruptedException e) {
+            log.error("InterruptedException: ", e);
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            log.error("ExecutionException: ", e);
+        }
+
+        return result;
+    }
+
+    private List<String> getTopicByAddresses(String brokerAddresses) {
+        List<String> result;
+        Properties props = new Properties();
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
+
+        try (AdminClient adminClient = AdminClient.create(props)) {
+            ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
+            listTopicsOptions.timeoutMs(5000);
+            result = getTopicList(adminClient, listTopicsOptions)
+                    .stream()
+                    .filter(StringUtils::hasLength)
+                    .sorted()
+                    .toList();
+
+        }
+        return result;
+
     }
 }
