@@ -24,7 +24,7 @@ public class MessagesController {
         try {
             MessageRequestDTO messageRequestDTO = messageService.processMessage(message);
             return new ResponseEntity<>(messageRequestDTO, HttpStatus.OK);
-        } catch (MessageProcessingException | BrokerNotFoundException | TopicsNameNotFound e) {
+        } catch (MessageProcessingException | TopicsNameNotFound e) {
             return new ResponseEntity<>(message, HttpStatus.CONFLICT);
         }
     }
