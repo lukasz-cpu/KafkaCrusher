@@ -34,13 +34,11 @@ public class TopicService {
 
     }
 
-    private List<String> getTopicByAddresses(String brokerAddresses) throws TopicsNameNotFound {
+    private List<String> getTopicByAddresses(String brokerAddresses) {
         List<String> result = new ArrayList<>();
-        AdminClient adminClient = null;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
-        try {
-            adminClient = AdminClient.create(props);
+        try (AdminClient adminClient = AdminClient.create(props)){
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
             result = adminClient
@@ -52,16 +50,6 @@ public class TopicService {
                     .sorted()
                     .toList();
 
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
-        } finally {
-            closeAdminClient(adminClient);
-        }
-        if (result.isEmpty()) {
-            throw new TopicsNameNotFound("Topics name not found for connection name: " + brokerAddresses);
         }
         return result;
 
