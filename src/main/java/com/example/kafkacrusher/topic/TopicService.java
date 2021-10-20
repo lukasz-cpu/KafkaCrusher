@@ -41,6 +41,7 @@ public class TopicService {
         List<String> result;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
+
         try (AdminClient adminClient = AdminClient.create(props)) {
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
