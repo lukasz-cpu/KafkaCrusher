@@ -28,4 +28,4 @@ jobs:
           cache: 'maven'
       
       - name: Build maven project
-        run: mvn -T 8 -B --no-transfer-progress clean package --file pom.xml
+        run: mvn -B --no-transfer-progress clean package --file pom.xml
