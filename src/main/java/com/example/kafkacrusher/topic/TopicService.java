@@ -1,5 +1,6 @@
 package com.example.kafkacrusher.topic;
 
+import com.example.kafkacrusher.connection.ClientConnection;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.connection.ConnectionActiveManager;
 import lombok.extern.slf4j.Slf4j;
@@ -27,17 +28,18 @@ public class TopicService {
     }
 
 
-    public List<String> getTopicsNames(String connectionName) throws BrokerNotFoundException {
-        String brokerAddressesByName = getBrokerAddressesByName(connectionName);
-        return getTopicByAddresses(brokerAddressesByName);
-
+    public List<String> getTopicsNames(String connectionName) {
+        return getBrokerAddressesByName(connectionName).stream().filter(name -> name.getBrokers().length() > 0)
+                .map(name -> getTopicByAddresses(name.getBrokers()))
+                .flatMap(List::stream)
+                .toList();
     }
 
     private List<String> getTopicByAddresses(String brokerAddresses) {
         List<String> result;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
-        try (AdminClient adminClient = AdminClient.create(props)){
+        try (AdminClient adminClient = AdminClient.create(props)) {
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
             listTopicsOptions.timeoutMs(5000);
             result = getTopicList(adminClient, listTopicsOptions)
@@ -131,12 +133,13 @@ public class TopicService {
         }
     }
 
-    private String getBrokerAddressesByName(String name) throws BrokerNotFoundException {
-        return clientConnectionRepository.
-                findByConnectionName(name)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new BrokerNotFoundException("Broker not found"))
-                .getBrokers();
+    private Optional<ClientConnection> getBrokerAddressesByName(String name) {
+        return Optional.of(clientConnectionRepository.
+                        findByConnectionName(name)
+                        .stream()
+                        .findAny())
+                .orElse(Optional.empty());
+
+
     }
 }
