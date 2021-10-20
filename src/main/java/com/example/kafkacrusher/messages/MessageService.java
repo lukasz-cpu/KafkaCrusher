@@ -34,19 +34,23 @@ public class MessageService {
     }
 
 
-    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException, TopicsNameNotFound, BrokerNotFoundException {
+    public MessageRequestDTO processMessage(MessageRequestDTO message) throws MessageProcessingException, BrokerNotFoundException {
         if(connectionContainsTopic(message)){
-            String connectionName = message.getConnectionName();
-            KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
-            String topic = message.getTopic();
-            String payload = message.getMessage();
-            kafkaTemplate.send(topic, payload); 
+            sendMessage(message);
         }
         else{
          log.warn("No topic found: {}", message.getTopic());
          throw new MessageProcessingException("Problem with sending message");
         }
         return message;
+    }
+
+    private void sendMessage(MessageRequestDTO message) throws BrokerNotFoundException {
+        String connectionName = message.getConnectionName();
+        KafkaTemplate<String, String> kafkaTemplate = kafkaConnectionManager.getKafkaTemplate(connectionName);
+        String topic = message.getTopic();
+        String payload = message.getMessage();
+        kafkaTemplate.send(topic, payload);
     }
 
     private boolean connectionContainsTopic(MessageRequestDTO message) throws TopicsNameNotFound {
