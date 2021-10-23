@@ -4,7 +4,6 @@ package com.example.kafkacrusher.messages;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.kafka.KafkaConnectionManager;
 import com.example.kafkacrusher.topic.TopicService;
-import com.example.kafkacrusher.topic.TopicsNameNotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -58,16 +57,16 @@ public class MessageService {
         return kafkaTemplate;
     }
 
-    private boolean connectionContainsTopic(MessageRequestDTO message) throws TopicsNameNotFound {
+    private boolean connectionContainsTopic(MessageRequestDTO message) {
         return topicService.getTopicsNames(message.getConnectionName()).contains(message.getTopic());
     }
 
 
-    private boolean connectionContainsTopic(String connectionName, String topicName) throws TopicsNameNotFound {
+    private boolean connectionContainsTopic(String connectionName, String topicName){
         return topicService.getTopicsNames(connectionName).contains(topicName);
     }
 
-    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException, TopicsNameNotFound {
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException{
 
         String brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
 

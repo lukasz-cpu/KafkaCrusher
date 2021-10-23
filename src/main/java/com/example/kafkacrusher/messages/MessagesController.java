@@ -1,6 +1,5 @@
 package com.example.kafkacrusher.messages;
 
-import com.example.kafkacrusher.topic.TopicsNameNotFound;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class MessagesController {
         try {
             MessageRequestDTO messageRequestDTO = messageService.processMessage(message);
             return new ResponseEntity<>(messageRequestDTO, HttpStatus.OK);
-        } catch (MessageProcessingException | TopicsNameNotFound e) {
+        } catch (MessageProcessingException e) {
             return new ResponseEntity<>(message, HttpStatus.CONFLICT);
         }
     }
@@ -33,7 +32,7 @@ public class MessagesController {
         try {
             List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
             return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);
-        } catch (ReadMessageFromTopicException | TopicsNameNotFound e) {
+        } catch (ReadMessageFromTopicException e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.CONFLICT);
         }
     }
