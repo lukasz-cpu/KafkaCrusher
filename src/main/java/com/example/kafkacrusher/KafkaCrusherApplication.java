@@ -8,6 +8,6 @@ public class KafkaCrusherApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaCrusherApplication.class, args);
-    }
+     }
 
 }
