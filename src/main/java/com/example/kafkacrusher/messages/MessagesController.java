@@ -18,12 +18,9 @@ public class MessagesController {
 
     @PostMapping("/sendMessage")
     public ResponseEntity<MessageRequestDTO> sendMessage(@RequestBody MessageRequestDTO message) {
-        try {
-            MessageRequestDTO messageRequestDTO = messageService.processMessage(message);
-            return new ResponseEntity<>(messageRequestDTO, HttpStatus.OK);
-        } catch (MessageProcessingException e) {
+            messageService.processMessage(message);
             return new ResponseEntity<>(message, HttpStatus.CONFLICT);
-        }
+
     }
 
     @GetMapping("/readMessagesFromTopic")
