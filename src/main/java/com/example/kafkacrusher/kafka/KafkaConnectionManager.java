@@ -1,5 +1,6 @@
 package com.example.kafkacrusher.kafka;
 
+import com.example.kafkacrusher.connection.ClientConnection;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -25,7 +26,7 @@ public class KafkaConnectionManager {
     }
 
 
-    public KafkaTemplate<String, String> getKafkaTemplate(String connectionName) throws BrokerNotFoundException {
+    public KafkaTemplate<String, String> getKafkaTemplate(String connectionName) {
         String addresses = getBrokerAddressesByName(connectionName);
         ConnectionInfo connectionInfo = ConnectionInfo.builder()
                 .connectionName(connectionName)
@@ -45,13 +46,14 @@ public class KafkaConnectionManager {
 
     }
 
-    private String getBrokerAddressesByName(String name) throws BrokerNotFoundException {
+    private String getBrokerAddressesByName(String name) {
         return clientConnectionRepository.
                 findByConnectionName(name)
                 .stream()
                 .filter(clientConnection -> StringUtils.hasLength(clientConnection.getBrokers()))
                 .findFirst()
-                .orElseThrow(() -> new BrokerNotFoundException("Broker not found"))
-                .getBrokers();
+                .map(ClientConnection::getBrokers)
+                .orElse("");
+
     }
 }

@@ -52,12 +52,9 @@ public class MessageService {
     }
 
     private Optional<KafkaTemplate<String, String>> getKafkaTemplate(String connectionName) {
-        Optional<KafkaTemplate<String, String>> kafkaTemplate = Optional.empty();
-        try {
-            kafkaTemplate = Optional.of(kafkaConnectionManager.getKafkaTemplate(connectionName));
-        } catch (BrokerNotFoundException e) {
-            e.printStackTrace();
-        }
+        Optional<KafkaTemplate<String, String>> kafkaTemplate;
+        kafkaTemplate = Optional.of(kafkaConnectionManager.getKafkaTemplate(connectionName));
+
         return kafkaTemplate;
     }
 
@@ -72,22 +69,16 @@ public class MessageService {
 
     public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException, TopicsNameNotFound {
 
-        Optional<String> brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
+        String brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
 
-        Optional<Properties> properties = brokerAddressByConnectionName.stream().map(this::prepareProperties).findFirst();
+        Properties properties = prepareProperties(brokerAddressByConnectionName);
 
         if (connectionContainsTopic(connectionName, topicName)) {
-            List<MessageResponseDTO> messageResponseDTOS =
-                    properties
-                            .stream()
-                            .map(x -> getMessagesFromTopic(topicName, x))
-                            .takeWhile(list -> !list.isEmpty())
-                            .findAny()
-                            .orElse(new ArrayList<>());
 
+            List<MessageResponseDTO> messagesFromTopic = getMessagesFromTopic(topicName, properties);
 
-            if (!messageResponseDTOS.isEmpty()) {
-                return messageResponseDTOS;
+            if (!messagesFromTopic.isEmpty()) {
+                return messagesFromTopic;
             } else {
                 throw new ReadMessageFromTopicException();
             }
@@ -112,13 +103,11 @@ public class MessageService {
         return messages;
     }
 
-    private Optional<String> getBrokerAddressByConnectionName(String connectionName) {
-        try {
-            return Optional.of(clientConnectionRepository.getBrokerAddressByConnectionName(connectionName));
-        } catch (BrokerNotFoundException e) {
-            log.error(e.getMessage());
-        }
-        return Optional.empty();
+    private String getBrokerAddressByConnectionName(String connectionName) {
+
+        return clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
+
+
     }
 
 
@@ -138,6 +127,8 @@ public class MessageService {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(date);
     }
+
+
 }
 
 
