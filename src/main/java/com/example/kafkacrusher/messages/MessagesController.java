@@ -19,7 +19,7 @@ public class MessagesController {
     @PostMapping("/sendMessage")
     public ResponseEntity<MessageRequestDTO> sendMessage(@RequestBody MessageRequestDTO message) {
             messageService.processMessage(message);
-            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(message, HttpStatus.OK);
 
     }
 
