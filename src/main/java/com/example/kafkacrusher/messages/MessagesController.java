@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,12 +28,9 @@ public class MessagesController {
 
     @GetMapping("/readMessagesFromTopic")
     public ResponseEntity<List<MessageResponseDTO>> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName) {
-        try {
             List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
             return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);
-        } catch (ReadMessageFromTopicException e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.CONFLICT);
-        }
+
     }
 }
 

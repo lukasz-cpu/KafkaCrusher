@@ -66,7 +66,7 @@ public class MessageService {
         return topicService.getTopicsNames(connectionName).contains(topicName);
     }
 
-    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) throws ReadMessageFromTopicException{
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) {
 
         String brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
 
@@ -79,10 +79,11 @@ public class MessageService {
             if (!messagesFromTopic.isEmpty()) {
                 return messagesFromTopic;
             } else {
-                throw new ReadMessageFromTopicException();
+               return new ArrayList<>();
             }
         }
-        throw new ReadMessageFromTopicException();
+        return new ArrayList<>();
+
 
     }
 
