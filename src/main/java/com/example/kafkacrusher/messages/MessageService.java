@@ -3,7 +3,6 @@ package com.example.kafkacrusher.messages;
 
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.kafka.KafkaConnectionManager;
-import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import com.example.kafkacrusher.topic.TopicService;
 import com.example.kafkacrusher.topic.TopicsNameNotFound;
 import lombok.extern.slf4j.Slf4j;

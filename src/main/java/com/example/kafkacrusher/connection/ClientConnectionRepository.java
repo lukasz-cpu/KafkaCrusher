@@ -1,6 +1,5 @@
 package com.example.kafkacrusher.connection;
 
-import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 

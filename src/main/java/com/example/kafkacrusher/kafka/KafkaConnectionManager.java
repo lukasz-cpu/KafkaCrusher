@@ -1,7 +1,6 @@
 package com.example.kafkacrusher.kafka;
 
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
-import com.example.kafkacrusher.topic.BrokerNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
