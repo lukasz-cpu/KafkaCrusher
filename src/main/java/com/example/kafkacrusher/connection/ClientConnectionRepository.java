@@ -14,7 +14,7 @@ public interface ClientConnectionRepository extends JpaRepository<ClientConnecti
         return findByConnectionName(name)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new BrokerNotFoundException("Broker not found"))
-                .getBrokers();
+                .map(ClientConnection::getBrokers)
+                .orElse("");
     }
 }
