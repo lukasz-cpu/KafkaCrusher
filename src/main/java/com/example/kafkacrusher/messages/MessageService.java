@@ -32,14 +32,13 @@ public class MessageService {
     }
 
 
-    public MessageRequestDTO processMessage(MessageRequestDTO message) {
+    public void processMessage(MessageRequestDTO message) {
         if (connectionContainsTopic(message)) {
             sendMessage(message);
         } else {
             log.warn("No topic found: {}", message.getTopic());
             throw new MessageProcessingException("Problem with sending message");
         }
-        return message;
     }
 
     private void sendMessage(MessageRequestDTO message) {
