@@ -31,5 +31,7 @@ class ConnectionActiveManagerTest {
     @Test
     void validateKafkaAddress() {
         assertTrue(connectionActiveManager.validateKafkaAddresses("localhost:9092"));
+        assertTrue(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,localhost:9092,192.168.0.74:9093"));
+        assertTrue(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.74:9092,localhost:9092"));
     }
 }
