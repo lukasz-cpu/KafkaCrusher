@@ -46,7 +46,7 @@ class AddTopicsForConnectionNameTests {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         final String baseUrl = "http://localhost:8099/addTopicsForConnectionName?connectionName=connection test10";
-        TopicListDTO request = TopicListDTO.builder().topicListDTO(Arrays.asList("TestTopic2", "TestTopic3", "TestTopic4", "Topic7")).build();
+        TopicListDTO request = TopicListDTO.builder().topicList(Arrays.asList("TestTopic2", "TestTopic3", "TestTopic4", "Topic7")).build();
 
 
         HttpEntity<String> entity = new HttpEntity<>(getJson(request), headers);
@@ -59,7 +59,7 @@ class AddTopicsForConnectionNameTests {
         TopicListDTO connectionResponseDTOS = objectMapper.readValue(response.getBody(), new TypeReference<>() {
         });
 
-        List<String> topicListDTO = connectionResponseDTOS.getTopicListDTO();
+        List<String> topicListDTO = connectionResponseDTOS.getTopicList();
 
         assertAll(
                 () -> Assertions.assertTrue(topicListDTO.contains("TestTopic2")),

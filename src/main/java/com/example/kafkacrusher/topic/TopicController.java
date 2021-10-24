@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.kafkacrusher.util.JSONUtils.getJson;
-
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -18,9 +16,9 @@ public class TopicController {
     private final TopicService topicService;
 
     @GetMapping("/getTopicListForConnectionName")
-    public ResponseEntity<String> getTopicsForConnectionName(@RequestParam String connectionName) {
+    public ResponseEntity<List<String>> getTopicsForConnectionName(@RequestParam String connectionName) {
         List<String> topicsNames = topicService.getTopicsNames(connectionName);
-        return new ResponseEntity<>(getJson(topicsNames), HttpStatus.OK);
+        return new ResponseEntity<>(topicsNames, HttpStatus.OK);
     }
 
     @PostMapping("/addTopicsForConnectionName")

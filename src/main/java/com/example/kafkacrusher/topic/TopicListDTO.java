@@ -13,5 +13,5 @@ import java.util.List;
 @Builder
 public class TopicListDTO {
     @JsonProperty("topicList")
-    List<String> topicListDTO;
+    List<String> topicList;
 }

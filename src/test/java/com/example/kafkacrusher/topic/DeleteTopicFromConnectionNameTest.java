@@ -41,7 +41,7 @@ class DeleteTopicFromConnectionNameTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         final String baseUrl = "http://localhost:8099/deleteTopicsForConnectionName?connectionName=connection test10";
-        TopicListDTO request = TopicListDTO.builder().topicListDTO(List.of("TestTopic123555")).build();
+        TopicListDTO request = TopicListDTO.builder().topicList(List.of("TestTopic123555")).build();
 
 
         HttpEntity<String> entity = new HttpEntity<>(getJson(request), headers);
@@ -53,7 +53,7 @@ class DeleteTopicFromConnectionNameTest {
 
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(connectionResponseDTOS.getTopicListDTO().contains("TestTopic123555"));
+        assertTrue(connectionResponseDTOS.getTopicList().contains("TestTopic123555"));
 
     }
 }

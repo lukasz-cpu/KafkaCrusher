@@ -46,7 +46,7 @@ public class TopicService {
         try (AdminClient adminClient = AdminClient.create(props)) {
             if (isActive) {
                 List<NewTopic> topicsList = topicListDTO
-                        .getTopicListDTO()
+                        .getTopicList()
                         .stream()
                         .map(topic -> new NewTopic(topic, 1, (short) 1))
                         .toList();
@@ -63,7 +63,6 @@ public class TopicService {
         boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddressesByName);
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
-
         if (isActive) {
             deleteTopic(topicListDTO, props);
         }
@@ -72,7 +71,7 @@ public class TopicService {
     private void deleteTopic(TopicListDTO topicListDTO, Properties props) {
         try (AdminClient adminClient = AdminClient.create(props)) {
             List<String> topicsList = topicListDTO
-                    .getTopicListDTO()
+                    .getTopicList()
                     .stream()
                     .toList();
             adminClient.deleteTopics(topicsList);
