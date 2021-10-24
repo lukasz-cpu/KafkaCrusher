@@ -62,7 +62,7 @@ public class MessageService {
     }
 
 
-    private boolean connectionContainsTopic(String connectionName, String topicName){
+    private boolean connectionContainsTopic(String connectionName, String topicName) {
         return topicService.getTopicsNames(connectionName).contains(topicName);
     }
 
@@ -79,7 +79,7 @@ public class MessageService {
             if (!messagesFromTopic.isEmpty()) {
                 return messagesFromTopic;
             } else {
-               return new ArrayList<>();
+                return new ArrayList<>();
             }
         }
         return new ArrayList<>();

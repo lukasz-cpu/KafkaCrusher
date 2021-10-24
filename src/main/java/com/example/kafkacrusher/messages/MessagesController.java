@@ -18,15 +18,15 @@ public class MessagesController {
 
     @PostMapping("/sendMessage")
     public ResponseEntity<MessageRequestDTO> sendMessage(@RequestBody MessageRequestDTO message) {
-            messageService.processMessage(message);
-            return new ResponseEntity<>(message, HttpStatus.OK);
+        messageService.processMessage(message);
+        return new ResponseEntity<>(message, HttpStatus.OK);
 
     }
 
     @GetMapping("/readMessagesFromTopic")
     public ResponseEntity<List<MessageResponseDTO>> readMessagesFromTopic(@RequestParam String connectionName, @RequestParam String topicName) {
-            List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
-            return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);
+        List<MessageResponseDTO> messageFromTopic = messageService.readMessageFromTopic(connectionName, topicName);
+        return new ResponseEntity<>(messageFromTopic, HttpStatus.OK);
 
     }
 }

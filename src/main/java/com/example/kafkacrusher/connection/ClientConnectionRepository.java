@@ -9,7 +9,7 @@ import java.util.List;
 public interface ClientConnectionRepository extends JpaRepository<ClientConnection, Long> {
     List<ClientConnection> findByConnectionName(String name);
 
-    default String getBrokerAddressByConnectionName(String name)  {
+    default String getBrokerAddressByConnectionName(String name) {
         return findByConnectionName(name)
                 .stream()
                 .findFirst()
