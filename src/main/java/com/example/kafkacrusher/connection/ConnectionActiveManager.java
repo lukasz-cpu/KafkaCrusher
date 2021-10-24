@@ -6,6 +6,7 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DescribeClusterOptions;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ import java.util.Properties;
 @AllArgsConstructor
 @RestController
 @Slf4j
+
 public class ConnectionActiveManager {
 
 
@@ -28,9 +30,17 @@ public class ConnectionActiveManager {
         for (ClientConnection connection : connections) {
             String brokers = connection.getBrokers();
             boolean isActive = validateKafkaAddress(brokers);
-            connection.setIsActive(isActive);
-            clientConnectionRepository.save(connection);
+            if(isActive){
+                saveConnection(connection);
+            }
         }
+    }
+
+
+    private void saveConnection(ClientConnection connection) {
+        ClientConnection clientConnection = clientConnectionRepository.getById(connection.getId());
+        clientConnection.setIsActive(true);
+        clientConnectionRepository.save(clientConnection);
     }
 
 
@@ -40,7 +50,7 @@ public class ConnectionActiveManager {
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
         try (AdminClient adminClient = AdminClient.create(props)) {
             DescribeClusterOptions dco = new DescribeClusterOptions();
-            dco.timeoutMs(5000);
+            dco.timeoutMs(1000);
             adminClient.describeCluster(dco).clusterId().get();
             flag = true;
         } catch (Exception e) {
