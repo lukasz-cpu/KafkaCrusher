@@ -37,17 +37,13 @@ public class ConnectionActiveManager {
     }
 
     public boolean validateKafkaAddresses(String kafkaAddress) {
-
-        List<String> eachAddress = Arrays.stream(kafkaAddress.split(",")).toList();
-        List<Boolean> resultList = new ArrayList<>();
-
-        for (String address : eachAddress) {
-            boolean result = checkEachAddress(address);
-            resultList.add(result);
-        }
-
-        return resultList.contains(true);
-
+        return Arrays
+                .stream(kafkaAddress.split(","))
+                .toList()
+                .stream()
+                .map(this::checkEachAddress)
+                .toList()
+                .contains(true);
     }
 
 
