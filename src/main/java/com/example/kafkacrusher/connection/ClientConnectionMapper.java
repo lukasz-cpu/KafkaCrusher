@@ -6,7 +6,6 @@ public class ClientConnectionMapper {
 
     }
 
-
     static ClientConnection map(ClientConnectionRequestDTO clientConnectionRequestDTO) {
         return ClientConnection.ClientConnectionBuilder.aClientConnection()
                 .withConnectionName(clientConnectionRequestDTO.getConnectionName())
