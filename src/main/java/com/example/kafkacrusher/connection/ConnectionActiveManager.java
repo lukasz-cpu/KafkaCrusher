@@ -36,14 +36,6 @@ public class ConnectionActiveManager {
         }
     }
 
-
-    private void saveConnection(ClientConnection connection) {
-        ClientConnection clientConnection = clientConnectionRepository.getById(connection.getId());
-        clientConnection.setIsActive(true);
-        clientConnectionRepository.save(clientConnection);
-    }
-
-
     public boolean validateKafkaAddresses(String kafkaAddress) {
 
         List<String> eachAddress = Arrays.stream(kafkaAddress.split(",")).toList();
@@ -56,6 +48,13 @@ public class ConnectionActiveManager {
 
         return resultList.contains(true);
 
+    }
+
+
+    private void saveConnection(ClientConnection connection) {
+        ClientConnection clientConnection = clientConnectionRepository.getById(connection.getId());
+        clientConnection.setIsActive(true);
+        clientConnectionRepository.save(clientConnection);
     }
 
     private boolean checkEachAddress(String kafkaAddress) {
