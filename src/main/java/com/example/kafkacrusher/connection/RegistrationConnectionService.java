@@ -31,7 +31,7 @@ public class RegistrationConnectionService {
         Optional<ClientConnection> result = Optional.empty();
         try {
             String brokers = clientConnection.getBrokers();
-            if (connectionActiveManager.validateKafkaAddress(brokers)) {
+            if (connectionActiveManager.validateKafkaAddresses(brokers)) {
                 result = Optional.of(clientConnectionRepository.save(clientConnection));
             }
         } catch (Exception e) {

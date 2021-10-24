@@ -39,7 +39,7 @@ public class TopicService {
 
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) {
         String brokerAddresses = getBrokerAddresses(connectionName);
-        boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddresses);
+        boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddresses);
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
 
@@ -60,7 +60,7 @@ public class TopicService {
 
     public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) {
         String brokerAddressesByName = getBrokerAddresses(connectionName);
-        boolean isActive = connectionActiveManager.validateKafkaAddress(brokerAddressesByName);
+        boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddressesByName);
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
 

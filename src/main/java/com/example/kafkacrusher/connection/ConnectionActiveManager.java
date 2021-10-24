@@ -6,10 +6,11 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DescribeClusterOptions;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -17,7 +18,6 @@ import java.util.Properties;
 @AllArgsConstructor
 @RestController
 @Slf4j
-
 public class ConnectionActiveManager {
 
 
@@ -29,8 +29,8 @@ public class ConnectionActiveManager {
         final List<ClientConnection> connections = clientConnectionRepository.findAll();
         for (ClientConnection connection : connections) {
             String brokers = connection.getBrokers();
-            boolean isActive = validateKafkaAddress(brokers);
-            if(isActive){
+            boolean isActive = validateKafkaAddresses(brokers);
+            if (isActive) {
                 saveConnection(connection);
             }
         }
@@ -44,13 +44,27 @@ public class ConnectionActiveManager {
     }
 
 
-    public boolean validateKafkaAddress(String kafkaAddress) {
+    public boolean validateKafkaAddresses(String kafkaAddress) {
+
+        List<String> eachAddress = Arrays.stream(kafkaAddress.split(",")).toList();
+        List<Boolean> resultList = new ArrayList<>();
+
+        for (String address : eachAddress) {
+            boolean result = checkEachAddress(address);
+            resultList.add(result);
+        }
+
+        return resultList.contains(true);
+
+    }
+
+    private boolean checkEachAddress(String kafkaAddress) {
         boolean flag = false;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
         try (AdminClient adminClient = AdminClient.create(props)) {
             DescribeClusterOptions dco = new DescribeClusterOptions();
-            dco.timeoutMs(1000);
+            dco.timeoutMs(500);
             adminClient.describeCluster(dco).clusterId().get();
             flag = true;
         } catch (Exception e) {

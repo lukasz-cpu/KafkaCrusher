@@ -13,7 +13,7 @@ class ConnectionActiveManagerTest {
 
     @Test
     void validateKafkaAddress() {
-        boolean b = connectionActiveManager.validateKafkaAddress("192.168.0.74:9093,localhost:9092");
+        boolean b = connectionActiveManager.validateKafkaAddresses("192.168.0.74:9093,localhost:9092");
         System.out.println(b);
     }
 }
