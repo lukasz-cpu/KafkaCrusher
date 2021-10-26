@@ -82,14 +82,6 @@ public class MessageService {
         return kafkaTemplate;
     }
 
-    private boolean connectionContainsTopic(MessageRequestDTO message) {
-        return topicService.getTopicsNames(message.getConnectionName()).contains(message.getTopic());
-    }
-
-
-    private boolean connectionContainsTopic(String connectionName, String topicName) {
-        return topicService.getTopicsNames(connectionName).contains(topicName);
-    }
 
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
@@ -130,6 +122,14 @@ public class MessageService {
         date.setTime(recordMessage.timestamp());
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(date);
+    }
+
+    private boolean connectionContainsTopic(String connectionName, String topicName) {
+        return topicService.getTopicsNames(connectionName).contains(topicName);
+    }
+
+    private boolean connectionContainsTopic(MessageRequestDTO message) {
+        return topicService.getTopicsNames(message.getConnectionName()).contains(message.getTopic());
     }
 
 
