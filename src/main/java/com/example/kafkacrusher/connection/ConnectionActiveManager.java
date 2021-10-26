@@ -25,14 +25,13 @@ public class ConnectionActiveManager {
 
     @GetMapping("/connectionManager/setActiveStatuses")
     public void setActiveStatuses() {
-        final List<ClientConnection> connections = clientConnectionRepository.findAll();
-        for (ClientConnection connection : connections) {
-            String brokers = connection.getBrokers();
-            boolean isActive = validateKafkaAddresses(brokers);
-            if (isActive) {
-                saveConnection(connection);
-            }
-        }
+        clientConnectionRepository
+                .findAll()
+                .stream()
+                .filter(connection -> validateKafkaAddresses(connection.getBrokers()))
+                .forEach(this::saveConnection);
+
+
     }
 
     public boolean validateKafkaAddresses(String kafkaAddress) {
