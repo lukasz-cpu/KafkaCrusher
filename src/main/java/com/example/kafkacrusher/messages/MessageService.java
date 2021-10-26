@@ -46,6 +46,27 @@ public class MessageService {
         }
     }
 
+    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) {
+
+        String brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
+
+        Properties properties = prepareProperties(brokerAddressByConnectionName);
+
+        if (connectionContainsTopic(connectionName, topicName)) {
+
+            List<MessageResponseDTO> messagesFromTopic = getMessagesFromTopic(topicName, properties);
+
+            if (!messagesFromTopic.isEmpty()) {
+                return messagesFromTopic;
+            } else {
+                return new ArrayList<>();
+            }
+        }
+        return new ArrayList<>();
+
+
+    }
+
     private void sendMessage(MessageRequestDTO message) {
         String topic = message.getTopic();
         String payload = message.getMessage();
@@ -68,27 +89,6 @@ public class MessageService {
 
     private boolean connectionContainsTopic(String connectionName, String topicName) {
         return topicService.getTopicsNames(connectionName).contains(topicName);
-    }
-
-    public List<MessageResponseDTO> readMessageFromTopic(String connectionName, String topicName) {
-
-        String brokerAddressByConnectionName = getBrokerAddressByConnectionName(connectionName);
-
-        Properties properties = prepareProperties(brokerAddressByConnectionName);
-
-        if (connectionContainsTopic(connectionName, topicName)) {
-
-            List<MessageResponseDTO> messagesFromTopic = getMessagesFromTopic(topicName, properties);
-
-            if (!messagesFromTopic.isEmpty()) {
-                return messagesFromTopic;
-            } else {
-                return new ArrayList<>();
-            }
-        }
-        return new ArrayList<>();
-
-
     }
 
 
