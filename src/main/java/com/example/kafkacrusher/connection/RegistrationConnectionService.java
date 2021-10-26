@@ -21,22 +21,21 @@ public class RegistrationConnectionService {
     }
 
     public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection) {
-        return getClientConnection(clientConnection)
+        return saveClientConnection(clientConnection)
                 .stream()
                 .findFirst()
                 .or(Optional::empty);
     }
 
-    private Optional<ClientConnection> getClientConnection(ClientConnection clientConnection) {
+    private Optional<ClientConnection> saveClientConnection(ClientConnection clientConnection) {
         Optional<ClientConnection> result = Optional.empty();
-        try {
-            String brokers = clientConnection.getBrokers();
-            if (connectionActiveManager.validateKafkaAddresses(brokers)) {
-                result = Optional.of(clientConnectionRepository.save(clientConnection));
-            }
-        } catch (Exception e) {
-            log.error("Error with saving client connection to database : " + clientConnection.toString());
+
+        String brokers = clientConnection.getBrokers();
+        if (connectionActiveManager.validateKafkaAddresses(brokers)) {
+            result = Optional.of(clientConnectionRepository.save(clientConnection));
         }
+
+
         return result;
     }
 
