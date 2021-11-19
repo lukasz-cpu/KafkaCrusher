@@ -33,7 +33,6 @@ class GetTopicListForConnectionNameTests {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void getTopicsForConnectionName() {
