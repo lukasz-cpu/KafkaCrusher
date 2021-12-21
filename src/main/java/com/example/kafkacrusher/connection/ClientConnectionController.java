@@ -36,11 +36,4 @@ public class ClientConnectionController {
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
         return new ResponseEntity<>(connectionsInfo, HttpStatus.OK);
     }
-
-
-
-    @GetMapping(value = "/v2/getConnections")
-    public String getConnectionsV2(){
-        return "lammbo";
-    }
 }
