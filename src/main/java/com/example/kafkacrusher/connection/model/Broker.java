@@ -10,6 +10,8 @@ import lombok.ToString;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyColumn;
 import java.util.Map;
@@ -24,6 +26,7 @@ import java.util.Map;
 public class Broker {
 
     @ElementCollection(targetClass = ActiveStatus.class)
+    @Enumerated(EnumType.STRING)
     @MapKeyClass(Address.class)
     private Map<Address, ActiveStatus> serverAddresses;
 

@@ -2,6 +2,7 @@ package com.example.kafkacrusher;
 
 import com.example.kafkacrusher.connection.ClientConnection2;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
+import com.example.kafkacrusher.connection.ClientConnectionRepository2;
 import com.example.kafkacrusher.connection.model.ActiveStatus;
 import com.example.kafkacrusher.connection.model.Address;
 import com.example.kafkacrusher.connection.model.Broker;
@@ -18,7 +19,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 
 
     @Autowired
-    ClientConnectionRepository clientConnectionRepository;
+    ClientConnectionRepository2 clientConnectionRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaCrusherApplication.class, args);
@@ -46,7 +47,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
                 .build();
 
 
-
+        ClientConnection2 save = clientConnectionRepository.save(clientConnection2);
 
 
     }
