@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyColumn;
 import java.util.Map;
 
@@ -15,6 +16,8 @@ import java.util.Map;
 @Setter
 @Embeddable
 public class Broker {
-    @ElementCollection
-    private Map<String, String> serverAddresses;
+
+    @ElementCollection(targetClass = ActiveStatus.class)
+    @MapKeyClass(Address.class)
+    private Map<Address, ActiveStatus> serverAddresses;
 }
