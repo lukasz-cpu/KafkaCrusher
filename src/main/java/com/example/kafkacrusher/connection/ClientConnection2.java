@@ -1,17 +1,19 @@
 package com.example.kafkacrusher.connection;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.example.kafkacrusher.connection.model.Broker;
+import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
-@Getter
-@Setter
+
 @Entity(name = "client_connection2")
+@Data
 public class ClientConnection2 {
 
 
@@ -21,12 +23,9 @@ public class ClientConnection2 {
     private Long id;
     @Column(unique = true)
     private String connectionName;
-    private String brokers;
-    @Column(nullable = false)
-    private Boolean isActive;
-
-
-    
+    @Embedded
+    @Column
+    private Broker brokers;
 
 
 }
