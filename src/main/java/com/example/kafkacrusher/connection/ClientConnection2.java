@@ -26,4 +26,7 @@ public class ClientConnection2 {
     private Boolean isActive;
 
 
+    
+
+
 }
