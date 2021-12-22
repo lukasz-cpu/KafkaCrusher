@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 
 @Entity(name = "client_connection2")
@@ -28,4 +27,36 @@ public class ClientConnection2 {
     private Broker brokers;
 
 
+    public static final class ClientConnection2Builder {
+        //FIX ME need to investigate UUID as ID to have better hash code equals
+        private Long id;
+        private String connectionName;
+        private Broker brokers;
+
+        private ClientConnection2Builder() {
+        }
+
+        public static ClientConnection2Builder aClientConnection2() {
+            return new ClientConnection2Builder();
+        }
+
+
+        public ClientConnection2Builder withConnectionName(String connectionName) {
+            this.connectionName = connectionName;
+            return this;
+        }
+
+        public ClientConnection2Builder withBrokers(Broker brokers) {
+            this.brokers = brokers;
+            return this;
+        }
+
+        public ClientConnection2 build() {
+            ClientConnection2 clientConnection2 = new ClientConnection2();
+            clientConnection2.setId(id);
+            clientConnection2.setConnectionName(connectionName);
+            clientConnection2.setBrokers(brokers);
+            return clientConnection2;
+        }
+    }
 }
