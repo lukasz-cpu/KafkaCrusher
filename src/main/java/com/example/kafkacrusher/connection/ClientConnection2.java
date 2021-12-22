@@ -2,6 +2,7 @@ package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.connection.model.Broker;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 
 @Entity(name = "client_connection2")
 @Data
+@ToString
 public class ClientConnection2 {
 
 

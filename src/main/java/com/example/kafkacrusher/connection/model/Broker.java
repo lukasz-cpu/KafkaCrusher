@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
@@ -19,6 +20,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
+@ToString
 public class Broker {
 
     @ElementCollection(targetClass = ActiveStatus.class)

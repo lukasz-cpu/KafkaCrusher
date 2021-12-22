@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Embeddable;
 
@@ -13,6 +14,7 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Embeddable
 public class Address {
     public String address;

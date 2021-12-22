@@ -1,9 +1,11 @@
 package com.example.kafkacrusher;
 
 import com.example.kafkacrusher.connection.ClientConnection2;
+import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.connection.model.ActiveStatus;
 import com.example.kafkacrusher.connection.model.Address;
 import com.example.kafkacrusher.connection.model.Broker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,10 @@ import java.util.Map;
 
 @SpringBootApplication
 public class KafkaCrusherApplication implements CommandLineRunner {
+
+
+    @Autowired
+    ClientConnectionRepository clientConnectionRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaCrusherApplication.class, args);
@@ -28,6 +34,8 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 
         Map<Address, ActiveStatus> resultMap = new HashMap<>();
 
+        resultMap.put(address, active);
+
 
         Broker broker = new Broker(resultMap);
 
@@ -36,6 +44,9 @@ public class KafkaCrusherApplication implements CommandLineRunner {
                 .withConnectionName("LAMBO33")
                 .withBrokers(broker)
                 .build();
+
+
+
 
 
     }
