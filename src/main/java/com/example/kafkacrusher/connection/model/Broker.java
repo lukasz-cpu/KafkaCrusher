@@ -10,11 +10,8 @@ import lombok.ToString;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.MapKeyClass;
-import javax.persistence.MapKeyColumn;
 import java.util.Map;
 
 @Data
