@@ -23,16 +23,16 @@ public class ConnectionActiveManager {
     private ClientConnectionRepository clientConnectionRepository;
 
 
-    @GetMapping("/connectionManager/setActiveStatuses")
-    public void setActiveStatuses() {
-        clientConnectionRepository
-                .findAll()
-                .stream()
-                .filter(connection -> validateKafkaAddresses(connection.getBrokers()))
-                .forEach(this::saveConnection);
-
-
-    }
+//    @GetMapping("/connectionManager/setActiveStatuses")
+//    public void setActiveStatuses() {
+//        clientConnectionRepository
+//                .findAll()
+//                .stream()
+//                .filter(connection -> validateKafkaAddresses(connection.getBrokers()))
+//                .forEach(this::saveConnection);
+//
+//                                                                          //fixme
+//    }
 
     public boolean validateKafkaAddresses(String kafkaAddress) {
         return Arrays
@@ -47,7 +47,7 @@ public class ConnectionActiveManager {
 
     private void saveConnection(ClientConnection connection) {
         ClientConnection clientConnection = clientConnectionRepository.getById(connection.getId());
-        clientConnection.setIsActive(true);
+//        clientConnection.setIsActive(true);                   //fixme
         clientConnectionRepository.save(clientConnection);
     }
 

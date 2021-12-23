@@ -24,12 +24,12 @@ public class ClientConnection {
     private String connectionName;
     @Embedded
     @Column
-    private Broker brokers;
+    private Broker broker;
 
 
     public static final class ClientConnectionBuilder {
         private String connectionName;
-        private Broker brokers;
+        private Broker broker;
 
         private ClientConnectionBuilder() {
         }
@@ -45,14 +45,14 @@ public class ClientConnection {
         }
 
         public ClientConnectionBuilder withBrokers(Broker brokers) {
-            this.brokers = brokers;
+            this.broker = brokers;
             return this;
         }
 
         public ClientConnection build() {
             ClientConnection clientConnection = new ClientConnection();
             clientConnection.setConnectionName(connectionName);
-            clientConnection.setBrokers(brokers);
+            clientConnection.setBroker(broker);
             return clientConnection;
         }
     }

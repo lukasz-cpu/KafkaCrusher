@@ -35,7 +35,6 @@ public class TopicService {
     public List<String> getTopicsNames(String connectionName) {
         return getClientConnectionByName(connectionName)
                 .stream()
-                .filter(name -> StringUtils.hasLength(name.getBrokers()))
                 .map(name -> getTopicByAddresses(name.getBrokers()))
                 .flatMap(List::stream)
                 .toList();

@@ -1,5 +1,6 @@
 package com.example.kafkacrusher.connection;
 
+import com.example.kafkacrusher.connection.dto.BrokerDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientConnectionResponseDTO {
-    private Long id;
     private String connectionName;
-    private String brokers;
-    @JsonProperty("active")
-    private boolean isActive;
+    private BrokerDTO brokerDTO;
 }

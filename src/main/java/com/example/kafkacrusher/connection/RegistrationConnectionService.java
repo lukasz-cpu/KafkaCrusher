@@ -5,6 +5,7 @@ import com.example.kafkacrusher.connection.entity.ClientConnection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,25 +30,16 @@ public class RegistrationConnectionService {
     }
 
     private Optional<ClientConnection> saveClientConnection(ClientConnection clientConnection) {
-        Optional<ClientConnection> result = Optional.empty();
-
-        String brokers = clientConnection.getBrokers();
-        if (connectionActiveManager.validateKafkaAddresses(brokers)) {
-            result = Optional.of(clientConnectionRepository.save(clientConnection));
-        }
-
-
-        return result;
+        return Optional.of(clientConnectionRepository.save(clientConnection));  //fixme cannot save when connection is broken
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
-        return clientConnectionRepository.findAll().stream().map(
-                clientConnection -> ClientConnectionResponseDTO.builder()
-                        .id(clientConnection.getId())
-                        .brokers(clientConnection.getBrokers())
-                        .connectionName(clientConnection.getConnectionName())
-                        .isActive(clientConnection.getIsActive())
-                        .build()
-        ).toList();
+        List<ClientConnection> all = clientConnectionRepository.findAll();
+        List<ClientConnectionResponseDTO> result = new ArrayList<>();
+        for (ClientConnection clientConnection : all) {
+            ClientConnectionResponseDTO map = ClientConnectionMapper.map(clientConnection);           //fixme
+            result.add(map);
+        }
+        return result;
     }
 }

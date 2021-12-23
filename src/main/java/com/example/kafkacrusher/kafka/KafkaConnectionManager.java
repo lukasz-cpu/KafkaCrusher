@@ -47,13 +47,7 @@ public class KafkaConnectionManager {
     }
 
     private String getBrokerAddressesByName(String name) {
-        return clientConnectionRepository.
-                findByConnectionName(name)
-                .stream()
-                .filter(clientConnection -> StringUtils.hasLength(clientConnection.getBrokers()))
-                .findFirst()
-                .map(ClientConnection::getBrokers)
-                .orElse("");
+        return clientConnectionRepository.getBrokerAddressByConnectionName(name);  //fixme not needed
 
     }
 }
