@@ -33,18 +33,20 @@ public class TopicService {
 
 
     public List<String> getTopicsNames(String connectionName) {
+        String brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
+
         return getClientConnectionByName(connectionName)
                 .stream()
-                .map(name -> getTopicByAddresses(name.getBrokers()))
+                .map(name -> getTopicByAddresses(brokerAddressByConnectionName))
                 .flatMap(List::stream)
                 .toList();
     }
 
     public void createTopicForConnection(String connectionName, TopicListDTO topicListDTO) {
-        String brokerAddresses = getBrokerAddresses(connectionName);
-        boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddresses);
+        String brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
+        boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddressByConnectionName);
         Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddresses);
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressByConnectionName);
 
         try (AdminClient adminClient = AdminClient.create(props)) {
             if (isActive) {
@@ -62,10 +64,10 @@ public class TopicService {
 
 
     public void deleteTopicsForConnectionName(String connectionName, TopicListDTO topicListDTO) {
-        String brokerAddressesByName = getBrokerAddresses(connectionName);
-        boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddressesByName);
+        String brokerAddressByConnectionName = clientConnectionRepository.getBrokerAddressByConnectionName(connectionName);
+        boolean isActive = connectionActiveManager.validateKafkaAddresses(brokerAddressByConnectionName);
         Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressesByName);
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokerAddressByConnectionName);
         if (isActive) {
             deleteTopic(topicListDTO, props);
         }
@@ -92,13 +94,7 @@ public class TopicService {
 
     }
 
-    private String getBrokerAddresses(String connectionName) {
-        return getClientConnectionByName(connectionName)
-                .stream()
-                .map(ClientConnection::getBrokers)
-                .filter(StringUtils::hasLength)
-                .findFirst().orElse("");
-    }
+
 
     private Set<String> getTopicList(AdminClient adminClient, ListTopicsOptions listTopicsOptions) {
         Set<String> result = new HashSet<>();
