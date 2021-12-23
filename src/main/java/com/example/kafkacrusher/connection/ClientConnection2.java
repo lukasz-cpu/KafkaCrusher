@@ -30,8 +30,6 @@ public class ClientConnection2 {
 
 
     public static final class ClientConnection2Builder {
-        //FIX ME need to investigate UUID as ID to have better hash code equals
-        private Long id;
         private String connectionName;
         private Broker brokers;
 
@@ -55,7 +53,6 @@ public class ClientConnection2 {
 
         public ClientConnection2 build() {
             ClientConnection2 clientConnection2 = new ClientConnection2();
-            clientConnection2.setId(id);
             clientConnection2.setConnectionName(connectionName);
             clientConnection2.setBrokers(brokers);
             return clientConnection2;
