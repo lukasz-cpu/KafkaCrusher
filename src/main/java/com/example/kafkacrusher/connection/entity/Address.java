@@ -1,4 +1,4 @@
-package com.example.kafkacrusher.connection.model;
+package com.example.kafkacrusher.connection.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

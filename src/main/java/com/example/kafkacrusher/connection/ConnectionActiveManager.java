@@ -1,5 +1,6 @@
 package com.example.kafkacrusher.connection;
 
+import com.example.kafkacrusher.connection.entity.ClientConnection;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;

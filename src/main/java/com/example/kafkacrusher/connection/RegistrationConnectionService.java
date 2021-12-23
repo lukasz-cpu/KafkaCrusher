@@ -1,6 +1,7 @@
 package com.example.kafkacrusher.connection;
 
 
+import com.example.kafkacrusher.connection.entity.ClientConnection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

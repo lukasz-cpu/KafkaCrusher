@@ -1,7 +1,8 @@
-package com.example.kafkacrusher.connection.model;
+package com.example.kafkacrusher.connection.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Embeddable
 @ToString
+@Builder
 public class Broker {
 
     @ElementCollection(targetClass = ActiveStatus.class, fetch = FetchType.EAGER)

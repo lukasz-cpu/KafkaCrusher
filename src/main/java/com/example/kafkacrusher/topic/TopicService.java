@@ -1,6 +1,6 @@
 package com.example.kafkacrusher.topic;
 
-import com.example.kafkacrusher.connection.ClientConnection;
+import com.example.kafkacrusher.connection.entity.ClientConnection;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import com.example.kafkacrusher.connection.ConnectionActiveManager;
 import lombok.extern.slf4j.Slf4j;

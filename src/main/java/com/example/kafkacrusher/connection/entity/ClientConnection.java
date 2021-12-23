@@ -1,9 +1,10 @@
-package com.example.kafkacrusher.connection;
+package com.example.kafkacrusher.connection.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,15 +22,14 @@ public class ClientConnection {
     private Long id;
     @Column(unique = true)
     private String connectionName;
-    private String brokers;
-    @Column(nullable = false)
-    private Boolean isActive;
+    @Embedded
+    @Column
+    private Broker brokers;
+
 
     public static final class ClientConnectionBuilder {
-        private Long id;
         private String connectionName;
-        private String brokers;
-        private Boolean isActive;
+        private Broker brokers;
 
         private ClientConnectionBuilder() {
         }
@@ -38,26 +38,21 @@ public class ClientConnection {
             return new ClientConnectionBuilder();
         }
 
+
         public ClientConnectionBuilder withConnectionName(String connectionName) {
             this.connectionName = connectionName;
             return this;
         }
 
-        public ClientConnectionBuilder withBrokers(String brokers) {
+        public ClientConnectionBuilder withBrokers(Broker brokers) {
             this.brokers = brokers;
-            return this;
-        }
-
-        public ClientConnectionBuilder withIsActive(Boolean isActive) {
-            this.isActive = isActive;
             return this;
         }
 
         public ClientConnection build() {
             ClientConnection clientConnection = new ClientConnection();
-            clientConnection.connectionName = this.connectionName;
-            clientConnection.brokers = this.brokers;
-            clientConnection.isActive = this.isActive;
+            clientConnection.setConnectionName(connectionName);
+            clientConnection.setBrokers(brokers);
             return clientConnection;
         }
     }

@@ -1,6 +1,6 @@
 package com.example.kafkacrusher.kafka;
 
-import com.example.kafkacrusher.connection.ClientConnection;
+import com.example.kafkacrusher.connection.entity.ClientConnection;
 import com.example.kafkacrusher.connection.ClientConnectionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
