@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -30,7 +31,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 
 
         Address address = new Address("1231");
-        ActiveStatus active = ActiveStatus.ACTIVE;
+        ActiveStatus active = new ActiveStatus("true");
 
 
         Map<Address, ActiveStatus> resultMap = new HashMap<>();
@@ -48,6 +49,17 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 
 
         ClientConnection2 save = clientConnectionRepository.save(clientConnection2);
+
+
+        System.out.println("-----------------------------------------------");
+
+
+        List<ClientConnection2> all = clientConnectionRepository.findAll();
+
+
+        for (ClientConnection2 connection2 : all) {
+            System.out.println(connection2.toString());
+        }
 
 
     }
