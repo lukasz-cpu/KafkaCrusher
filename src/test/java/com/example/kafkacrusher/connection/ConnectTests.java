@@ -4,6 +4,7 @@ import com.example.kafkacrusher.KafkaCrusherApplication;
 import com.example.kafkacrusher.connection.dto.ActiveStatusDTO;
 import com.example.kafkacrusher.connection.dto.AddressDTO;
 import com.example.kafkacrusher.connection.dto.BrokerDTO;
+import com.example.kafkacrusher.util.GsonTestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,19 +72,19 @@ class ConnectTests {
                 .build();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(getJson(connection_test), headers);
+        HttpEntity<String> entity = new HttpEntity<>(GsonTestUtils.getInstance().getGson().toJson(connection_test), headers);
+
+
+        System.out.println(entity.toString());
 
         //when
         //defined in props
         String url = "http://localhost:8099";
         String response = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
-//        ClientConnectionRequestDTO connectionResponseDTOS = gson.fromJson(response, new TypeToken<List<ClientConnectionRequestDTO>>(){}.getType());
 
-//        assertEquals("connection test", connectionResponseDTOS.getConnectionName());
+        System.out.println(response.toString());
 
-
-        System.out.println(response);
 
 
     }

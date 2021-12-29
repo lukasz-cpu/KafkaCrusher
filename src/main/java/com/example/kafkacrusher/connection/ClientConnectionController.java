@@ -27,12 +27,14 @@ public class ClientConnectionController {
         ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
 
         Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
-        if (clientConnectionResult.isEmpty()) {
-            return new ResponseEntity<>("[]", HttpStatus.BAD_REQUEST);
-        }
+
+
+        ClientConnectionResponseDTO map = ClientConnectionMapper.map(clientConnectionResult.get());
+
+
         String s = GsonUtils.getInstance()
                 .getGson()
-                .toJson(clientConnectionRequestDTO);
+                .toJson(map);
 
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
