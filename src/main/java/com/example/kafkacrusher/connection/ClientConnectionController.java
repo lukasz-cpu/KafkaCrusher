@@ -23,14 +23,18 @@ public class ClientConnectionController {
     private RegistrationConnectionService registrationConnectionService;
 
     @PostMapping(value = "/registerConnection")
-    public ResponseEntity<ClientConnectionRequestDTO> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
+    public ResponseEntity<String> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
         ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
 
         Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
         if (clientConnectionResult.isEmpty()) {
-            return new ResponseEntity<>(clientConnectionRequestDTO, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("[]", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(clientConnectionRequestDTO, HttpStatus.OK);
+        String s = GsonUtils.getInstance()
+                .getGson()
+                .toJson(clientConnectionRequestDTO);
+
+        return new ResponseEntity<>(s, HttpStatus.OK);
     }
 
     @GetMapping(value = "/getConnections")

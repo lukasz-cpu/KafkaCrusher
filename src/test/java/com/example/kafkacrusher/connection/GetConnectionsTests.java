@@ -4,6 +4,9 @@ import com.example.kafkacrusher.KafkaCrusherApplication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +36,10 @@ class GetConnectionsTests {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Gson gson = new GsonBuilder()
+            .enableComplexMapKeySerialization()
+            .setPrettyPrinting()
+            .create();
 
 
     @Test
@@ -47,9 +53,9 @@ class GetConnectionsTests {
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/getConnections", String.class);
 
         //then
-        List<ClientConnectionResponseDTO> connectionResponseDTOS = objectMapper.readValue(forEntity.getBody(), new TypeReference<>() {
-        });
-        assertEquals(10, connectionResponseDTOS.size());
+        List<ClientConnectionResponseDTO> connectionResponseDTOS = gson.fromJson(forEntity.getBody(), new TypeToken<List<ClientConnectionResponseDTO>>(){}.getType());
+
+        assertEquals(1, connectionResponseDTOS.size());
 
     }
 }
