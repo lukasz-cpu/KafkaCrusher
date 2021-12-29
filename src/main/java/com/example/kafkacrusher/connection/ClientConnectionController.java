@@ -32,6 +32,7 @@ public class ClientConnectionController {
 
         ClientConnectionResponseDTO map = ClientConnectionMapper.map(clientConnectionResult.get());
 
+//        https://stackoverflow.com/questions/27550376/spring-restcontroller-custom-json-deserializer
 
         String s = GsonUtils.getInstance()
                 .getGson()
