@@ -1,8 +1,7 @@
 package com.example.kafkacrusher.connection;
 
+import com.example.kafkacrusher.configuration.GsonUtils;
 import com.example.kafkacrusher.connection.entity.ClientConnection;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,10 +36,12 @@ public class ClientConnectionController {
     @GetMapping(value = "/getConnections")
     public ResponseEntity<String> getConnections() {
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
-        Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
 
 
-        String s = gson.toJson(connectionsInfo);
+        String s = GsonUtils.getInstance()
+                .getGson()
+                .toJson(connectionsInfo);
+
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 }
