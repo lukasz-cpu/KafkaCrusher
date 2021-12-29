@@ -37,7 +37,7 @@ public class ClientConnectionController {
     @GetMapping(value = "/getConnections")
     public ResponseEntity<String> getConnections() {
         List<ClientConnectionResponseDTO> connectionsInfo = registrationConnectionService.getConnectionsInfo();
-        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
 
 
         String s = gson.toJson(connectionsInfo);
