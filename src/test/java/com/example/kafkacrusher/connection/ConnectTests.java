@@ -7,6 +7,9 @@ import com.example.kafkacrusher.connection.dto.BrokerDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
@@ -41,11 +45,13 @@ class ConnectTests {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
+    private final Gson gson = new GsonBuilder()
+            .enableComplexMapKeySerialization()
+            .setPrettyPrinting()
+            .create();
 
     @Test
-    void connect() throws JsonProcessingException {
+    void connect() {
 
 
         AddressDTO addressDTO = AddressDTO.builder().address("localhost:9092").build();
@@ -72,10 +78,12 @@ class ConnectTests {
         String url = "http://localhost:8099";
         String response = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
-//        ClientConnectionRequestDTO connectionResponseDTOS = objectMapper.readValue(response, new TypeReference<>() {
-//        });
+//        ClientConnectionRequestDTO connectionResponseDTOS = gson.fromJson(response, new TypeToken<List<ClientConnectionRequestDTO>>(){}.getType());
 
 //        assertEquals("connection test", connectionResponseDTOS.getConnectionName());
+
+
+        System.out.println(response);
 
 
     }
