@@ -23,8 +23,9 @@ public class ClientConnectionController {
     private RegistrationConnectionService registrationConnectionService;
 
     @PostMapping(value = "/registerConnection")
-    public ResponseEntity<String> connect(@RequestBody ClientConnectionRequestDTO clientConnectionRequestDTO) {
-        ClientConnection clientConnection = ClientConnectionMapper.map(clientConnectionRequestDTO);
+    public ResponseEntity<String> connect(@RequestBody String inputString) {
+
+        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
 
         Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
 
