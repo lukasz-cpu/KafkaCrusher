@@ -1,6 +1,7 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.configuration.GsonUtils;
+import com.example.kafkacrusher.connection.dto.ClientConnectionDTO;
 import com.example.kafkacrusher.connection.entity.ClientConnection;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +24,11 @@ public class ClientConnectionController {
     private RegistrationConnectionService registrationConnectionService;
 
     @PostMapping(value = "/registerConnection")
-    public ResponseEntity<String> connect(@RequestBody String inputString) {
+    public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputString) {
 
-//        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
-//
-//        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
+        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
+
+        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
 
 
         log.info(inputString);
