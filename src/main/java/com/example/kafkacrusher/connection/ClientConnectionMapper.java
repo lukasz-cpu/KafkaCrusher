@@ -71,4 +71,5 @@ public class ClientConnectionMapper {
         return Broker.builder().serverAddresses(mappedResult).build();
     }
 
+
 }

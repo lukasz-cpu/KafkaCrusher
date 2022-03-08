@@ -25,20 +25,14 @@ public class ClientConnectionController {
     @PostMapping(value = "/registerConnection")
     public ResponseEntity<String> connect(@RequestBody String inputString) {
 
-        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
+//        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
+//
+//        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
 
-        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
 
+        log.info(inputString);
 
-        ClientConnectionResponseDTO map = ClientConnectionMapper.map(clientConnectionResult.get());
-
-//        https://stackoverflow.com/questions/27550376/spring-restcontroller-custom-json-deserializer
-
-        String s = GsonUtils.getInstance()
-                .getGson()
-                .toJson(map);
-
-        return new ResponseEntity<>(s, HttpStatus.OK);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @GetMapping(value = "/getConnections")
