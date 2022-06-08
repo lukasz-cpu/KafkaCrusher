@@ -26,12 +26,12 @@ public class ClientConnectionController {
     @PostMapping(value = "/registerConnection")
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputString) {
 
-        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
-
-        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
-
-
-        log.info(inputString);
+//        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
+//
+//        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
+//
+//
+//        log.info(inputString);
 
         return new ResponseEntity<>("", HttpStatus.OK);
     }
