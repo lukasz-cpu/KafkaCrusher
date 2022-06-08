@@ -3,6 +3,7 @@ package com.example.kafkacrusher.connection;
 import com.example.kafkacrusher.connection.dto.ActiveStatusDTO;
 import com.example.kafkacrusher.connection.dto.AddressDTO;
 import com.example.kafkacrusher.connection.dto.BrokerDTO;
+import com.example.kafkacrusher.connection.dto.ClientConnectionDTO;
 import com.example.kafkacrusher.connection.entity.ActiveStatus;
 import com.example.kafkacrusher.connection.entity.Address;
 import com.example.kafkacrusher.connection.entity.Broker;
@@ -18,7 +19,7 @@ public class ClientConnectionMapper {
 
     }
 
-    static ClientConnection map(ClientConnectionRequestDTO clientConnectionRequestDTO) {
+    static ClientConnection map(ClientConnectionDTO clientConnectionRequestDTO) {
 
         Broker broker = getBrokerFromClientConnectionRequestDTO(clientConnectionRequestDTO);
 
@@ -58,17 +59,18 @@ public class ClientConnectionMapper {
         return BrokerDTO.builder().serverAddresses(mappedResult).build();
     }
 
-    private static Broker getBrokerFromClientConnectionRequestDTO(ClientConnectionRequestDTO clientConnectionRequestDTO) {
-        Map<AddressDTO, ActiveStatusDTO> serverAddresses = clientConnectionRequestDTO.getBrokerDTO().getServerAddresses();
-        Map<Address, ActiveStatus> mappedResult = new HashMap<>();
+    private static Broker getBrokerFromClientConnectionRequestDTO(ClientConnectionDTO clientConnectionRequestDTO) {
+        Map<Address, ActiveStatus> result = new HashMap<>();
+
+        result.put(new Address(clientConnectionRequestDTO.getBrokerAddress()), new ActiveStatus().activeStatus.)
 
 
-        for (var entry : serverAddresses.entrySet()) {
-            mappedResult.put(new Address(entry.getKey().address), new ActiveStatus(entry.getValue().activeStatus));
-        }
 
 
-        return Broker.builder().serverAddresses(mappedResult).build();
+
+
+
+        return Broker.builder().serverAddresses(result).build();
     }
 
 
