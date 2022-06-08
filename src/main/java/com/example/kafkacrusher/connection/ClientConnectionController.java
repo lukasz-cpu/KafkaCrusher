@@ -28,16 +28,12 @@ public class ClientConnectionController {
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputClientConnectionDTO) {
 
 
-        ClientConnectionDTO example_connection_name = ClientConnectionDTO.builder().connectionName("example connection name")
-                .brokerAddress("123123")
-                .build();
 
 
-        String s = GsonUtils.getInstance().getGson().toJson(example_connection_name);
+        String s = GsonUtils.getInstance().getGson().toJson(inputClientConnectionDTO);
 
         log.info(s);
 
-//        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
 //
 //        Optional<ClientConnection> clientConnectionResult = registrationConnectionService.registerClientConnection(clientConnection);
 //
