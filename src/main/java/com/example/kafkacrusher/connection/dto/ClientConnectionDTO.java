@@ -13,5 +13,5 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ClientConnectionDTO {
     private String connectionName;
-    private String brokers;
+    private String brokerAddress;
 }
