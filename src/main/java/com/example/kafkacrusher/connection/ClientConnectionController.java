@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,17 @@ public class ClientConnectionController {
     private RegistrationConnectionService registrationConnectionService;
 
     @PostMapping(value = "/registerConnection")
-    public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputString) {
+    public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputClientConnectionDTO) {
+
+
+        ClientConnectionDTO example_connection_name = ClientConnectionDTO.builder().connectionName("example connection name")
+                .brokerAddress("123123")
+                .build();
+
+
+        String s = GsonUtils.getInstance().getGson().toJson(example_connection_name);
+
+        log.info(s);
 
 //        ClientConnection clientConnection = ClientConnectionMapper.map(inputString);
 //
