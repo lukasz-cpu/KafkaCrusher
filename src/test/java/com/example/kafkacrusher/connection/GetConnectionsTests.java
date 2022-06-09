@@ -1,9 +1,6 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -43,7 +40,7 @@ class GetConnectionsTests {
 
 
     @Test
-    void getConnections() throws JsonProcessingException {
+    void getConnections() {
         //given
         //noting
 
@@ -53,8 +50,10 @@ class GetConnectionsTests {
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url + "/getConnections", String.class);
 
         //then
-        List<ClientConnectionResponseDTO> connectionResponseDTOS = gson.fromJson(forEntity.getBody(), new TypeToken<List<ClientConnectionResponseDTO>>(){}.getType());
+        List<ClientConnectionResponseDTO> connectionResponseDTOS = gson.fromJson(forEntity.getBody(), new TypeToken<List<ClientConnectionResponseDTO>>() {
+        }.getType());
 
+        assert connectionResponseDTOS != null;
         assertEquals(1, connectionResponseDTOS.size());
 
     }
