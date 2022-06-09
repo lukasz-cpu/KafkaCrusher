@@ -26,8 +26,12 @@ public class ClientConnectionController {
 
     @PostMapping(value = "/registerConnection")
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputClientConnectionDTO) {
-        String s = GsonUtils.getInstance().getGson().toJson(inputClientConnectionDTO);
-        log.info(s);
+        ClientConnection clientConnection = ClientConnectionMapper.map(inputClientConnectionDTO);
+        Optional<ClientConnection> registerClientConnection = registrationConnectionService.registerClientConnection(clientConnection);
+
+        
+
+
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
