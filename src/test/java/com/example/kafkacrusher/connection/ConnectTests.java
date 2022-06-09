@@ -1,17 +1,8 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
-import com.example.kafkacrusher.connection.dto.ActiveStatusDTO;
-import com.example.kafkacrusher.connection.dto.AddressDTO;
-import com.example.kafkacrusher.connection.dto.BrokerDTO;
 import com.example.kafkacrusher.connection.dto.ClientConnectionDTO;
 import com.example.kafkacrusher.util.GsonTestUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,10 +16,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 
 @ExtendWith(SpringExtension.class)
@@ -58,8 +45,6 @@ class ConnectTests {
 
 
         System.out.println(response);
-
-
 
 
     }
