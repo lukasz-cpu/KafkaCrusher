@@ -34,10 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(
-        classes = KafkaCrusherApplication.class,
-        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
-)
+@SpringBootTest(classes = KafkaCrusherApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
 @DirtiesContext
@@ -46,17 +43,13 @@ class ConnectTests {
 
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
-    private final Gson gson = new GsonBuilder()
-            .enableComplexMapKeySerialization()
-            .setPrettyPrinting()
-            .create();
 
     @Test
     void connect() {
 
 
         AddressDTO addressDTO = AddressDTO.builder().address("localhost:9092").build();
-        ActiveStatusDTO aTrue = ActiveStatusDTO.builder().activeStatus("true").build();
+        ActiveStatusDTO aTrue = ActiveStatusDTO.builder().isActiveStatus(true).build();
 
         Map<AddressDTO, ActiveStatusDTO> result = new HashMap<>();
         result.put(addressDTO, aTrue);
@@ -66,16 +59,13 @@ class ConnectTests {
 
 
         //given
-        ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder()
-                .connectionName("connection test")
-                .brokerDTO(build)
-                .build();
+        ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder().connectionName("connection test").brokerDTO(build).build();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(GsonTestUtils.getInstance().getGson().toJson(connection_test), headers);
 
 
-        System.out.println(entity.toString());
+        System.out.println(entity);
 
         //when
         //defined in props
@@ -83,8 +73,7 @@ class ConnectTests {
         String response = restTemplate.postForObject(url + "/registerConnection", entity, String.class);
 
 
-        System.out.println(response.toString());
-
+        System.out.println(response);
 
 
     }

@@ -49,8 +49,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
                                 .build();
 
         ActiveStatus trueSecond = ActiveStatus.builder()
-                .isActive(true)
-                                .build();
+                .isActive(true).build();
 
 
         resultMap.put(build, trueOne);
