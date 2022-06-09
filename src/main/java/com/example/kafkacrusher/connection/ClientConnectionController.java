@@ -29,10 +29,13 @@ public class ClientConnectionController {
         ClientConnection clientConnection = ClientConnectionMapper.map(inputClientConnectionDTO);
         Optional<ClientConnection> registerClientConnection = registrationConnectionService.registerClientConnection(clientConnection);
 
-        
 
-
-        return new ResponseEntity<>("", HttpStatus.OK);
+        if(registerClientConnection.isEmpty()){
+            return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(registerClientConnection.get().toString(), HttpStatus.OK);
+        }
     }
 
     @GetMapping(value = "/getConnections")
