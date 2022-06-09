@@ -30,7 +30,13 @@ public class RegistrationConnectionService {
     }
 
     private Optional<ClientConnection> saveClientConnection(ClientConnection clientConnection) {
-        return Optional.of(clientConnectionRepository.save(clientConnection));  //!fixme cannot save when connection is broken
+        try{
+            return Optional.of(clientConnectionRepository.save(clientConnection));
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return Optional.empty(); //!fixme cannot save when connection is broken
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
