@@ -17,6 +17,6 @@ import javax.persistence.Embeddable;
 @ToString
 @Embeddable
 @Builder
-public class ActiveStatus {  //ENUM TODO
-   public String activeStatus;
+public class ActiveStatus { 
+   public boolean isActive;
 }
