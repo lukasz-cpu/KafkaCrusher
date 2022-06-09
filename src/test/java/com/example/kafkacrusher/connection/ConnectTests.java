@@ -4,6 +4,7 @@ import com.example.kafkacrusher.KafkaCrusherApplication;
 import com.example.kafkacrusher.connection.dto.ActiveStatusDTO;
 import com.example.kafkacrusher.connection.dto.AddressDTO;
 import com.example.kafkacrusher.connection.dto.BrokerDTO;
+import com.example.kafkacrusher.connection.dto.ClientConnectionDTO;
 import com.example.kafkacrusher.util.GsonTestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,11 +27,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static com.example.kafkacrusher.util.JsonTestUtil.getJson;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @ExtendWith(SpringExtension.class)
@@ -46,26 +44,12 @@ class ConnectTests {
 
     @Test
     void connect() {
-
-
-        AddressDTO addressDTO = AddressDTO.builder().address("localhost:9092").build();
-        ActiveStatusDTO aTrue = ActiveStatusDTO.builder().isActiveStatus(true).build();
-
-        Map<AddressDTO, ActiveStatusDTO> result = new HashMap<>();
-        result.put(addressDTO, aTrue);
-
-
-        BrokerDTO build = BrokerDTO.builder().serverAddresses(result).build();
-
-
         //given
-        ClientConnectionRequestDTO connection_test = ClientConnectionRequestDTO.builder().connectionName("connection test").brokerDTO(build).build();
+        ClientConnectionDTO connection_test = ClientConnectionDTO.builder().connectionName("connection test").brokerAddress("localhost:9092").build();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(GsonTestUtils.getInstance().getGson().toJson(connection_test), headers);
 
-
-        System.out.println(entity);
 
         //when
         //defined in props
@@ -74,6 +58,8 @@ class ConnectTests {
 
 
         System.out.println(response);
+
+
 
 
     }
