@@ -12,5 +12,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActiveStatusDTO {
-    public String activeStatus;
+    public boolean isActiveStatus;
 }

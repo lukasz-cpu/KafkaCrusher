@@ -8,7 +8,6 @@ import com.example.kafkacrusher.connection.entity.ActiveStatus;
 import com.example.kafkacrusher.connection.entity.Address;
 import com.example.kafkacrusher.connection.entity.Broker;
 import com.example.kafkacrusher.connection.entity.ClientConnection;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,20 +19,15 @@ public class ClientConnectionMapper {
     }
 
     static ClientConnection map(ClientConnectionDTO clientConnectionRequestDTO) {
-
-        Broker broker = getBrokerFromClientConnectionRequestDTO(clientConnectionRequestDTO);
-
-
+        var broker = getBrokerFromClientConnectionRequestDTO(clientConnectionRequestDTO);
         return ClientConnection.ClientConnectionBuilder.aClientConnection()
                 .withConnectionName(clientConnectionRequestDTO.getConnectionName())
                 .withBrokers(broker)
                 .build();
-
     }
 
 
-
-    static ClientConnectionResponseDTO map(ClientConnection clientConnection){
+    static ClientConnectionResponseDTO map(ClientConnection clientConnection) {
 
         BrokerDTO brokerDTO = getBrokerDTOFromClientConnection(clientConnection);
 
@@ -50,10 +44,9 @@ public class ClientConnectionMapper {
         Map<Address, ActiveStatus> serverAddresses = clientConnection.getBroker().getServerAddresses();
         Map<AddressDTO, ActiveStatusDTO> mappedResult = new HashMap<>();
 
-        for(var entry : serverAddresses.entrySet()) {
-            mappedResult.put(new AddressDTO(entry.getKey().address), new ActiveStatusDTO(entry.getValue().activeStatus));
+        for (var entry : serverAddresses.entrySet()) {
+            mappedResult.put(new AddressDTO(entry.getKey().getAddress()), new ActiveStatusDTO(entry.getValue().isActive));
         }
-
 
 
         return BrokerDTO.builder().serverAddresses(mappedResult).build();
@@ -61,15 +54,7 @@ public class ClientConnectionMapper {
 
     private static Broker getBrokerFromClientConnectionRequestDTO(ClientConnectionDTO clientConnectionRequestDTO) {
         Map<Address, ActiveStatus> result = new HashMap<>();
-
-        result.put(new Address(clientConnectionRequestDTO.getBrokerAddress()), new ActiveStatus().activeStatus.)
-
-
-
-
-
-
-
+        result.put(new Address(clientConnectionRequestDTO.getBrokerAddress()), new ActiveStatus(false));
         return Broker.builder().serverAddresses(result).build();
     }
 

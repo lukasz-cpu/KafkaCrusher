@@ -39,16 +39,17 @@ public class KafkaCrusherApplication implements CommandLineRunner {
                 .address("localhost:9092")
                 .build();
 
-        ActiveStatus trueOne = ActiveStatus.builder()
-                .activeStatus("true").build();
-
+        ActiveStatus trueOne = ActiveStatus
+                .builder()
+                .isActive(false)
+                .build();
 
         Address build2 = Address.builder()
                         .address("localhost:9093")
                                 .build();
 
         ActiveStatus trueSecond = ActiveStatus.builder()
-                        .activeStatus("true")
+                .isActive(true)
                                 .build();
 
 
