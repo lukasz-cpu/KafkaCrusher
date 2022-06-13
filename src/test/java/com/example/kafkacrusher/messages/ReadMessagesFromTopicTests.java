@@ -1,6 +1,11 @@
 package com.example.kafkacrusher.messages;
 
 import com.example.kafkacrusher.KafkaCrusherApplication;
+import com.example.kafkacrusher.connection.ClientConnectionRepository;
+import com.example.kafkacrusher.connection.entity.ActiveStatus;
+import com.example.kafkacrusher.connection.entity.Address;
+import com.example.kafkacrusher.connection.entity.Broker;
+import com.example.kafkacrusher.connection.entity.ClientConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +16,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
@@ -20,7 +26,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +48,8 @@ class ReadMessagesFromTopicTests {
     public static KafkaProducer<String, String> kafkaProducer = null;
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ClientConnectionRepository clientConnectionRepository;
 
     public static KafkaProducer<String, String> createKafkaProducer() {
         Properties properties = new Properties();
@@ -62,8 +72,40 @@ class ReadMessagesFromTopicTests {
         kafkaProducer.send(new ProducerRecord<>(topic, msg));
     }
 
-    @BeforeEach
-    void setUp() {
+
+        @BeforeEach
+        void setUp() {
+
+            clientConnectionRepository.deleteAll();
+
+            Map<Address, ActiveStatus> resultMap = new HashMap<>();
+
+
+            Address build = Address.builder()
+                    .address("localhost:9092")
+                    .build();
+
+            ActiveStatus trueOne = ActiveStatus
+                    .builder()
+                    .isActive(true)
+                    .build();
+
+
+
+            resultMap.put(build, trueOne);
+
+            Broker result = Broker.builder().serverAddresses(resultMap).build();
+
+            ClientConnection connection_one1 = ClientConnection.ClientConnectionBuilder.aClientConnection()
+                    .withConnectionName("connection test10")
+                    .withBrokers(result)
+                    .build();
+
+            clientConnectionRepository.save(connection_one1);
+
+
+
+
         send("TestTopic", "test message on test topic");
     }
 
