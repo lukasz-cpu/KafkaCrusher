@@ -1,5 +1,7 @@
 package com.example.kafkacrusher.connection;
 
+import com.example.kafkacrusher.connection.entity.ActiveStatus;
+import com.example.kafkacrusher.connection.entity.Address;
 import com.example.kafkacrusher.connection.entity.ClientConnection;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.apache.kafka.clients.admin.DescribeClusterOptions;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Properties;
 
 @Component
@@ -33,7 +36,12 @@ public class ConnectionActiveManager {
 //    }
     private void saveConnection(ClientConnection connection) {
         ClientConnection clientConnection = clientConnectionRepository.getById(connection.getId());
-//        clientConnection.setIsActive(true);                   //fixme
+        Map<Address, ActiveStatus> serverAddresses = clientConnection.getBroker().getServerAddresses();
+        for (Map.Entry<Address, ActiveStatus> address : serverAddresses.entrySet()) {
+            String selectedAddress = address.getKey().getAddress();
+            boolean isActive = checkAddress(selectedAddress);
+            address.getValue().setActive(isActive);
+        }
         clientConnectionRepository.save(clientConnection);
     }
 
