@@ -30,7 +30,7 @@ public class ConnectionActiveManager {
 //                .findAll()
 //                .stream()
 //                .filter(connection -> validateKafkaAddresses(connection.getBrokers()))
-//                .forEach(this::saveConnection);
+//                .forEach(this::saveConnection); 
 //
 //                                                                          //fixme
 //    }
