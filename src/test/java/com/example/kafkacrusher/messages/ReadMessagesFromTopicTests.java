@@ -114,7 +114,7 @@ class ReadMessagesFromTopicTests {
         final String baseUrl = "http://localhost:8099/readMessagesFromTopic?connectionName=connection test10&topicName=TestTopic";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(headers); 
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
 
