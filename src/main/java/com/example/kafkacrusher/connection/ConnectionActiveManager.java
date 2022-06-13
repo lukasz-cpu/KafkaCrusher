@@ -35,13 +35,15 @@ public class ConnectionActiveManager {
 //    }
 
     public boolean validateKafkaAddresses(String kafkaAddress) {
-        return Arrays
-                .stream(kafkaAddress.split(","))
-                .toList()
-                .stream()
-                .map(this::checkEachAddress)
-                .toList()
-                .contains(true);
+
+        
+//        return Arrays
+//                .stream(kafkaAddress.split(","))
+//                .toList()
+//                .stream()
+//                .map(this::checkEachAddress)
+//                .toList()
+//                .contains(true);
     }
 
 
