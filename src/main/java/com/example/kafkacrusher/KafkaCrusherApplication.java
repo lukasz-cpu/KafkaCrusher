@@ -41,24 +41,17 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 
         ActiveStatus trueOne = ActiveStatus
                 .builder()
-                .isActive(false)
+                .isActive(true)
                 .build();
 
-        Address build2 = Address.builder()
-                        .address("localhost:9093")
-                                .build();
-
-        ActiveStatus trueSecond = ActiveStatus.builder()
-                .isActive(true).build();
 
 
         resultMap.put(build, trueOne);
-        resultMap.put(build2, trueSecond);
 
         Broker result = Broker.builder().serverAddresses(resultMap).build();
 
         ClientConnection connection_one1 = ClientConnection.ClientConnectionBuilder.aClientConnection()
-                .withConnectionName("connection one1")
+                .withConnectionName("connection_one1")
                 .withBrokers(result)
                 .build();
 
