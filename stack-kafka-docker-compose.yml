@@ -24,18 +24,5 @@ services:
     depends_on:
       - zookeeper
 
-  kafka-manager:
-    image: hlebalbau/kafka-manager:stable
-    container_name: kafka-manager
-    restart: always
-    ports:
-      - "9000:9000"
-    environment:
-      ZK_HOSTS: "zookeeper:2181"
-      APPLICATION_SECRET: "random-secret"
-    command:
-      - Dpidfile.path=/dev/null
-    depends_on:
-      - kafka
 
 
