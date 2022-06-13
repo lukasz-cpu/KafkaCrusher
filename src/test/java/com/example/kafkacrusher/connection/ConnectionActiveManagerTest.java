@@ -31,10 +31,10 @@ class ConnectionActiveManagerTest {
 
     @Test
     void validateKafkaAddress() {
-        assertTrue(connectionActiveManager.validateKafkaAddresses("localhost:9092"));
-        assertTrue(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,localhost:9092,192.168.0.74:9093"));
-        assertTrue(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.74:9092,localhost:9092"));
-        assertFalse(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.74:9091,localhost:9091"));
-        assertFalse(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.75:9091,localhost:9091"));
+        assertTrue(connectionActiveManager.checkAddress("localhost:9092"));
+        assertFalse(connectionActiveManager.checkAddress("192.168.0.74:9091"));
+        assertFalse(connectionActiveManager.checkAddress("192.168.0.74:9092"));
+        assertFalse(connectionActiveManager.checkAddress("localhost:9093"));
+
     }
 }
