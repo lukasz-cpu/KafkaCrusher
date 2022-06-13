@@ -11,6 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -33,5 +34,7 @@ class ConnectionActiveManagerTest {
         assertTrue(connectionActiveManager.validateKafkaAddresses("localhost:9092"));
         assertTrue(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,localhost:9092,192.168.0.74:9093"));
         assertTrue(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.74:9092,localhost:9092"));
+        assertFalse(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.74:9091,localhost:9091"));
+        assertFalse(connectionActiveManager.validateKafkaAddresses("192.168.0.74:9091,192.168.0.75:9091,localhost:9091"));
     }
 }
