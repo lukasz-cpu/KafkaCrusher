@@ -36,7 +36,7 @@ public class ConnectionActiveManager {
 
     public boolean validateKafkaAddresses(String kafkaAddress) {
 
-        
+        return true;
 //        return Arrays
 //                .stream(kafkaAddress.split(","))
 //                .toList()
