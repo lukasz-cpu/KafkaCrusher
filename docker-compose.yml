@@ -23,5 +23,3 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
     depends_on:
       - zookeeper
-
-
