@@ -24,18 +24,19 @@ public interface ClientConnectionRepository extends JpaRepository<ClientConnecti
 
 
     private String getAddressesFromBroker(Broker broker) {
-
         Set<Address> addresses = broker.getServerAddresses().keySet();
-
-
-        StringBuilder str
+        
+        StringBuilder sb
                 = new StringBuilder();
 
         for (Address address : addresses) {
-            str.append(address.address);
-            str.append(",");
+            sb.append(address.address);
+            sb.append(",");
         }
-        return str.toString();
+        if(sb.length() > 0){
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
 
     }
 }
