@@ -1,7 +1,9 @@
 package com.example.kafkacrusher.connection;
 
+import com.example.kafkacrusher.configuration.GsonUtils;
 import com.example.kafkacrusher.connection.entity.ActiveStatus;
 import com.example.kafkacrusher.connection.entity.Address;
+import com.example.kafkacrusher.connection.entity.Broker;
 import com.example.kafkacrusher.connection.entity.ClientConnection;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,17 +30,18 @@ public class ConnectionActiveManager {
 
     @GetMapping("/connectionManager/setActiveStatuses")
     public void setActiveStatuses() {
+        List<ClientConnection> allConnections = clientConnectionRepository.
+                findAll();
 
+        for (ClientConnection connection : allConnections) {
+            Broker originBroker = connection.getBroker();
+            Broker modifiedBroker = setServerStatusesForBroker(originBroker);
+            connection.setBroker(modifiedBroker);
+        }
 
+        clientConnectionRepository.saveAll(allConnections);
 
-
-//        clientConnectionRepository
-//                .findAll()
-//                .stream()
-//                .filter(connection -> validateKafkaAddresses(connection.getBrokers()))
-//                .forEach(this::saveConnection);
-
-                                                                          //fixme
+        log.info("Setting active statuses for connections finished.");
     }
 
     private void saveConnection(ClientConnection connection) {
@@ -49,6 +53,14 @@ public class ConnectionActiveManager {
             address.getValue().setActive(isActive);
         }
         clientConnectionRepository.save(clientConnection);
+    }
+
+    private Broker setServerStatusesForBroker(Broker broker){
+        Map<Address, ActiveStatus> serverAddresses = broker.getServerAddresses();
+        for (Map.Entry<Address, ActiveStatus> addressActiveStatusEntry : serverAddresses.entrySet()) {
+            addressActiveStatusEntry.getValue().setActive(checkAddress(addressActiveStatusEntry.getKey().getAddress()));
+        }
+        return Broker.builder().serverAddresses(serverAddresses).build();
     }
 
     public boolean checkAddress(String kafkaAddress) {
