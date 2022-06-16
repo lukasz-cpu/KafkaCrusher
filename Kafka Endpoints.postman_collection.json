@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "2b5859cb-0103-4ee1-9914-3c6cf682b363",
-		"name": "kafka",
+		"_postman_id": "a641b755-972a-41aa-9048-fe1d3f27137d",
+		"name": "Kafka Endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -31,7 +31,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"connectionName\":\"connection test\", \"brokers\": \"192.168.0.74:9092, 192.168.0.74:9094\"}",
+					"raw": "{\"connectionName\":\"connection test\", \"brokerAddress\": \"localhost:9092\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -75,7 +75,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/getTopicListForConnectionName?connectionName=connection%20test1",
+					"raw": "localhost:8080/getTopicListForConnectionName?connectionName=connection_one1",
 					"host": [
 						"localhost"
 					],
@@ -86,7 +86,7 @@
 					"query": [
 						{
 							"key": "connectionName",
-							"value": "connection%20test1"
+							"value": "connection_one1"
 						}
 					]
 				}
@@ -100,7 +100,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"topicList\" : [ \"TestTopic2\", \"TestTopic3\", \"TestTopic4\", \"Topic7\" ]\r\n}",
+					"raw": "{\r\n  \"topicList\" : [ \"TestTopic\", \"TestTopic3\", \"TestTopic4\", \"Topic7\" ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -108,7 +108,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/addTopicsForConnectionName?connectionName=connection%20test1",
+					"raw": "localhost:8080/addTopicsForConnectionName?connectionName=connection_one1",
 					"host": [
 						"localhost"
 					],
@@ -119,7 +119,7 @@
 					"query": [
 						{
 							"key": "connectionName",
-							"value": "connection%20test1"
+							"value": "connection_one1"
 						}
 					]
 				}
@@ -141,7 +141,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/deleteTopicsForConnectionName?connectionName=connection%20test1",
+					"raw": "localhost:8080/deleteTopicsForConnectionName?connectionName=connection_one1",
 					"host": [
 						"localhost"
 					],
@@ -152,7 +152,7 @@
 					"query": [
 						{
 							"key": "connectionName",
-							"value": "connection%20test1"
+							"value": "connection_one1"
 						}
 					]
 				}
@@ -166,7 +166,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"connectionName\" : \"connection test1\",\r\n  \"topic\" : \"TestTopic\",\r\n  \"message\" : \"lambo2332221\"\r\n}",
+					"raw": "{\r\n  \"connectionName\" : \"connection_one1\",\r\n  \"topic\" : \"TestTopic\",\r\n  \"message\" : \"lambo2332221\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -192,7 +192,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/readMessagesFromTopic?connectionName=connection test1&topicName=TestTopic",
+					"raw": "localhost:8080/readMessagesFromTopic?connectionName=connection_one1&topicName=TestTopic",
 					"host": [
 						"localhost"
 					],
@@ -203,7 +203,7 @@
 					"query": [
 						{
 							"key": "connectionName",
-							"value": "connection test1"
+							"value": "connection_one1"
 						},
 						{
 							"key": "topicName",
