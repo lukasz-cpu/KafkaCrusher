@@ -32,7 +32,7 @@ public class ClientConnectionController {
             return new ResponseEntity<>("Error during registering connection.", HttpStatus.NOT_ACCEPTABLE);
         }
         else {
-            String jsonResponse = GsonUtils.getInstance().getGson().toJson(registerClientConnection.get());
+            String jsonResponse = GsonUtils.toJson(registerClientConnection.get());
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         }
     }

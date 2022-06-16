@@ -24,4 +24,9 @@ public class GsonUtils {
     public Gson getGson() {
         return mGson;
     }
+
+    public static <T> String toJson(T object){
+        return getInstance().getGson().toJson(object);
+    }
+
 }
