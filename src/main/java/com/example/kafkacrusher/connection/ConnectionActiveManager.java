@@ -9,6 +9,7 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DescribeClusterOptions;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -24,16 +25,21 @@ public class ConnectionActiveManager {
     private ClientConnectionRepository clientConnectionRepository;
 
 
-//    @GetMapping("/connectionManager/setActiveStatuses")
-//    public void setActiveStatuses() {
+    @GetMapping("/connectionManager/setActiveStatuses")
+    public void setActiveStatuses() {
+
+
+
+
 //        clientConnectionRepository
 //                .findAll()
 //                .stream()
 //                .filter(connection -> validateKafkaAddresses(connection.getBrokers()))
-//                .forEach(this::saveConnection); 
-//
-//                                                                          //fixme
-//    }
+//                .forEach(this::saveConnection);
+
+                                                                          //fixme
+    }
+
     private void saveConnection(ClientConnection connection) {
         ClientConnection clientConnection = clientConnectionRepository.getById(connection.getId());
         Map<Address, ActiveStatus> serverAddresses = clientConnection.getBroker().getServerAddresses();
