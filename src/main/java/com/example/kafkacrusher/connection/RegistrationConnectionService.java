@@ -37,12 +37,8 @@ public class RegistrationConnectionService {
     }
 
     public List<ClientConnectionResponseDTO> getConnectionsInfo() {
-        List<ClientConnection> all = clientConnectionRepository.findAll();
-        List<ClientConnectionResponseDTO> result = new ArrayList<>();
-        for (ClientConnection clientConnection : all) {
-            ClientConnectionResponseDTO map = ClientConnectionMapper.map(clientConnection);           //!fixme
-            result.add(map);
-        }
-        return result;
+        List<ClientConnection> allConnections = clientConnectionRepository.findAll();
+
+        return allConnections.stream().map(ClientConnectionMapper::map).toList();
     }
 }
