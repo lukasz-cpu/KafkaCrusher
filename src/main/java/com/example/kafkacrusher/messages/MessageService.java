@@ -120,7 +120,7 @@ public class MessageService {
 
     private String getFormattedDateFromTimeStamp(ConsumerRecord<String, String> recordMessage) {
         date.setTime(recordMessage.timestamp());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return formatter.format(date);
     }
 
