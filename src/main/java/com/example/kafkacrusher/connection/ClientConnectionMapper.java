@@ -31,11 +31,9 @@ public class ClientConnectionMapper {
 
         BrokerDTO brokerDTO = getBrokerDTOFromClientConnection(clientConnection);
 
-        ClientConnectionResponseDTO build = ClientConnectionResponseDTO.builder().connectionName(clientConnection.getConnectionName())
+        return ClientConnectionResponseDTO.builder().connectionName(clientConnection.getConnectionName())
                 .brokerDTO(brokerDTO)
                 .build();
-
-        return build;
 
     }
 
