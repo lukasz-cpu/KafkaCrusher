@@ -35,8 +35,7 @@ public interface ClientConnectionRepository extends JpaRepository<ClientConnecti
             str.append(address.address);
             str.append(",");
         }
-        String s = str.toString();
-        return s;
+        return str.toString();
 
     }
 }
