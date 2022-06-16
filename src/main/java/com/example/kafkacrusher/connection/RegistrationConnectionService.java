@@ -14,12 +14,9 @@ import java.util.Optional;
 public class RegistrationConnectionService {
 
     private final ClientConnectionRepository clientConnectionRepository;
-    private final ConnectionActiveManager connectionActiveManager;
 
-    public RegistrationConnectionService(ClientConnectionRepository clientConnectionRepository,
-                                         ConnectionActiveManager connectionActiveManager) {
+    public RegistrationConnectionService(ClientConnectionRepository clientConnectionRepository) {
         this.clientConnectionRepository = clientConnectionRepository;
-        this.connectionActiveManager = connectionActiveManager;
     }
 
     public Optional<ClientConnection> registerClientConnection(ClientConnection clientConnection) {
