@@ -46,6 +46,7 @@ public class ConnectionActiveManager {
     }
 
     public boolean checkAddress(String kafkaAddress) {
+        log.info("Checking Kafka Address: {}", kafkaAddress);
         boolean flag = false;
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
