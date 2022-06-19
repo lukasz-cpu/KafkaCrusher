@@ -23,6 +23,10 @@ public class KafkaCrusherApplication implements CommandLineRunner {
     private ClientConnectionRepository clientConnectionRepository;
 
 
+    public static void main(String[] args) {
+        SpringApplication.run(KafkaCrusherApplication.class, args);
+    }
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -78,4 +82,3 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 
 
 //connection name1 ->> broker1 --> mapa<adres, active>
-
