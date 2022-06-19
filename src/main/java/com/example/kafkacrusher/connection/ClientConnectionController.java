@@ -28,10 +28,9 @@ public class ClientConnectionController {
     public ResponseEntity<String> connect(@RequestBody ClientConnectionDTO inputClientConnectionDTO) {
         ClientConnection clientConnection = ClientConnectionMapper.map(inputClientConnectionDTO);
         Optional<ClientConnection> registerClientConnection = registrationConnectionService.registerClientConnection(clientConnection);
-        if(registerClientConnection.isEmpty()){
+        if (registerClientConnection.isEmpty()) {
             return new ResponseEntity<>("Error during registering connection.", HttpStatus.NOT_ACCEPTABLE);
-        }
-        else {
+        } else {
             String jsonResponse = GsonUtils.toJson(registerClientConnection.get());
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         }

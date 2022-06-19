@@ -18,5 +18,5 @@ import javax.persistence.Embeddable;
 @Embeddable
 @Builder
 public class ActiveStatus {
-   public boolean isActive;
+    public boolean isActive;
 }

@@ -69,7 +69,6 @@ class AddTopicsForConnectionNameTests {
                 .build();
 
 
-
         resultMap.put(build, trueOne);
 
         Broker result = Broker.builder().serverAddresses(resultMap).build();

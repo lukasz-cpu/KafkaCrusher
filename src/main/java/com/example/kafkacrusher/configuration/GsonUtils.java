@@ -8,10 +8,10 @@ public class GsonUtils {
     private final Gson mGson;
 
     private GsonUtils() {
-         mGson = new GsonBuilder()
-                 .enableComplexMapKeySerialization()
-                 .setPrettyPrinting()
-                 .create();
+        mGson = new GsonBuilder()
+                .enableComplexMapKeySerialization()
+                .setPrettyPrinting()
+                .create();
     }
 
     public static GsonUtils getInstance() {
@@ -21,12 +21,12 @@ public class GsonUtils {
         return sInstance;
     }
 
-    public Gson getGson() {
-        return mGson;
+    public static <T> String toJson(T object) {
+        return getInstance().getGson().toJson(object);
     }
 
-    public static <T> String toJson(T object){
-        return getInstance().getGson().toJson(object);
+    public Gson getGson() {
+        return mGson;
     }
 
 }

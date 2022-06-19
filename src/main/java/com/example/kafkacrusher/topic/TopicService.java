@@ -95,7 +95,6 @@ public class TopicService {
     }
 
 
-
     private Set<String> getTopicList(AdminClient adminClient, ListTopicsOptions listTopicsOptions) {
         Set<String> result = new HashSet<>();
         try {

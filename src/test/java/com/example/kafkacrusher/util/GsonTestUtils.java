@@ -8,10 +8,10 @@ public class GsonTestUtils {
     private final Gson mGson;
 
     private GsonTestUtils() {
-         mGson = new GsonBuilder()
-                 .enableComplexMapKeySerialization()
-                 .setPrettyPrinting()
-                 .create();
+        mGson = new GsonBuilder()
+                .enableComplexMapKeySerialization()
+                .setPrettyPrinting()
+                .create();
     }
 
     public static GsonTestUtils getInstance() {

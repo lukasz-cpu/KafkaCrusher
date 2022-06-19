@@ -55,7 +55,7 @@ public class ConnectionActiveManager {
         clientConnectionRepository.save(clientConnection);
     }
 
-    private Broker setServerStatusesForBroker(Broker broker){
+    private Broker setServerStatusesForBroker(Broker broker) {
         Map<Address, ActiveStatus> serverAddresses = broker.getServerAddresses();
         for (Map.Entry<Address, ActiveStatus> addressActiveStatusEntry : serverAddresses.entrySet()) {
             addressActiveStatusEntry.getValue().setActive(checkAddress(addressActiveStatusEntry.getKey().getAddress()));

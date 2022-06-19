@@ -83,7 +83,6 @@ public class MessageService {
     }
 
 
-
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
         List<MessageResponseDTO> messages = new ArrayList<>();
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {

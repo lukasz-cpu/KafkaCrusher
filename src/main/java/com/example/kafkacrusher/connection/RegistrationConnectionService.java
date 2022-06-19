@@ -27,10 +27,9 @@ public class RegistrationConnectionService {
     }
 
     private Optional<ClientConnection> saveClientConnection(ClientConnection clientConnection) {
-        try{
+        try {
             return Optional.of(clientConnectionRepository.save(clientConnection));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
         return Optional.empty(); //!fixme cannot save when connection is broken

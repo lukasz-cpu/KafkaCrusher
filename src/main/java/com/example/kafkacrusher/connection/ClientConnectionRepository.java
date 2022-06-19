@@ -33,7 +33,7 @@ public interface ClientConnectionRepository extends JpaRepository<ClientConnecti
             sb.append(address.address);
             sb.append(",");
         }
-        if(sb.length() > 0){
+        if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
