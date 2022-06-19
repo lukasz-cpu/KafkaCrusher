@@ -48,3 +48,5 @@ jobs:
           context: .
           push: true
           tags: user/kafka-crusher:latest
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
