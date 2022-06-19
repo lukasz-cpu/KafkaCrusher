@@ -47,4 +47,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/kafka-crusher:latest
+          tags: mercangel/kafka-crusher:latest
