@@ -80,6 +80,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
 //https://github.com/metamx/incubator-storm/blob/f6b843d99c874a7139c7339b79cfc6a995f143d2/external/storm-kafka/src/jvm/storm/kafka/DynamicBrokersReader.java#L35
 // zaczac przechowywac jako mapa??
 //https://github.com/marketplace/actions/build-and-push-docker-images
+//https://docs.bitnami.com/tutorials/deploy-scalable-kafka-zookeeper-cluster-kubernetes/
 
 
 //connection name1 ->> broker1 --> mapa<adres, active>
