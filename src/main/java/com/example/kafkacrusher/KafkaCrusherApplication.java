@@ -72,7 +72,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
         }
 
 
-    }
+     }
 }
 
 
