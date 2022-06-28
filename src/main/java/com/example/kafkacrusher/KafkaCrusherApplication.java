@@ -28,7 +28,7 @@ public class KafkaCrusherApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         Map<Address, ActiveStatus> resultMap = new HashMap<>();
 

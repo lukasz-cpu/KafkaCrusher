@@ -34,5 +34,3 @@ public class MessagesController {
 
     }
 }
-
-//https://stackoverflow.com/questions/47702994/how-to-reliably-get-all-kafka-topic-messages-via-kafkaconsumer
