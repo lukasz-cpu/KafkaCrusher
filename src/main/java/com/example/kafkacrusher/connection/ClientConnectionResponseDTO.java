@@ -1,7 +1,6 @@
 package com.example.kafkacrusher.connection;
 
 import com.example.kafkacrusher.connection.dto.BrokerDTO;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
