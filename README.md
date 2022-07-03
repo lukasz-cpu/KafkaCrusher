@@ -23,3 +23,9 @@ responsible for storing connection details.
 - checkout 
 - mvn clean package
 - docker image build & push
+
+## Swagger
+
+- http://localhost:8080/swagger-ui.html
+
+## 
