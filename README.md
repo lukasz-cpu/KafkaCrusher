@@ -1,5 +1,6 @@
 # Kafka Crusher
 ## REST API for Kafka
+![CI](https://github.com/lukasz-cpu/KafkaCrusher/actions/workflows/main.yml/badge.svg)
 
 Kafka Crusher was created to learn Apache Kafka for my own purposes.
 
@@ -17,8 +18,6 @@ responsible for storing connection details.
 - Connection details stored in database
 
 ## CI steps
-
-![CI](https://github.com/lukasz-cpu/KafkaCrusher/actions/workflows/main.yml/badge.svg)
 
 - checkout 
 - mvn clean package
