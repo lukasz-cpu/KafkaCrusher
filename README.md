@@ -1,6 +1,7 @@
 # Kafka Crusher
-## REST API for Kafka
 ![CI](https://github.com/lukasz-cpu/KafkaCrusher/actions/workflows/main.yml/badge.svg)
+
+## REST API for Kafka
 
 Kafka Crusher was created to learn Apache Kafka for my own purposes.
 
