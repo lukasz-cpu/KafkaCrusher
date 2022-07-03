@@ -15,7 +15,7 @@ import java.util.Collections;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
+    
     @Bean
     public Docket get() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -26,11 +26,11 @@ public class SwaggerConfig {
     }
 
     private ApiInfo createApiInfo() {
-        return new ApiInfo("-",
+        return new ApiInfo("Kafka Crusher",
+                "REST client for Kafka",
+                "1.0.0-beta",
                 "-",
-                "1.00",
-                "-",
-                new Contact("-", "-", "-"),
+                new Contact("Lukasz Popek", "-", "lukasz.popek@hotmail.com"),
                 "-",
                 "-",
                 Collections.emptyList()
