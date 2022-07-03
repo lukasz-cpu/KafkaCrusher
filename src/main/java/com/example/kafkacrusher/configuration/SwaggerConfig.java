@@ -20,8 +20,8 @@ public class SwaggerConfig {
     public Docket get() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .paths(PathSelectors.ant("/*"))
-                .apis(RequestHandlerSelectors.basePackage("com.example.kafkacrusher"))
+                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.any())
                 .build().apiInfo(createApiInfo());
     }
 
