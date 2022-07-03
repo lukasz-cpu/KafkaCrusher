@@ -17,4 +17,5 @@ responsible for storing connection details.
 - Connection details stored in database
 
 ## CI
+
 ![CI](https://github.com/lukasz-cpu/KafkaCrusher/actions/workflows/main.yml/badge.svg)
