@@ -1,19 +1,39 @@
+#Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# Eclipse
 .project
-.metadata
 .classpath
 .settings/
-**/Thumbs.db
-target
+bin/
+
+# IntelliJ
+.idea
+*.ipr
 *.iml
 *.iws
-*.ipr
-.idea/
-.DS_Store
-.factorypath
-.vscode
-.env
-settings.xml
 
-kafka.properties*
-kafka.truststore.jks*
-kafka.keystore.jks*
+# NetBeans
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode
+.factorypath
+
+# OSX
+.DS_Store
+
+# Vim
+*.swp
+*.swo
+
+# patch
+*.orig
+*.rej
+
+# Local environment
+.env
