@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.*;
 
 @Component
 @Slf4j
@@ -85,16 +86,30 @@ public class MessageService {
 
     private List<MessageResponseDTO> getMessagesFromTopic(String topicName, Properties properties) {
         List<MessageResponseDTO> messages = new ArrayList<>();
-        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
-            consumer.subscribe(Collections.singletonList(topicName));
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));
-            for (ConsumerRecord<String, String> recordMessage : records) {
-                String value = recordMessage.value();
-                String formattedDate = getFormattedDateFromTimeStamp(recordMessage);
-                MessageResponseDTO buildMessage = MessageResponseDTO.builder().message(value).date(formattedDate).build();
-                messages.add(buildMessage);
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        Future<?> futureTask = executorService.submit(() -> {
+            try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties)) {
+                consumer.subscribe(Collections.singletonList(topicName));
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(100));
+                for (ConsumerRecord<String, String> recordMessage : records) {
+                    String value = recordMessage.value();
+                    String formattedDate = getFormattedDateFromTimeStamp(recordMessage);
+                    MessageResponseDTO buildMessage = MessageResponseDTO.builder().message(value).date(formattedDate).build();
+                    messages.add(buildMessage);
+                }
             }
+        });
+
+        try {
+            futureTask.get(10, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            return new ArrayList<>();
+        } finally {
+            executorService.shutdown();
         }
+
         return messages;
     }
 
