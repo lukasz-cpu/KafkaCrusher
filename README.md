@@ -14,9 +14,9 @@ responsible for storing connection details.
 - Add topic for connection name
 - Delete topic for connection name
 - Multiple server addreses for one connection name
-- Send message
-- Read messages
-- Connection details stored in database
+- Send message to a certain topic 
+- Read messages from a topic 
+- Connection details stored in a database
 
 ## CI steps
 
