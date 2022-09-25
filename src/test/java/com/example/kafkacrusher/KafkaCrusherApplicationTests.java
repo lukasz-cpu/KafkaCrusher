@@ -9,8 +9,8 @@ import org.springframework.test.annotation.DirtiesContext;
 class KafkaCrusherApplicationTests {
 
     @Test
-    void contextLoads() {
-         
+    void contextLoads() {   
+
     }
 
 }
