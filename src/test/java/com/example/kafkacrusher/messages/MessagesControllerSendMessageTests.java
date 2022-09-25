@@ -96,6 +96,6 @@ class MessagesControllerSendMessageTests {
         assertEquals("test message", Objects.requireNonNull(response.getBody()).getMessage());
 
 
-        1}
+         }
 
 }
