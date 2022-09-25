@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 )
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class ConnectionActiveManagerTest {
 
