@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 )
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class GetConnectionsTests {
 
