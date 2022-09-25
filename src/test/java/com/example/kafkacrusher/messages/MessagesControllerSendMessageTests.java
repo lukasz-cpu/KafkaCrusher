@@ -99,3 +99,5 @@ class MessagesControllerSendMessageTests {
     }
 
 }
+
+//TODO replace embedded kafka with test containers
