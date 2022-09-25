@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Slf4j
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"}, topics = {"TestTopic"})
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"}, topics = {"TestTopic1"})
 class MessagesControllerSendMessageTests {
 
     private final RestTemplate restTemplate = new TestRestTemplate().getRestTemplate();
@@ -80,7 +80,7 @@ class MessagesControllerSendMessageTests {
         MessageRequestDTO connection_test = MessageRequestDTO.builder()
                 .message("test message")
                 .connectionName("connection test10")
-                .topic("TestTopic")
+                .topic("TestTopic1")
                 .build();
 
         final String baseUrl = "http://localhost:8099/sendMessage";
@@ -92,9 +92,8 @@ class MessagesControllerSendMessageTests {
         ResponseEntity<MessageRequestDTO> response = restTemplate.exchange(baseUrl, HttpMethod.POST, entity, MessageRequestDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("TestTopic", Objects.requireNonNull(response.getBody()).getTopic());
+        assertEquals("TestTopic1", Objects.requireNonNull(response.getBody()).getTopic());
         assertEquals("test message", Objects.requireNonNull(response.getBody()).getMessage());
-        assertEquals("TestTopic", Objects.requireNonNull(response.getBody()).getTopic());
 
 
     }
