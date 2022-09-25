@@ -95,7 +95,7 @@ class MessagesControllerSendMessageTests {
         assertEquals("TestTopic1", Objects.requireNonNull(response.getBody()).getTopic());
         assertEquals("test message", Objects.requireNonNull(response.getBody()).getMessage());
 
-  
-    }
+
+     }
 
 }
